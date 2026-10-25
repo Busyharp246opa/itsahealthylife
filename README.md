@@ -2,7 +2,7 @@
 
 Source repository: https://github.com/Busyharp246opa/itsahealthylife
 
-A responsive member app, expert workspace, and admin console based on the supplied platform spec, workbook, logos, and Figma screens. The app has two modes: a seeded local walkthrough in browser storage and a connected Supabase mode backed by shared records and row level security.
+A responsive member app, expert workspace, and admin console based on the supplied platform spec, workbook, logos, and Figma screens. The public app connects to Supabase and uses separate role-specific URLs. The earlier seeded walkthrough remains in the repository as development reference code, but is not mounted by the public entrypoint.
 
 ## Run locally
 
@@ -12,26 +12,26 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open <http://127.0.0.1:5173/>. The local walkthrough works without credentials. For connected mode, set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`. The current workspace already has a local, ignored `.env.local` for the HealthyLife project. Never put a service role key in a Vite variable.
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`, then open <http://127.0.0.1:5173/member>, <http://127.0.0.1:5173/experts>, or <http://127.0.0.1:5173/admin>. The current workspace already has an ignored `.env.local` for the HealthyLife project. Never put a service role key in a Vite variable.
 
-The production preview is <https://itsahealthylife.vercel.app/>. GitHub `main` deploys through the Vercel `itsahealthylife` project. Its Production environment contains the same browser-safe Supabase URL and publishable key as local development; changes to those values require redeployment. The Supabase `platform-api` function permits requests from that production origin and localhost, with JWT and role checks still required.
+The production workspaces are <https://itsahealthylife.vercel.app/member>, <https://itsahealthylife.vercel.app/experts>, and <https://itsahealthylife.vercel.app/admin>. The root URL opens `/member`. GitHub `main` deploys through the Vercel `itsahealthylife` project. Its Production environment contains the same browser-safe Supabase URL and publishable key as local development; changes to those values require redeployment. The Supabase `platform-api` function permits requests from that production origin and localhost, with JWT and role checks still required.
 
 For the three desktop design concepts, open <http://127.0.0.1:5173/Sample%20UI/index.html>. You can also open `Sample UI/index.html` directly from the project folder; its links target each concept's `index.html` rather than a directory. Daily Workbench now includes clickable program details, full exercise browsing, illustrative animated exercise previews, technique details, add-to-day targets, and an expert sharing preview. These concept actions stay in memory and never write to Supabase. Its member desktop navigation has also been adapted into the React app, with role-scoped Find a feature search (Ctrl/Cmd+K); the existing admin panel keeps its UI. Browser Back and Forward now follow workspace pages and the training catalog, including its filters. Design rationale is in `Sample UI/DESIGN.md`.
 
-On the mobile member demo, use the green **Live** button in the purple top bar to switch to **Live Supabase**. The demo role selector only previews local sample data and does not authenticate. Create or sign in to an account there. The confirmed account `itsahealthylifeltd@gmail.com` has the first admin grant; refresh after signing in to load it. Any signed-in member can choose **Apply as expert**. An admin must approve the submitted application before the expert appears in discovery or can be booked.
+Create or sign in to an account from `/member`. The confirmed account `itsahealthylifeltd@gmail.com` has the first admin grant and may open `/admin`. Members can open `/experts` to apply; until approval, that shell shows only the application and review status. An admin must approve the application before the full expert workspace opens and the expert appears in discovery.
 
 ## What works
 
 - Member: account creation/sign-in/reset, health profile and sharing choice, expert discovery, available slots, simulated booking/cancellation, booking-linked messages, meal and activity logs, **member-authored weekly training programs with a 1,324-item searchable and filtered exercise browser, technique details, target sets/reps, per-set rep and weight logging, completion history, one active program, and optional sharing with a booked expert**, reviewed library saves, challenge steps, member Circle rooms and posts, likes, comments, reports, blocks, and people views, shop orders, and support requests.
 - Expert: application and review status, availability, assigned bookings/clients, read-only member-shared training programs, messages, a separate approved-expert Circle, content drafts, and linked simulated earnings.
 - Admin: expert review, booking/payment/payout overview, content publication, challenge and product creation, support/report queues, booking policy versions, and audit activity.
-- Local demo: prefilled walkthrough for all three roles. Demo data stays in browser storage and is separate from Supabase.
+- Development reference: the former browser-storage demo code and standalone design concepts remain in the repository; the deployed app does not expose the demo role/mode switch.
 
 Checkout and shop orders are **simulated**. No card is charged, no funds move, and no external payment provider is configured.
 
 Confirmed booking messages support one image or document attachment per message (up to 10 MB). Demo files stay in browser IndexedDB; Live Supabase files use a private Storage bucket that only the booked member and expert can access while the booking is confirmed.
 
-Member **Track** has compact nutrition and movement totals, a quick meal/activity form, optional macros, and repeat/remove controls in today's log. The same page works in local demo and Live Supabase modes.
+Member **Track** has compact nutrition and movement totals, a quick meal/activity form, optional macros, and repeat/remove controls in today's log.
 
 ## Backend
 

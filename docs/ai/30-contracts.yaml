@@ -38,6 +38,7 @@ contracts:
     configuration: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
     production_configuration: Vercel Production Config values are embedded into the Vite browser bundle at build time; changes require a redeploy. Never use a Supabase service role key here.
     authorization: Supabase Auth session plus RLS; role_grants is server controlled.
+    shell_access: /member requires a member grant; /admin requires an admin grant. /experts permits an authenticated applicant to view only the application screen until an expert grant and latest approved review exist. URL selection never grants data access.
     direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
       progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
       reactions and blocks; admin may manage rooms, guidelines, and hide posts via RLS.
@@ -52,9 +53,10 @@ contracts:
     slot_constraint: one_active_booking_per_slot unique partial index.
     policy_version: Stored on each booking and used for cancellation math.
   navigation:
-    state: history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
-    behavior: DemoApp and CloudApp push page/role changes; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
-    boundary: History state contains route and filter state only; no auth tokens, health records, or training logs. It does not grant access. Live admin restoration checks the current user's grant.
+    shell_paths: /member, /experts, and /admin; / opens /member. vercel.json rewrites direct shell requests to index.html.
+    state: The pathname selects the live role. history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
+    behavior: CloudApp pushes page changes under the current shell path; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
+    boundary: URL and history state contain route and filter state only; no auth tokens, health records, or training logs. Neither grants access. Member, expert, and admin rendering checks server-managed grants and review status.
   feature_search:
     source: src/FeatureSearch.tsx contains role-scoped Healthy Life feature destinations and keyword ranking adapted
       from FitCircle.

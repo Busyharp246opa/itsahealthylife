@@ -5,7 +5,8 @@ deferred_cleanup:
 - The live training tables, RLS, and activation RPC passed rolled-back authenticated SQL checks. A signed-in member/expert
   browser pass still needs an approved expert and confirmed booking; the current Supabase project has one profile
   and no expert profiles or bookings.
-- Browser history preserves current routes and filters, but the location is stored in history state rather than a shareable URL.
+- The three role shells have shareable paths; pages and training filters within a shell remain in history state rather than shareable URLs.
+- The old src/App.tsx browser-storage walkthrough remains as unmounted reference code; remove or extract its fixtures after connected QA no longer needs them.
 - The feature search opens Training but does not deep-link into a specific member program or exercise; selecting
   a program is required before adding an exercise.
 - The static exercise catalog loads 1324 English text records at once; add list virtualization or server-side search

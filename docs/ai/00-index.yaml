@@ -11,15 +11,16 @@ read_order:
 - 40-flows.yaml
 - 50-guardrails.yaml
 - 60-debt.yaml
-summary: Responsive member, expert, and admin clients share a Supabase backend. A separate local demo uses browser
-  storage. Members author weekly training programs, track sets, and optionally share with booked experts. Checkout
+summary: Responsive member, expert, and admin clients share a Supabase backend at /member, /experts, and /admin.
+  The public entrypoint mounts the connected client only; the old browser-storage demo remains as reference code.
+  Members author weekly training programs, track sets, and optionally share with booked experts. Checkout
   and orders are simulated. Three standalone member/expert desktop concept previews live in Sample UI/; Daily Workbench
   training informs the member desktop app. Members open programs, browse and filter the full exercise catalog, review
   technique, and add movements to a selected day. Role-scoped command search navigates member, expert, and admin
-  features while the admin console keeps its layout. Browser Back and Forward follow demo/live pages and the nested training browser. Circle now has member topic rooms and a separate approved-expert
+  features while the admin console keeps its layout. Browser Back and Forward follow pages within the selected shell and the nested training browser. Circle now has member topic rooms and a separate approved-expert
   feed, with posts, kinds, likes, comments, safety actions, people views, guidelines, and admin moderation. Exercise
   detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
-  Booking messages now support one private image or document attachment per message in demo and live modes.
+  Booking messages support one private image or document attachment per message.
   Member Track uses a compact daily check-in with side-by-side totals, quick meal/activity entry, optional macros, and one-click repeat from today's log.
   The production Vite build is served from itsahealthylife.vercel.app with browser-safe Supabase variables set in Vercel Production.
 task_routing:
@@ -43,7 +44,7 @@ task_routing:
     - 30-contracts.yaml
     - 40-flows.yaml
     - 50-guardrails.yaml
-    owner: src/navigation.ts, src/App.tsx, src/CloudApp.tsx, src/Training.tsx, src/ExerciseBrowser.tsx
+    owner: src/navigation.ts, src/main.tsx, src/CloudApp.tsx, src/Training.tsx, src/ExerciseBrowser.tsx, vercel.json
   feature_search:
     read:
     - 20-modules.yaml
@@ -72,7 +73,7 @@ task_routing:
     - 30-contracts.yaml
     - 40-flows.yaml
     - 50-guardrails.yaml
-    owner: package.json, src/main.tsx, supabase/functions/platform-api/index.ts, README.md
+    owner: package.json, src/main.tsx, vercel.json, supabase/functions/platform-api/index.ts, README.md
   frontend:
     read:
     - 20-modules.yaml

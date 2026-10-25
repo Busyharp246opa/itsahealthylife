@@ -17,11 +17,13 @@ decisions:
   local_testing: http://127.0.0.1:5173/
   source_repository: https://github.com/Busyharp246opa/itsahealthylife (public; local main branch tracks origin/main)
   production_host: https://itsahealthylife.vercel.app/ (Vercel project itsahealthylife under the itsahealthylife Hobby account; main deploys automatically)
+  public_shells: /member for members, /experts for approved experts or applicants, and /admin for granted admins. Root redirects in the browser to /member. Vercel rewrites the three paths to the SPA entrypoint.
+  shell_access: URL chooses the workspace. Member and admin shells verify role_grants; the expert shell shows the application until an expert grant and approved review exist. The demo role/mode dock is absent from the public app.
   production_configuration: Vercel Production holds VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY as browser-readable Config values. No service role key is present. Supabase platform-api allows this production origin and local development origins.
   first_admin_email: itsahealthylifeltd@gmail.com
   first_admin_state: confirmed account has admin and member grants; initial grant audited; user confirmed live admin
     overview
-  navigation: Browser history tracks the current mode, role, page, and member training location; browser Back and Forward restore these states.
+  navigation: Browser paths identify live roles; history state tracks page and member training location within a shell, with Back and Forward restoring them.
   member_search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Expert and admin layouts keep their existing search position.
   session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
   daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.

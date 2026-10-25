@@ -39,3 +39,15 @@
 @media(min-width:900px){.app-shell.member .feature-search-trigger{top:104px;left:29px;right:auto;width:200px;justify-content:flex-start;background:#ffffff17;color:#fff;border-color:#ffffff48;box-shadow:none}.app-shell.member .feature-search-trigger kbd{margin-left:auto;color:#eee0f1;border-color:#ffffff55}.app-shell.member .member-desktop-caption{margin-top:111px}}
 .visually-hidden{position:absolute!important;width:1px!important;min-width:0!important;height:1px!important;min-height:0!important;padding:0!important;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .chat-compose{display:block}.chat-compose-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.chat-compose-row>input{flex:1;min-width:150px}.chat-attach-button{width:50px;height:50px;display:grid;place-items:center;flex:none;background:white;border:1px solid #e5e0e8;border-radius:12px;color:#52305c}.chat-attach-button:hover,.chat-attach-button:focus-visible{border-color:#a260b9;background:#f2e3fa}.chat-compose-row>.btn{height:50px;min-width:68px}.chat-selected-file{order:3;flex-basis:100%;display:flex;align-items:center;gap:8px;min-width:0;background:#f2e3fa;border-radius:10px;padding:8px 10px;color:#52305c;font-size:12px}.chat-selected-file strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-selected-file small{white-space:nowrap}.chat-selected-file button{margin-left:auto;background:none;border:0;color:#52305c;padding:3px}.chat-attachment-error{font-size:12px;color:#a3354f;margin:8px 0 0}.chat-message-text{display:block;white-space:pre-wrap;overflow-wrap:anywhere}.chat-message-file{margin-top:7px;min-width:160px}.chat-message-file:first-child{margin-top:0}.chat-message-file img{display:block;max-width:min(300px,60vw);max-height:260px;object-fit:contain;border-radius:9px;margin-bottom:8px}.chat-file-line{display:flex;align-items:center;gap:8px;min-width:0}.chat-file-line>span{min-width:0}.chat-file-line a,.chat-file-line span{overflow-wrap:anywhere;color:#52305c;font-weight:700}.chat-file-line small{display:block;margin-top:3px}.bubble{overflow:hidden}
+
+/* Separate live workspace shells */
+.desktop-account-actions{display:flex;align-items:center;gap:15px;margin-left:auto}
+.desktop-account-actions>a,.desktop-account-actions>button{border:0;background:none;color:#52305c;font:inherit;font-weight:700;text-decoration:none;white-space:nowrap;cursor:pointer}
+.desktop-account-actions>a:hover,.desktop-account-actions>button:hover{text-decoration:underline}
+.desktop-account-actions .desktop-user{padding-left:15px;border-left:1px solid #e7e1e9}
+.shell-account{display:grid;gap:10px;margin-top:22px}
+.shell-account h2{margin:0 0 4px}
+.shell-account .list-card{border:1px solid #eee6f1;color:inherit;text-decoration:none}
+.shell-account>.btn{justify-self:start;margin-top:4px}
+.auth-card>.text-link{margin-top:12px}
+@media(max-width:760px){.desktop-account-actions{gap:9px}.desktop-account-actions .desktop-user{display:none}}

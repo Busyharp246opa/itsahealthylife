@@ -1,8 +1,8 @@
 schema_version: 1
 workspace:
   state: implemented_local_and_connected
-  entrypoint: index.html -> src/main.tsx -> src/App.tsx
-  local_demo: src/App.tsx + src/data.ts + src/TrainingDemo.tsx + localStorage + IndexedDB chat files + src/Circle.tsx
+  entrypoint: index.html -> src/main.tsx -> src/CloudApp.tsx
+  local_demo: src/App.tsx + src/data.ts + src/TrainingDemo.tsx remain as unmounted development reference code
   connected_app: src/CloudApp.tsx + src/TrainingCloud.tsx + Supabase JS client + private session-attachments Storage bucket + src/Circle.tsx
   design: src/styles.css + src/DailyTracker.tsx + src/DailyTracker.css + src/Training.tsx + src/ExerciseBrowser.tsx + src/FeatureSearch.tsx + Frame.png + Group
     46831.png + Circle styles + DESIGN.md
@@ -12,7 +12,7 @@ workspace:
     scripts, so they can be opened directly or served by Vite.
   exercise_catalog: public/data/exercises.json holds 1324 English text records adapted from FitCircle; Sample UI/shared/exercises.json
     is the standalone preview copy. public/data/flow/assets/ stores 3771 SVG frames for 1257 exercises; 67 have no frames. Both clients use the same animation metadata.
-  navigation: src/navigation.ts stores the demo/live route in browser history state; App, CloudApp, Training, and ExerciseBrowser restore on popstate.
+  navigation: src/navigation.ts maps /member, /experts, and /admin to role shells and stores inner page/training state in browser history. CloudApp, Training, and ExerciseBrowser restore on popstate; vercel.json rewrites direct shell requests to index.html.
   messaging: src/ChatAttachment.tsx owns file validation, picker, and attachment display. Messages remain booking scoped.
   daily_tracking: src/DailyTracker.tsx owns the shared compact Track presentation and form state. App and CloudApp adapt it to local demo data or Supabase meal_entries and activity_entries.
   application_stack: React 19, TypeScript 7, Vite 8, Supabase JS 2

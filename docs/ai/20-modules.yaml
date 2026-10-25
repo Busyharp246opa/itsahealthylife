@@ -75,6 +75,7 @@ modules:
 - owner_module: app_navigation
   allowed_edit_paths:
   - src/navigation.ts
+  - src/main.tsx
   - src/App.tsx
   - src/CloudApp.tsx
   - src/Training.tsx
@@ -82,7 +83,8 @@ modules:
   must_not_move_without:
   - src/FeatureSearch.tsx
   - src/styles.css
-  purpose: Shared browser history state and Back/Forward restoration across modes, roles, pages, and nested training screens.
+  - vercel.json
+  purpose: Live role shells selected by URL, plus browser history state and Back/Forward restoration within pages and nested training screens. src/App.tsx is unmounted demo reference code.
 - owner_module: booking_messaging
   allowed_edit_paths:
   - src/ChatAttachment.tsx
@@ -139,6 +141,8 @@ modules:
   - .mcp.json
   - .env.example
   - .gitignore
+  - vercel.json
+  - src/main.tsx
   - README.md
   must_not_move_without:
   - src/main.tsx

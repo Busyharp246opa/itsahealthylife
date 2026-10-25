@@ -8,7 +8,7 @@ import { FeatureSearch } from './FeatureSearch';
 import { Circle, type CircleActions, type CirclePost } from './Circle';
 import { DailyTracker } from './DailyTracker';
 import { AttachmentPicker, MessageAttachment, attachmentBucket, attachmentMime, liveAttachmentLimit } from './ChatAttachment';
-import { backTo, pushLocation, readLocation, replaceLocation, scrollToPageTop } from './navigation';
+import { backTo, pushLocation, readLocation, replaceLocation, scrollToPageTop, shellRole } from './navigation';
 
 type Row = Record<string, any>;
 type Role = 'member'|'expert'|'admin';
@@ -28,24 +28,25 @@ const Section = ({title,action}:{title:string;action?:React.ReactNode}) => <div 
 const Field = ({label,...props}:{label:string}&React.InputHTMLAttributes<HTMLInputElement>) => <label className="field"><span>{label}</span><input {...props}/></label>;
 const Area = ({label,...props}:{label:string}&React.TextareaHTMLAttributes<HTMLTextAreaElement>) => <label className="field"><span>{label}</span><textarea {...props}/></label>;
 
-export default function CloudApp({onDemo}:{onDemo:()=>void}) {
+export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
   const [user,setUser]=useState<User|null>(null);
   const [loading,setLoading]=useState(true);
   const [busy,setBusy]=useState(false);
   const [tables,setTables]=useState<Tables>({});
-  const [role,setRole]=useState<Role>(()=>readLocation()?.mode==='live'?readLocation()!.role:'member');
-  const [page,setPage]=useState(()=>readLocation()?.mode==='live'?readLocation()!.page:'home');
+  const [role,setRole]=useState<Role>(shellRole);
+  const [page,setPage]=useState(()=>{const location=readLocation();return location?.mode==='live'&&location.role===shellRole()?location.page:'home'});
   const [notice,setNotice]=useState('');
   const [error,setError]=useState('');
+  const [accessError,setAccessError]=useState('');
   const rows=(name:string)=>tables[name]??[];
   const profile=rows('profiles').find(x=>x.id===user?.id);
   const health=rows('member_health').find(x=>x.user_id===user?.id);
   const myExpert=rows('expert_profiles').find(x=>x.user_id===user?.id);
   const latestReview=(id:string)=>rows('expert_reviews').filter(x=>x.expert_id===id).sort((a,b)=>b.created_at.localeCompare(a.created_at))[0];
   const name=(id:string)=>rows('profiles').find(x=>x.id===id)?.display_name||`Member ${id?.slice(0,5)}`;
-  const go=(value:string,nextRole:Role=role)=>{
-    if(page===value&&role===nextRole)return;
-    backTo(parent=>parent.mode==='live'&&parent.role===nextRole&&parent.page===value&&!parent.training,()=>{pushLocation({mode:'live',role:nextRole,page:value});setRole(nextRole);setPage(value);scrollToPageTop()});
+  const go=(value:string)=>{
+    if(page===value)return;
+    backTo(parent=>parent.mode==='live'&&parent.role===role&&parent.page===value&&!parent.training,()=>{pushLocation({mode:'live',role,page:value});setPage(value);scrollToPageTop()});
   };
   const refresh=useCallback(async(activeUser?:User|null)=>{
     if(!supabase)return;
@@ -56,38 +57,93 @@ export default function CloudApp({onDemo}:{onDemo:()=>void}) {
     const next:Tables={};
     for(const x of results){if(x.error)console.warn(`Could not load ${x.name}: ${x.error.message}`);next[x.name]=(x.data as Row[]|null)??[]}
     setTables(next);
-    const grants=next.role_grants??[];
-    const selected:Role=grants.some(x=>x.role==='admin')?'admin':(next.expert_profiles??[]).some(x=>x.user_id===current.id)?'expert':'member';
+    setAccessError(results.find(x=>x.name==='role_grants')?.error?.message??'');
+    const selected:Role=shellRole();
     setRole(selected);setLoading(false);
     const location=readLocation();
-    if(location?.mode==='live'&&location.role!==selected){replaceLocation({mode:'live',role:selected,page:'home'});setPage('home')}
+    if(location?.mode!=='live'||location.role!==selected){replaceLocation({mode:'live',role:selected,page:'home'});setPage('home')}
   },[]);
-  useEffect(()=>{const restore=()=>{const location=readLocation();if(location?.mode!=='live')return;const canAdmin=(tables.role_grants||[]).some(grant=>grant.user_id===user?.id&&grant.role==='admin');if(location.role==='admin'&&!canAdmin){replaceLocation({mode:'live',role:'member',page:'home'});setRole('member');setPage('home')}else{setRole(location.role);setPage(location.page)}scrollToPageTop()};window.addEventListener('popstate',restore);return()=>window.removeEventListener('popstate',restore)},[tables,user]);
-  useEffect(()=>{if(!supabase){setLoading(false);return}supabase.auth.getUser().then(({data})=>{setUser(data.user);refresh(data.user)});const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{setUser(session?.user??null);if(!session?.user){setTables({});setRole('member');setPage('home');replaceLocation({mode:'live',role:'member',page:'home'})}else refresh(session.user)});return()=>subscription.unsubscribe()},[refresh]);
+  useEffect(()=>{const restore=()=>{const requested=shellRole();const location=readLocation();if(location?.mode==='live'&&location.role===requested){setRole(requested);setPage(location.page)}else{replaceLocation({mode:'live',role:requested,page:'home'});setRole(requested);setPage('home')}scrollToPageTop()};window.addEventListener('popstate',restore);return()=>window.removeEventListener('popstate',restore)},[]);
+  useEffect(()=>{if(!supabase){setLoading(false);return}supabase.auth.getUser().then(({data})=>{setUser(data.user);refresh(data.user)});const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{setUser(session?.user??null);if(!session?.user){setTables({});setAccessError('');setRole(shellRole());setPage('home');setLoading(false);replaceLocation({mode:'live',role:shellRole(),page:'home'})}else refresh(session.user)});return()=>subscription.unsubscribe()},[refresh]);
   useEffect(()=>{if(!notice)return;const timer=window.setTimeout(()=>setNotice(''),4000);return()=>window.clearTimeout(timer)},[notice]);
   const act=async(operation:()=>Promise<unknown>,success:string)=>{setBusy(true);setError('');try{await operation();await refresh(user);setNotice(success)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}};
   const edge=async(action:string,payload:Row={})=>{if(!supabase)throw Error('Supabase is not configured');const {data,error}=await supabase.functions.invoke('platform-api',{body:{action,...payload}});if(error){let message=error.message;try{const body=await error.context?.json();message=body?.error||body?.message||message}catch{}throw Error(message)}if(data?.error)throw Error(data.error);return data};
-  if(!supabase)return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Connection needed</h1><p>Add the project URL and publishable key to <code>.env.local</code>.</p><button className="btn soft" onClick={onDemo}>Return to local demo</button></div></div>;
+  if(!supabase)return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Service unavailable</h1><p>This workspace is temporarily unavailable. Please try again later.</p></div></div>;
   if(loading&&!user)return <div className="cloud-auth"><div className="auth-card">Connecting to Healthy Life…</div></div>;
-  if(!user)return <Auth onDemo={onDemo} onNotice={setNotice}/>;
+  if(!user)return <Auth role={role}/>;
+  if(loading)return <div className="cloud-auth"><div className="auth-card">Loading your workspace…</div></div>;
+  if(accessError)return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Could not verify access</h1><p>Please try again in a moment.</p><button className="btn primary" onClick={()=>refresh(user)}>Retry</button></div></div>;
+  const grants=rows('role_grants').filter(x=>x.user_id===user.id);
+  const canMember=grants.some(x=>x.role==='member');
+  const canAdmin=grants.some(x=>x.role==='admin');
+  const expertApproved=grants.some(x=>x.role==='expert')&&latestReview(user.id)?.status==='approved';
+  if((role==='member'&&!canMember)||(role==='admin'&&!canAdmin))return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Access unavailable</h1><p>This account does not have access to the {role==='admin'?'admin console':'member workspace'}.</p><a className="btn soft" href="/member">Open member workspace</a><button className="text-link" onClick={()=>supabase.auth.signOut()}>Sign out</button></div></div>;
   const memberNav=[['home','Home',Home],['plan','Plan',CalendarDays],['train','Train',Dumbbell],['track','Track',Activity],['community','Circle',MessageCircle],['profile','Profile',Users]] as const;
   const expertNav=[['home','Overview',LayoutDashboard],['expert-profile','My profile',ShieldCheck],['availability','Calendar',CalendarDays],['bookings','Bookings',Users],['shared-training','Shared training',Dumbbell],['community','Circle',MessageCircle],['messages','Messages',MessageCircle],['content','My content',BookOpen]] as const;
   const adminNav=[['home','Overview',LayoutDashboard],['people','People',Users],['experts','Experts',ShieldCheck],['bookings','Bookings',CalendarDays],['payments','Payments',CreditCard],['content','Content',BookOpen],['challenges','Challenges',Star],['products','Store',ShoppingBag],['support','Support',MessageCircle],['settings','Settings',Settings]] as const;
-  const nav=role==='member'?memberNav:role==='expert'?expertNav:adminNav;
-  const active=role==='member'&&['experts','booking','checkout','library','challenge','shop','messages'].includes(page)?'plan':page;
+  const nav=role==='member'?memberNav:role==='expert'?(expertApproved?expertNav:[['expert-profile','Application',ShieldCheck]] as const):adminNav;
+  const visiblePage=role==='expert'&&!expertApproved?'expert-profile':page;
+  const active=role==='member'&&['experts','booking','checkout','library','challenge','shop','messages'].includes(page)?'plan':visiblePage;
   const props={user,rows,profile,health,myExpert,latestReview,name,go,act,edge,busy};
   return <div className={`app-shell cloud ${role}`}>
     {role==='member'&&<aside className="member-desktop-side" aria-label="Member workspace"><button className="member-desktop-brand" onClick={()=>go('home')}><img src={logo} alt=""/><span>IT’S A<br/>HEALTHY LIFE</span></button><span className="member-desktop-caption">YOUR WORKSPACE</span><nav aria-label="Member desktop navigation">{memberNav.map(([key,title,Icon],index)=><button key={key} className={active===key?'active':''} onClick={()=>go(key)} aria-current={active===key?'page':undefined}><small>{String(index+1).padStart(2,'0')}</small><Icon size={18}/><span>{title}</span><ArrowRight size={14}/></button>)}</nav><div className="member-desktop-footer"><strong>Better days start here.</strong><p>One useful action at a time.</p><button onClick={()=>go('profile')}>Your account ↗</button></div></aside>}
-    {role==='member'?<header className="mobile-header"><button className="brand-button" onClick={()=>go('home')}><img src={logo} alt=""/><span>IT’S A HEALTHY LIFE</span></button><button className="header-icon" onClick={()=>go('profile')} aria-label="Profile"><Bell size={20}/></button></header>:<aside className="sidebar"><button className="brand-stack" onClick={()=>go('home')}><img src={logo} alt="Healthy Life"/><span>IT’S A HEALTHY LIFE</span></button><div className="sidebar-label">{role==='admin'?'ADMIN CONSOLE':'EXPERT WORKSPACE'}</div><nav aria-label="Workspace navigation">{nav.map(([key,title,Icon])=><button key={key} className={active===key?'active':''} aria-label={title} onClick={()=>go(key)}><span className="nav-icon"><Icon size={16}/></span>{title}</button>)}</nav><div className="sidebar-bottom"><img src={fullLogo} alt=""/><span>Better days start here.</span></div></aside>}
-    <div className="workspace">{role!=='member'&&<header className="desktop-topbar"><span>Connected to HealthyLife Supabase</span><div className="desktop-user"><span className="avatar tiny">{(profile?.display_name||user.email||'U').slice(0,2).toUpperCase()}</span><span>{profile?.display_name||user.email}</span></div></header>}<main className={role==='member'?'mobile-content':'desktop-content'}>{loading?<div className="empty">Loading your workspace…</div>:role==='member'?<CloudMember page={page} {...props}/>:role==='expert'?<CloudExpert page={page} {...props}/>:<CloudAdmin page={page} {...props}/>}</main></div>
-    <FeatureSearch role={role} mode="live" onNavigate={go}/>
+    {role==='member'?<header className="mobile-header"><button className="brand-button" onClick={()=>go('home')}><img src={logo} alt=""/><span>IT’S A HEALTHY LIFE</span></button><button className="header-icon" onClick={()=>go('profile')} aria-label="Profile"><Bell size={20}/></button></header>:<aside className="sidebar"><button className="brand-stack" onClick={()=>go(role==='expert'&&!expertApproved?'expert-profile':'home')}><img src={logo} alt="Healthy Life"/><span>IT’S A HEALTHY LIFE</span></button><div className="sidebar-label">{role==='admin'?'ADMIN CONSOLE':'EXPERT WORKSPACE'}</div><nav aria-label="Workspace navigation">{nav.map(([key,title,Icon])=><button key={key} className={active===key?'active':''} aria-label={title} onClick={()=>go(key)}><span className="nav-icon"><Icon size={16}/></span>{title}</button>)}</nav><div className="sidebar-bottom"><img src={fullLogo} alt=""/><span>Better days start here.</span></div></aside>}
+    <div className="workspace">{role!=='member'&&<header className="desktop-topbar"><span>{role==='admin'?'Admin console':'Expert workspace'}</span><div className="desktop-account-actions"><a href="/member">Member workspace</a>{role==='expert'&&canAdmin&&<a href="/admin">Admin console</a>}<button onClick={()=>supabase.auth.signOut()}>Sign out</button><div className="desktop-user"><span className="avatar tiny">{(profile?.display_name||user.email||'U').slice(0,2).toUpperCase()}</span><span>{profile?.display_name||user.email}</span></div></div></header>}<main className={role==='member'?'mobile-content':'desktop-content'}>{role==='member'?<><CloudMember page={page} {...props}/>{page==='profile'&&<section className="card panel shell-account"><h2>Workspaces & account</h2><a className="list-card" href="/experts"><ShieldCheck size={19}/><span><strong>{expertApproved?'Expert workspace':'Become an expert'}</strong><small>{expertApproved?'Manage your coaching work':'Apply or check your application'}</small></span><ChevronRight size={18}/></a>{canAdmin&&<a className="list-card" href="/admin"><Settings size={19}/><span><strong>Admin console</strong><small>Manage the platform</small></span><ChevronRight size={18}/></a>}<button className="btn soft" onClick={()=>supabase.auth.signOut()}>Sign out</button></section>}</>:role==='expert'?<CloudExpert page={visiblePage} {...props}/>:<CloudAdmin page={page} {...props}/>}</main></div>
+    {(role!=='expert'||expertApproved)&&<FeatureSearch role={role} mode="live" onNavigate={go}/>}
     {role==='member'&&<nav className="bottom-nav" aria-label="Member navigation">{memberNav.map(([key,title,Icon])=><button key={key} className={active===key?'active':''} onClick={()=>go(key)}><span><Icon size={19}/></span><small>{title}</small></button>)}</nav>}
-    <div className="demo-switch"><span>LIVE SUPABASE</span>{role==='member'?<button onClick={()=>go('expert-profile','expert')}>Apply as expert</button>:role==='expert'?<button onClick={()=>go('home','member')}>Member view</button>:null}<button onClick={onDemo}>Local demo</button><button onClick={()=>{supabase.auth.signOut();setNotice('Signed out')}}>Sign out</button></div>
     {notice&&<div className="toast" role="status"><Check size={16}/>{notice}</div>}{error&&<div className="cloud-error" role="alert"><button onClick={()=>setError('')} aria-label="Dismiss error">×</button>{error}</div>}
   </div>;
 }
 
-function Auth({onDemo,onNotice}:{onDemo:()=>void;onNotice:(text:string)=>void}) { const [view,setView]=useState<'login'|'signup'|'reset'>('login');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [name,setName]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');const submit=async(e:React.FormEvent)=>{e.preventDefault();if(!supabase)return;setBusy(true);setError('');try{if(view==='reset'){const {error}=await supabase.auth.resetPasswordForEmail(email);if(error)throw error;onNotice('Check your email for a reset link.')}else if(view==='signup'){const {error}=await supabase.auth.signUp({email,password,options:{data:{name}}});if(error)throw error;onNotice('Account created. Check your email if verification is required.')}else{const {error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error}}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}};return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>{view==='signup'?'Create your account':view==='reset'?'Reset your password':'Welcome back'}</h1><p>{view==='signup'?'Start with your account. You can complete your fitness profile later.':view==='reset'?'We’ll email you a reset link.':'Sign in to your connected workspace.'}</p><form onSubmit={submit} className="form-card">{view==='signup'&&<Field label="Name" required value={name} onChange={e=>setName(e.target.value)}/>}<Field label="Email address" type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)}/>{view!=='reset'&&<Field label="Password" type="password" autoComplete={view==='signup'?'new-password':'current-password'} minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/>}<button className="btn primary full" disabled={busy}>{busy?'Please wait…':view==='signup'?'Create account':view==='reset'?'Send reset link':'Log in'}</button></form>{error&&<p className="auth-error" role="alert">{error}</p>}<div className="auth-links">{view!=='login'&&<button onClick={()=>setView('login')}>Log in</button>}{view!=='signup'&&<button onClick={()=>setView('signup')}>Create account</button>}{view!=='reset'&&<button onClick={()=>setView('reset')}>Forgot password?</button>}</div><button className="text-link" onClick={onDemo}>Explore local demo <ArrowRight size={15}/></button></div></div>}
+function Auth({role}:{role:Role}) {
+  const [view,setView]=useState<'login'|'signup'|'reset'>('login');
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+  const [name,setName]=useState('');
+  const [busy,setBusy]=useState(false);
+  const [error,setError]=useState('');
+  const [feedback,setFeedback]=useState('');
+  const submit=async(e:React.FormEvent)=>{
+    e.preventDefault();
+    if(!supabase)return;
+    setBusy(true);setError('');setFeedback('');
+    try{
+      if(view==='reset'){
+        const {error}=await supabase.auth.resetPasswordForEmail(email);
+        if(error)throw error;
+        setFeedback('Check your email for a reset link.');
+      }else if(view==='signup'){
+        const {error}=await supabase.auth.signUp({email,password,options:{data:{name}}});
+        if(error)throw error;
+        setFeedback('Account created. Check your email if verification is required.');
+      }else{
+        const {error}=await supabase.auth.signInWithPassword({email,password});
+        if(error)throw error;
+      }
+    }catch(e){setError(e instanceof Error?e.message:String(e))}
+    finally{setBusy(false)}
+  };
+  const title=view==='signup'?'Create your account':view==='reset'?'Reset your password':role==='admin'?'Admin sign in':role==='expert'?'Expert sign in':'Welcome back';
+  const description=view==='signup'?'Start with an account. You can complete your profile later.':view==='reset'?'We’ll email you a reset link.':role==='admin'?'Sign in with an approved admin account.':role==='expert'?'Sign in to coach or apply as an expert.':'Sign in to your member workspace.';
+  return <div className="cloud-auth"><div className="auth-card">
+    <img src={fullLogo} alt="It's a Healthy Life"/>
+    <h1>{title}</h1><p>{description}</p>
+    <form onSubmit={submit} className="form-card">
+      {view==='signup'&&<Field label="Name" required value={name} onChange={e=>setName(e.target.value)}/>}
+      <Field label="Email address" type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)}/>
+      {view!=='reset'&&<Field label="Password" type="password" autoComplete={view==='signup'?'new-password':'current-password'} minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/>}
+      <button className="btn primary full" disabled={busy}>{busy?'Please wait…':view==='signup'?'Create account':view==='reset'?'Send reset link':'Log in'}</button>
+    </form>
+    {error&&<p className="auth-error" role="alert">{error}</p>}
+    {feedback&&<p role="status">{feedback}</p>}
+    <div className="auth-links">
+      {view!=='login'&&<button onClick={()=>setView('login')}>Log in</button>}
+      {role!=='admin'&&view!=='signup'&&<button onClick={()=>setView('signup')}>Create account</button>}
+      {view!=='reset'&&<button onClick={()=>setView('reset')}>Forgot password?</button>}
+    </div>
+    {role!=='member'&&<a className="text-link" href="/member">Member workspace <ArrowRight size={15}/></a>}
+  </div></div>
+}
 
 type CloudProps={page:string;user:User;rows:(name:string)=>Row[];profile?:Row;health?:Row;myExpert?:Row;latestReview:(id:string)=>Row|undefined;name:(id:string)=>string;go:(page:string)=>void;act:(operation:()=>Promise<unknown>,success:string)=>Promise<void>;edge:(action:string,payload?:Row)=>Promise<any>;busy:boolean};
 const execute=async(promise:PromiseLike<{error:Error|null}>)=>{const result=await promise;if(result.error)throw result.error};

@@ -5,7 +5,7 @@ flows:
   steps:
   - Push main and wait for a Ready Production deployment of the same commit
   - Build with Vercel Production VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
-  - Open https://itsahealthylife.vercel.app/ and switch from demo to Live Supabase
+  - Open /member, /experts, and /admin directly and confirm the shared sign-in and role-specific shell
   - Invoke platform-api from the production origin for privileged user actions
   dependencies:
   - package.json build script and Vite dist output
@@ -13,7 +13,7 @@ flows:
   - Supabase Auth and platform-api Edge Function
   failure_modes:
   - Git integration points at another account or repository
-  - Missing build-time Vite variables leaves Live Supabase disconnected
+  - Missing build-time Vite variables leaves connected sign-in unavailable
   - Edge Function CORS rejects the production origin
   - Unauthenticated or unauthorized requests are denied by JWT and role checks
 - id: desktop_concept_review
@@ -42,7 +42,7 @@ flows:
   - sample state resets on reload
   - Flow frame missing or failed to load
 - id: local_demo
-  entrypoint: src/App.tsx
+  entrypoint: Unmounted src/App.tsx development reference
   steps:
   - Select demo role
   - navigate member/expert/admin surfaces
@@ -54,22 +54,24 @@ flows:
   - Browser storage disabled
   - stale local demo state
 - id: app_navigation
-  entrypoint: src/navigation.ts via src/App.tsx and src/CloudApp.tsx
+  entrypoint: src/navigation.ts via src/main.tsx and src/CloudApp.tsx
   steps:
-  - Navigate between workspace pages or demo/live modes
+  - Open the matching live shell path and verify role grants
+  - Navigate between pages within the current workspace
   - Open a training program, browse exercises, filter results, and open detail
   - Use browser Back and Forward or the in-app Back controls
   - Restore the matching page, filters, and top scroll position
   dependencies:
   - src/navigation.ts
-  - src/App.tsx
+  - src/main.tsx
   - src/CloudApp.tsx
+  - vercel.json
   - src/Training.tsx
   - src/ExerciseBrowser.tsx
   failure_modes:
   - Browser history state missing after direct entry
   - Stale scroll position obscures the page heading
-  - Wrong role or mode restored
+  - Wrong role restored or another shell opened from stale history state
 - id: feature_search
   entrypoint: src/FeatureSearch.tsx in local or connected shell
   steps:
@@ -91,7 +93,8 @@ flows:
   - Sign up or sign in with Supabase Auth
   - profile/member role trigger
   - load RLS-visible rows
-  - choose admin or expert workspace from role grants and profile
+  - choose the requested shell from the URL
+  - verify member and admin grants before rendering; restrict unapproved expert applicants to their application
   dependencies:
   - profiles
   - role_grants
@@ -264,10 +267,21 @@ manual_smoke_checks:
 - id: production_deployment
   steps:
   - Confirm Vercel Production is Ready for the intended GitHub main commit and itsahealthylife.vercel.app serves the app
-  - Open Live Supabase on the production host and confirm the connected sign-in form appears without browser errors
+  - Load /member, /experts, and /admin directly and refresh each; confirm the corresponding connected sign-in form appears without browser errors or demo controls
   - Send platform-api OPTIONS from the production origin and confirm allow-origin matches it
   - Confirm localhost remains allowed and an unknown origin returns null
   - Send an unauthenticated POST and confirm it is denied
+- id: shell_routes
+  steps:
+  - Open / and confirm the browser URL becomes /member
+  - Load and refresh /member, /experts, and /admin directly on the local server and production host
+  - Confirm member signup is available, expert signup/application is available, and admin signup is absent
+  - Confirm the bottom demo role/mode switch and local demo entry points are absent
+  - Sign in as a member and verify /admin cannot render the admin console
+  - Sign in as an admin and verify /admin renders the console while /member still renders member pages
+  - Sign in as an unapproved expert applicant and verify only the application screen appears at /experts
+  - Verify an approved expert can use the full /experts navigation and can reach /member
+  - Check Back/Forward in member training, refresh, and sign out without changing the current shell path
 - id: demo_track
   steps:
   - Open Track at desktop and phone widths; confirm quick add is visible early and no horizontal overflow
@@ -316,11 +330,11 @@ manual_smoke_checks:
     to the program
 - id: app_navigation
   steps:
-  - In local demo, navigate Home to Train to a program, browse home, results, and exercise detail
+  - In /member, navigate Home to Train to a program, browse home, results, and exercise detail
   - Use both in-app Back and browser Back/Forward through those screens
   - Confirm selected filters and result page return, with the catalog heading visible at scroll position zero
-  - Navigate Plan to expert discovery and back; switch demo member/admin role and back
-  - Enter Live Supabase signed-out mode and use browser Back to restore the local demo
+  - Navigate Plan to expert discovery and back without leaving /member
+  - Open /experts or /admin directly and confirm history state cannot bypass role checks
   - Repeat the training Back path at phone width and check no horizontal overflow or console errors
 - id: feature_search
   steps:
@@ -329,7 +343,7 @@ manual_smoke_checks:
   - type exercise and navigate to Train with Enter
   - reopen with Ctrl/Cmd+K
   - use arrows and Escape
-  - switch to expert and admin demo roles and verify only their destinations appear
+  - open the expert and admin shells with eligible accounts and verify only their destinations appear
 - id: demo_training
   steps:
   - At desktop and phone widths open local member Train
@@ -363,9 +377,10 @@ manual_smoke_checks:
   - see booking/payment/payout states in calendar
 - id: live_signed_out
   steps:
-  - Switch to Live Supabase
-  - verify sign-in/sign-up/reset controls render
-  - return to local demo
+  - Open /member, /experts, and /admin directly
+  - verify the matching sign-in and reset controls render
+  - verify only member and expert routes offer signup
+  - verify no local demo control appears
 - id: live_member
   steps:
   - Sign in as member
