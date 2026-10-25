@@ -123,6 +123,11 @@ contracts:
     origin: Explicit CORS allowlist for https://itsahealthylife.vercel.app and localhost or 127.0.0.1 with optional development port. Other origins receive null. Preflight permits the Supabase client headers including x-retry-count.
     actor: Authenticated JWT user ID; roles read from role_grants, never request body.
     admin_management: challenge.update and product.update accept a validated UUID and boolean active flag from an admin only; successful changes add audit_events. Content publishing, support triage, and policy publishing remain server actions.
+  admin_catalogue_ui:
+    source: src/CloudApp.tsx and src/styles.css.
+    challenges: Show the challenge list and status first; New challenge opens the existing create form, and each item's steps expand in place. Pause/Resume keeps using platform-api.
+    store: Products and Orders are separate in-page views. Add product opens the existing create form; descriptions expand in place and Hide/Show keeps using platform-api. Orders remain simulated.
+    refresh: Successful writes refresh the current page in the background and preserve the open view.
   circle:
     source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts
       Supabase.

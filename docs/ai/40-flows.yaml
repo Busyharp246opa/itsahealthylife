@@ -321,6 +321,25 @@ flows:
   - Stale queue after a write
   - Room or guideline write denied by RLS
   - Ticket or report transition denied by the server
+- id: admin_catalogue
+  entrypoint: src/CloudApp.tsx admin Challenges and Store
+  steps:
+  - Show existing challenges and products before their creation forms
+  - Open and close New challenge and Add product without a write
+  - Expand a challenge's steps and a product's description
+  - Pause or resume a challenge; hide or show a product
+  - Switch between Products and Orders without losing the current admin shell
+  - Create through the existing admin-only platform-api actions and refresh in place
+  dependencies:
+  - challenges
+  - challenge_steps
+  - products
+  - orders
+  - platform-api
+  failure_modes:
+  - Creation form obscures the list on initial load
+  - Inactive items disappear from the admin list
+  - Status transition denied by the server
 manual_smoke_checks:
 - id: landing_preview
   steps:
@@ -487,6 +506,7 @@ manual_smoke_checks:
   - publish content and policy
   - Open Content, Challenges, Store, Support, and Settings from the sidebar; confirm each destination renders its own heading and controls
   - Pause and resume a challenge, then hide and show a store product; verify the visible status changes after refresh and audit events are recorded
+  - Confirm Challenges and Store initially show compact item lists; open and close both create forms, expand item details, and switch Store Products/Orders at desktop and phone widths
   - Open each Support section; confirm only its relevant queue or settings appears and the default page stays compact
   - After changing room status or guidelines, confirm Circle settings stays selected while the updated data appears
   - Start, resolve, and reopen a support ticket; dismiss or action a report when test records are available
