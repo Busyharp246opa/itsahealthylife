@@ -10,6 +10,7 @@ scripts/prepare-public-pages.mjs  Generates public pages from the approved desig
 src/main.tsx                 Live-only React entrypoint and role-path initialization
 src/App.tsx                  Unmounted browser-storage demo reference
 src/CloudApp.tsx             Supabase-connected role shells, canonical login landing, admin overview and sidebar controls
+src/authStorage.ts           Supabase Auth local or tab-session storage selected by Remember me
 src/Training.tsx            Shared training program list, weekly planner, set logger, and expert review UI
 src/ExerciseBrowser.tsx     Full category/filter/pagination exercise browse and add-to-day flow
 src/ExercisePreview.tsx     Lazy SVG frame playback with pause, visibility, and reduced-motion support

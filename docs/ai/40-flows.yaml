@@ -127,6 +127,7 @@ flows:
   entrypoint: src/CloudApp.tsx
   steps:
   - Sign up or sign in with Supabase Auth
+  - Password visibility controls reveal or conceal the value without submitting; Remember me chooses localStorage or current-tab sessionStorage before password sign-in
   - Optional auth=signup URL intent opens registration in the member or expert shell
   - Confirmation and recovery emails return to the matching production role route, where the client consumes the session; recovery then prompts for a new password
   - profile/member role trigger
@@ -470,6 +471,8 @@ manual_smoke_checks:
   steps:
   - Open /member, /experts, and /admin directly
   - verify the matching sign-in and reset controls render
+  - On member sign-in, toggle password visibility and Remember me at desktop and phone widths; confirm no horizontal overflow
+  - With isolated browser storage, confirm unchecked sign-in uses sessionStorage, checked sign-in uses localStorage, refresh keeps the selected session, and sign-out clears both token stores
   - verify only member and expert routes offer signup
   - verify no local demo control appears
 - id: auth_email_redirects

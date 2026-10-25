@@ -93,6 +93,7 @@
 .shell-account .list-card{border:1px solid #eee6f1;color:inherit;text-decoration:none}
 .shell-account>.btn{justify-self:start;margin-top:4px}
 .auth-card>.text-link{margin-top:12px}
+.auth-password-input{position:relative;display:block}.auth-password-input input{padding-right:50px}.auth-password-input button{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:8px;background:transparent;color:#52305c}.auth-password-input button:hover{background:#f2e3fa}.auth-password-input button:focus-visible{outline:2px solid #7d4a94;outline-offset:1px}.auth-remember{display:flex;align-items:center;gap:9px;width:max-content;color:#52305c;font-size:12px;font-weight:700;cursor:pointer}.auth-remember input{width:16px;height:16px;margin:0;accent-color:#52305c;cursor:pointer}.auth-remember:focus-within{outline:2px solid #7d4a94;outline-offset:3px;border-radius:3px}
 @media(max-width:760px){.desktop-account-actions{gap:9px}.desktop-account-actions .desktop-user{display:none}}
 @media(max-width:1150px){.admin-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:1050px){.admin-circle-grid{grid-template-columns:1fr}}

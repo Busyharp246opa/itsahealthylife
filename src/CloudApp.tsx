@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Activity, ArrowLeft, ArrowRight, Bell, BookOpen, CalendarDays, Check, ChevronRight, CreditCard, Dumbbell, Home, LayoutDashboard, Leaf, LogOut, MessageCircle, Plus, RotateCcw, Search, Settings, ShieldCheck, ShoppingBag, Star, Users, Wallet } from 'lucide-react';
+import { useCallback, useEffect, useId, useState } from 'react';
+import { Activity, ArrowLeft, ArrowRight, Bell, BookOpen, CalendarDays, Check, ChevronRight, CreditCard, Dumbbell, Eye, EyeOff, Home, LayoutDashboard, Leaf, LogOut, MessageCircle, Plus, RotateCcw, Search, Settings, ShieldCheck, ShoppingBag, Star, Users, Wallet } from 'lucide-react';
 import { createClient, type User } from '@supabase/supabase-js';
 import logo from '../Frame.png';
 import fullLogo from '../Group 46831.png';
@@ -9,6 +9,7 @@ import { Circle, type CircleActions, type CirclePost } from './Circle';
 import { DailyTracker } from './DailyTracker';
 import { AttachmentPicker, MessageAttachment, attachmentBucket, attachmentMime, liveAttachmentLimit } from './ChatAttachment';
 import { ProductImagePicker, productImageBucket, productImagePath, productImagePaths, validateProductImages } from './ProductImages';
+import { createAuthStorage } from './authStorage';
 import { backTo, pushLocation, readLocation, replaceLocation, scrollToPageTop, shellRole } from './navigation';
 
 type Row = Record<string, any>;
@@ -16,7 +17,8 @@ type Role = 'member'|'expert'|'admin';
 type Tables = Record<string, Row[]>;
 const url = import.meta.env.VITE_SUPABASE_URL as string|undefined;
 const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string|undefined;
-const supabase = url && key ? createClient(url,key) : null;
+const authStorage = createAuthStorage(window.localStorage, window.sessionStorage);
+const supabase = url && key ? createClient(url,key,{auth:{storage:authStorage.storage,persistSession:true}}) : null;
 const authReturnUrl = (role:Role) => new URL(role==='expert'?'/experts':role==='admin'?'/admin':'/member', 'https://itsahealthylife.vercel.app').toString();
 const downloadSessionAttachment=async(path:string):Promise<Blob>=>{const {data,error}=await supabase!.storage.from(attachmentBucket).download(path);if(error||!data)throw error||new Error('Attachment unavailable');return data};
 const productImageUrl=(path:string)=>supabase!.storage.from(productImageBucket).getPublicUrl(path).data.publicUrl;
@@ -43,6 +45,11 @@ const Heading = ({title,subtitle,back}:{title:string;subtitle?:string;back?:()=>
 const Section = ({title,action}:{title:string;action?:React.ReactNode}) => <div className="section-title"><h2>{title}</h2>{action}</div>;
 const Field = ({label,...props}:{label:string}&React.InputHTMLAttributes<HTMLInputElement>) => <label className="field"><span>{label}</span><input {...props}/></label>;
 const Area = ({label,...props}:{label:string}&React.TextareaHTMLAttributes<HTMLTextAreaElement>) => <label className="field"><span>{label}</span><textarea {...props}/></label>;
+function PasswordField({label,...props}:{label:string}&React.InputHTMLAttributes<HTMLInputElement>){
+  const [visible,setVisible]=useState(false);
+  const id=useId();
+  return <div className="field auth-password-field"><label htmlFor={id}>{label}</label><div className="auth-password-input"><input {...props} id={id} type={visible?'text':'password'}/><button type="button" aria-label={`${visible?'Hide':'Show'} ${label.toLowerCase()}`} aria-pressed={visible} onClick={()=>setVisible(!visible)}>{visible?<EyeOff size={18}/>:<Eye size={18}/>}</button></div></div>;
+}
 
 export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
   const [user,setUser]=useState<User|null>(null);
@@ -118,6 +125,7 @@ function Auth({role}:{role:Role}) {
   const [view,setView]=useState<'login'|'signup'|'reset'>(()=>role!=='admin'&&new URLSearchParams(window.location.search).get('auth')==='signup'?'signup':'login');
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+  const [remember,setRemember]=useState(()=>authStorage.rememberByDefault());
   const [name,setName]=useState('');
   const [busy,setBusy]=useState(false);
   const [error,setError]=useState('');
@@ -136,6 +144,7 @@ function Auth({role}:{role:Role}) {
         if(error)throw error;
         setFeedback('Account created. Check your email if verification is required.');
       }else{
+        authStorage.choose(remember);
         const {error}=await supabase.auth.signInWithPassword({email,password});
         if(error)throw error;
         window.location.replace(role==='expert'?'/experts':role==='admin'?'/admin':'/member');
@@ -151,7 +160,8 @@ function Auth({role}:{role:Role}) {
     <form onSubmit={submit} className="form-card">
       {view==='signup'&&<Field label="Name" required value={name} onChange={e=>setName(e.target.value)}/>}
       <Field label="Email address" type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)}/>
-      {view!=='reset'&&<Field label="Password" type="password" autoComplete={view==='signup'?'new-password':'current-password'} minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/>}
+      {view!=='reset'&&<PasswordField key={view} label="Password" autoComplete={view==='signup'?'new-password':'current-password'} minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/>}
+      {view==='login'&&<label className="auth-remember"><input type="checkbox" checked={remember} onChange={e=>setRemember(e.target.checked)}/><span>Remember me</span></label>}
       <button className="btn primary full" disabled={busy}>{busy?'Please wait…':view==='signup'?'Create account':view==='reset'?'Send reset link':'Log in'}</button>
     </form>
     {error&&<p className="auth-error" role="alert">{error}</p>}
@@ -180,7 +190,7 @@ function PasswordRecovery({onComplete}:{onComplete:()=>void}) {
     await supabase.auth.signOut();
     onComplete();
   };
-  return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Choose a new password</h1><p>Update your password, then sign in again.</p><form className="form-card" onSubmit={submit}><Field label="New password" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/><Field label="Confirm password" type="password" autoComplete="new-password" minLength={8} required value={confirmation} onChange={e=>setConfirmation(e.target.value)}/><button className="btn primary full" disabled={busy}>{busy?'Updating…':'Update password'}</button></form>{error&&<p className="auth-error" role="alert">{error}</p>}</div></div>;
+  return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Choose a new password</h1><p>Update your password, then sign in again.</p><form className="form-card" onSubmit={submit}><PasswordField label="New password" autoComplete="new-password" minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/><PasswordField label="Confirm password" autoComplete="new-password" minLength={8} required value={confirmation} onChange={e=>setConfirmation(e.target.value)}/><button className="btn primary full" disabled={busy}>{busy?'Updating…':'Update password'}</button></form>{error&&<p className="auth-error" role="alert">{error}</p>}</div></div>;
 }
 
 type CloudProps={page:string;user:User;rows:(name:string)=>Row[];profile?:Row;health?:Row;myExpert?:Row;latestReview:(id:string)=>Row|undefined;name:(id:string)=>string;go:(page:string)=>void;act:(operation:()=>Promise<unknown>,success:string)=>Promise<void>;edge:(action:string,payload?:Row)=>Promise<any>;busy:boolean};

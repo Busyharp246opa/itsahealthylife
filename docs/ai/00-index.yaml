@@ -95,6 +95,13 @@ task_routing:
     - 40-flows.yaml
     - 50-guardrails.yaml
     owner: src/App.tsx and src/CloudApp.tsx
+  authentication_ui:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/CloudApp.tsx, src/authStorage.ts, src/styles.css
   database:
     read:
     - 10-system-map.yaml

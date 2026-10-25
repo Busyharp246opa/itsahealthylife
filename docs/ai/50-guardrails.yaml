@@ -33,6 +33,8 @@ guardrails:
   rule: The public entrypoint mounts only the connected app. Do not render the demo role/mode switch. A URL or history state cannot grant admin or expert access; unapproved experts see only their application. Keep a visible sign-out path in each shell.
 - id: auth_email_returns
   rule: Confirmation and recovery links must return to exact production member, expert, or admin shell URLs allowed by Supabase Auth. Never include tokens in source, docs, logs, or navigation state. Keep public signup off the admin shell, and handle password recovery before rendering workspace content.
+- id: auth_session_choice
+  rule: Remember me selects persistent localStorage only when checked; unchecked password sign-in uses tab-scoped sessionStorage. Preserve readable existing local sessions and clear either store on sign-out. Password visibility controls must not save plaintext credentials or change role checks.
 - id: feature_search_roles
   rule: Command search only lists current-role destinations. Route keys must exist in the corresponding demo or
     connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep the admin trigger in its sidebar above Overview. Expert placement is unchanged.
@@ -138,6 +140,7 @@ must_retest_if_changed:
   - live_training
 - paths:
   - src/CloudApp.tsx
+  - src/authStorage.ts
   - src/FeatureSearch.tsx
   smoke_groups:
   - feature_search
