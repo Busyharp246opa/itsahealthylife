@@ -21,7 +21,7 @@ summary: The approved public landing page opens at /, with an About page at /abo
   feed, with posts, kinds, likes, comments, safety actions, people views, guidelines, and admin moderation. Exercise
   detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
   Booking messages support one private image or document attachment per message.
-  Member Track uses a compact daily check-in with side-by-side totals, quick meal/activity entry, optional macros, and one-click repeat from today's log.
+  Member Track uses a compact daily check-in with side-by-side totals, quick meal/activity entry, optional macros, and one-click repeat from today's log. Member Shop is a top-level sidebar and phone navigation destination above Profile; the desktop sidebar ends with Log out.
   The production Vite build is served from itsahealthylife.vercel.app with browser-safe Supabase variables set in Vercel Production.
 task_routing:
   desktop_concepts:

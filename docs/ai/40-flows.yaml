@@ -426,6 +426,8 @@ manual_smoke_checks:
   - Use both in-app Back and browser Back/Forward through those screens
   - Confirm selected filters and result page return, with the catalog heading visible at scroll position zero
   - Navigate Plan to expert discovery and back without leaving /member
+  - Open Shop from member navigation, verify Shop is active above Profile, then return with browser Back
+  - Use member desktop sidebar Log out and confirm the member sign-in form appears
   - Open /experts or /admin directly and confirm history state cannot bypass role checks
   - Repeat the training Back path at phone width and check no horizontal overflow or console errors
 - id: feature_search

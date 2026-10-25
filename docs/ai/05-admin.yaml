@@ -27,6 +27,7 @@ decisions:
     overview
   navigation: Browser paths identify live roles; history state tracks page and member training location within a shell, with Back and Forward restoring them.
   search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Admin search sits above Admin console and Overview in its sidebar, with an icon trigger on narrow screens. Expert search keeps its top-bar placement.
+  member_navigation: Shop sits above Profile in the member desktop sidebar and phone bottom navigation. The shop opens as a top-level page. Member desktop Log out replaces the motivational/account footer; the profile keeps its account and sign-out section for phone access.
   admin_session_entry: Password sign-in returns to the requested role shell; direct /admin/ normalizes to /admin and remains the admin shell. Admin sidebar has a pinned current-session logout action.
   auth_form_controls: Connected sign-in shows a Remember me checkbox and an accessible password visibility button. Checked sign-ins use localStorage; unchecked sign-ins use sessionStorage. Existing local sessions remain readable. Signup and recovery password fields also have visibility controls.
   admin_management: Content, Challenges, Store, Support, and Settings are reachable from the admin sidebar. Challenge Pause/Resume and Store Hide/Show use admin-only platform-api actions and record audit events.

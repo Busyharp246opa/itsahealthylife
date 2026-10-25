@@ -76,6 +76,7 @@ contracts:
     shell_paths: / is public landing, /about is public story, and /member, /experts, and /admin are live role shells. A trailing slash normalizes to the same role path. Vite and vercel.json rewrite direct shell requests to app.html.
     state: The pathname selects the live role. history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
     behavior: CloudApp pushes page changes under the current shell path; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
+    member_shop: Shop is a top-level member destination directly above Profile in desktop and phone navigation. Its active state is Shop, and opening it does not require visiting Plan or expert discovery. Desktop sidebar Log out clears the member session.
     boundary: URL and history state contain route and filter state only; no auth tokens, health records, or training logs. Neither grants access. Member, expert, and admin rendering checks server-managed grants and review status.
   feature_search:
     source: src/FeatureSearch.tsx contains role-scoped Healthy Life feature destinations and keyword ranking adapted

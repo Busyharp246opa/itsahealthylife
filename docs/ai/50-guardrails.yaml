@@ -31,6 +31,8 @@ guardrails:
   rule: The pathname selects /member, /experts, or /admin, with optional trailing slash normalized to the same shell; browser history stores only navigation and catalog filter state. Back/Forward must restore the page and nested training location within that shell without exposing protected data or changing authorization. Member/admin grants and expert approval must be checked after loading or restoring a route. Keep the admin console's sidebar and panel structure.
 - id: live_shell_access
   rule: The public entrypoint mounts only the connected app. Do not render the demo role/mode switch. A URL or history state cannot grant admin or expert access; unapproved experts see only their application. Keep a visible sign-out path in each shell.
+- id: member_navigation
+  rule: Keep Shop as a top-level member destination above Profile on desktop and phone. The shop should have its own active navigation state, and the member desktop sidebar must retain a visible bottom Log out action. Preserve phone access to Profile sign-out.
 - id: auth_email_returns
   rule: Confirmation and recovery links must return to exact production member, expert, or admin shell URLs allowed by Supabase Auth. Never include tokens in source, docs, logs, or navigation state. Keep public signup off the admin shell, and handle password recovery before rendering workspace content.
 - id: auth_session_choice
