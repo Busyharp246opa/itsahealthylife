@@ -134,7 +134,8 @@ flows:
   - load RLS-visible rows
   - choose the requested shell from the URL
   - verify member and admin grants before rendering; restrict unapproved expert applicants to their application
-  - After password sign-in, reload the exact requested role shell; /admin and /admin/ must both land in the admin console for an admin-granted user
+  - After password sign-in, reload the requested role shell for ordinary accounts; /admin and /admin/ must both land in the admin console for an admin-granted user
+  - An admin-granted user signing in on /member is redirected to /admin after role lookup; an existing admin session opened at /member redirects before rendering member content
   dependencies:
   - profiles
   - role_grants
@@ -368,7 +369,8 @@ manual_smoke_checks:
   - Confirm member signup is available, expert signup/application is available, and admin signup is absent
   - Confirm the bottom demo role/mode switch and local demo entry points are absent
   - Sign in as a member and verify /admin cannot render the admin console
-  - Sign in as an admin and verify /admin renders the console while /member still renders member pages
+  - Sign in as an admin at /admin and verify the console renders
+  - Sign in as an admin from /member and verify the browser opens /admin without rendering member pages; repeat by opening /member with an existing admin session
   - Load /admin/ and confirm it normalizes to /admin and shows Admin sign in or the admin console, never member content
   - Sign in as an unapproved expert applicant and verify only the application screen appears at /experts
   - Verify an approved expert can use the full /experts navigation and can reach /member

@@ -9,7 +9,7 @@ vite.config.ts                Multi-page build and local role-route rewrites
 scripts/prepare-public-pages.mjs  Generates public pages from the approved design before dev/build
 src/main.tsx                 Live-only React entrypoint and role-path initialization
 src/App.tsx                  Unmounted browser-storage demo reference
-src/CloudApp.tsx             Supabase-connected role shells, member Shop and logout navigation, canonical login landing, admin overview and sidebar controls
+src/CloudApp.tsx             Supabase-connected role shells, grant-based admin routing, member Shop and logout navigation, login landing, admin overview and sidebar controls
 src/authStorage.ts           Supabase Auth local or tab-session storage selected by Remember me
 src/Training.tsx            Shared training program list, weekly planner, set logger, and expert review UI
 src/ExerciseBrowser.tsx     Full category/filter/pagination exercise browse and add-to-day flow

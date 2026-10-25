@@ -31,7 +31,7 @@ modules:
   must_not_move_without:
   - supabase/migrations/
   - supabase/functions/platform-api/index.ts
-  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs, canonical password-login shell landing, user-selected auth session storage, member Shop navigation and sidebar logout, admin management actions, and product image selection, upload, and gallery display.
+  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs, server-grant-based admin diversion from the member shell, canonical password-login shell landing, user-selected auth session storage, member Shop navigation and sidebar logout, admin management actions, and product image selection, upload, and gallery display.
 - owner_module: design_shell
   allowed_edit_paths:
   - src/styles.css

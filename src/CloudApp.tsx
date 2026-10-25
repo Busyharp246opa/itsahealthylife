@@ -51,6 +51,11 @@ function PasswordField({label,...props}:{label:string}&React.InputHTMLAttributes
   return <div className="field auth-password-field"><label htmlFor={id}>{label}</label><div className="auth-password-input"><input {...props} id={id} type={visible?'text':'password'}/><button type="button" aria-label={`${visible?'Hide':'Show'} ${label.toLowerCase()}`} aria-pressed={visible} onClick={()=>setVisible(!visible)}>{visible?<EyeOff size={18}/>:<Eye size={18}/>}</button></div></div>;
 }
 
+function AdminWorkspaceRedirect(){
+  useEffect(()=>{window.location.replace('/admin')},[]);
+  return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Opening admin console</h1><p>This account uses the admin workspace.</p><a className="btn primary" href="/admin">Open admin console</a></div></div>;
+}
+
 export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
   const [user,setUser]=useState<User|null>(null);
   const [loading,setLoading]=useState(true);
@@ -103,6 +108,7 @@ export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
   const canMember=grants.some(x=>x.role==='member');
   const canAdmin=grants.some(x=>x.role==='admin');
   const expertApproved=grants.some(x=>x.role==='expert')&&latestReview(user.id)?.status==='approved';
+  if(role==='member'&&canAdmin)return <AdminWorkspaceRedirect/>;
   if((role==='member'&&!canMember)||(role==='admin'&&!canAdmin))return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Access unavailable</h1><p>This account does not have access to the {role==='admin'?'admin console':'member workspace'}.</p><a className="btn soft" href="/member">Open member workspace</a><button className="text-link" onClick={signOut}>Sign out</button></div></div>;
   const memberNav=[['home','Home',Home],['plan','Plan',CalendarDays],['train','Train',Dumbbell],['track','Track',Activity],['community','Circle',MessageCircle],['shop','Shop',ShoppingBag],['profile','Profile',Users]] as const;
   const expertNav=[['home','Overview',LayoutDashboard],['expert-profile','My profile',ShieldCheck],['availability','Calendar',CalendarDays],['bookings','Bookings',Users],['shared-training','Shared training',Dumbbell],['community','Circle',MessageCircle],['messages','Messages',MessageCircle],['content','My content',BookOpen]] as const;
@@ -145,8 +151,13 @@ function Auth({role}:{role:Role}) {
         setFeedback('Account created. Check your email if verification is required.');
       }else{
         authStorage.choose(remember);
-        const {error}=await supabase.auth.signInWithPassword({email,password});
+        const {data,error}=await supabase.auth.signInWithPassword({email,password});
         if(error)throw error;
+        if(role==='member'&&data.user){
+          const {data:adminGrant,error:grantError}=await supabase.from('role_grants').select('role').eq('user_id',data.user.id).eq('role','admin').maybeSingle();
+          if(grantError)throw grantError;
+          if(adminGrant){window.location.replace('/admin');return;}
+        }
         window.location.replace(role==='expert'?'/experts':role==='admin'?'/admin':'/member');
       }
     }catch(e){setError(e instanceof Error?e.message:String(e))}
