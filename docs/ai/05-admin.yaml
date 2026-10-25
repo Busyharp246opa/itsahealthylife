@@ -1,5 +1,5 @@
 schema_version: 1
-phase: locally_hosted_build
+phase: production_preview_on_vercel
 decisions:
   desktop_design_review: Three interactive concepts in Sample UI/ cover member and expert only. Daily Workbench
     is the selected member desktop direction and now includes a program detail and full exercise browse flow. The
@@ -16,6 +16,8 @@ decisions:
   checkout: simulated; no payment provider or fund transfer
   local_testing: http://127.0.0.1:5173/
   source_repository: https://github.com/Busyharp246opa/itsahealthylife (public; local main branch tracks origin/main)
+  production_host: https://itsahealthylife.vercel.app/ (Vercel project itsahealthylife under the itsahealthylife Hobby account; main deploys automatically)
+  production_configuration: Vercel Production holds VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY as browser-readable Config values. No service role key is present. Supabase platform-api allows this production origin and local development origins.
   first_admin_email: itsahealthylifeltd@gmail.com
   first_admin_state: confirmed account has admin and member grants; initial grant audited; user confirmed live admin
     overview
@@ -37,6 +39,7 @@ maintenance:
   - desktop concepts change
   - smoke checks change
   - MCP configuration changes
+  - production deployment or environment configuration changes
   secrets: Never store OAuth tokens, passwords, or service role keys in project files. .env.local contains only
     the publishable key and is ignored.
   migration_rule: Keep local migration filenames aligned with Supabase migration history; apply changes through

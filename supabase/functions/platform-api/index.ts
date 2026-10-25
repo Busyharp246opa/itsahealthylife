@@ -2,10 +2,11 @@ import { withSupabase } from 'npm:@supabase/server@1';
 
 const cors = (request: Request) => {
   const origin = request.headers.get('origin') ?? '';
-  const allowed = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const allowed = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+    || origin === 'https://itsahealthylife.vercel.app';
   return {
     'Access-Control-Allow-Origin': allowed ? origin : 'null',
-    'Access-Control-Allow-Headers': 'authorization, apikey, content-type, x-client-info',
+    'Access-Control-Allow-Headers': 'authorization, apikey, content-type, x-client-info, x-retry-count',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     Vary: 'Origin',
   };

@@ -16,9 +16,15 @@ workspace:
   messaging: src/ChatAttachment.tsx owns file validation, picker, and attachment display. Messages remain booking scoped.
   daily_tracking: src/DailyTracker.tsx owns the shared compact Track presentation and form state. App and CloudApp adapt it to local demo data or Supabase meal_entries and activity_entries.
   application_stack: React 19, TypeScript 7, Vite 8, Supabase JS 2
-  hosting: local Vite development server; no production deployment
+  hosting: Local Vite at 127.0.0.1:5173 and Vercel Production at https://itsahealthylife.vercel.app/; GitHub main builds to dist. Vercel Production supplies browser-safe Supabase variables.
   source_repository: https://github.com/Busyharp246opa/itsahealthylife; local Git main tracks origin/main
 external_services:
+  vercel:
+    project: itsahealthylife
+    account: itsahealthylife Hobby
+    production_url: https://itsahealthylife.vercel.app/
+    source: https://github.com/Busyharp246opa/itsahealthylife main
+    production_variables: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
   supabase:
     codex_mcp_name: HealthyLife
     project_ref: jqtrzwiyeohcljdvfkss
@@ -29,6 +35,7 @@ external_services:
     edge_function: platform-api, deployed with JWT verification
 load_order_contracts:
 - Load Vite variables from ignored .env.local; never bundle a service role key.
+- Vercel Production provides the same two browser-safe Vite variables at build time; changing them requires a redeploy.
 - Auth user creation trigger adds profiles and member role before connected role selection.
 - Apply core schema, indexes, actions, directory/content, edit restriction, slot visibility, then four training
   migrations in filename order.

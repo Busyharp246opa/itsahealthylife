@@ -36,6 +36,7 @@ contracts:
     access_tokens: Never commit or print tokens.
   browser_to_supabase:
     configuration: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+    production_configuration: Vercel Production Config values are embedded into the Vite browser bundle at build time; changes require a redeploy. Never use a Supabase service role key here.
     authorization: Supabase Auth session plus RLS; role_grants is server controlled.
     direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
       progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
@@ -99,7 +100,7 @@ contracts:
   function:
     path: supabase/functions/platform-api/index.ts
     deployment: platform-api active with JWT verification.
-    origin: Localhost and 127.0.0.1 CORS allowlist for local testing.
+    origin: Explicit CORS allowlist for https://itsahealthylife.vercel.app and localhost or 127.0.0.1 with optional development port. Other origins receive null. Preflight permits the Supabase client headers including x-retry-count.
     actor: Authenticated JWT user ID; roles read from role_grants, never request body.
   circle:
     source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts

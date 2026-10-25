@@ -1,6 +1,6 @@
 schema_version: 1
 project: HealthyLife
-status: local_build_and_live_supabase
+status: vercel_production_and_live_supabase
 timezone: Asia/Dubai
 read_order:
 - 00-index.yaml
@@ -21,6 +21,7 @@ summary: Responsive member, expert, and admin clients share a Supabase backend. 
   detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
   Booking messages now support one private image or document attachment per message in demo and live modes.
   Member Track uses a compact daily check-in with side-by-side totals, quick meal/activity entry, optional macros, and one-click repeat from today's log.
+  The production Vite build is served from itsahealthylife.vercel.app with browser-safe Supabase variables set in Vercel Production.
 task_routing:
   desktop_concepts:
     read:
@@ -65,6 +66,13 @@ task_routing:
     - 40-flows.yaml
     - 50-guardrails.yaml
     owner: src/DailyTracker.tsx, src/DailyTracker.css, src/App.tsx, src/CloudApp.tsx
+  deployment:
+    read:
+    - 10-system-map.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: package.json, src/main.tsx, supabase/functions/platform-api/index.ts, README.md
   frontend:
     read:
     - 20-modules.yaml

@@ -6,6 +6,8 @@ guardrails:
 - id: no_secrets
   rule: Keep OAuth tokens, passwords, and service keys out of source, docs, logs, and browser bundles. Only publishable
     credentials may enter Vite.
+- id: production_origin
+  rule: Vercel Production may embed only the Supabase project URL and publishable key. Keep platform-api CORS limited to the verified production host and local development; do not allow arbitrary origins. Preserve JWT verification and role checks.
 - id: role_boundaries
   rule: Browser cannot grant roles or directly change booking, payment, payout, approval, or policy state. Server
     actions derive actor from JWT and check grants.
@@ -81,6 +83,7 @@ must_retest_if_changed:
   - supabase/functions/platform-api/index.ts
   smoke_groups:
   - security_boundary
+  - production_deployment
   - live_member
   - live_expert
   - live_admin

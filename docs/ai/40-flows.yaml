@@ -1,5 +1,21 @@
 schema_version: 1
 flows:
+- id: production_deployment
+  entrypoint: GitHub main to Vercel project itsahealthylife
+  steps:
+  - Push main and wait for a Ready Production deployment of the same commit
+  - Build with Vercel Production VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+  - Open https://itsahealthylife.vercel.app/ and switch from demo to Live Supabase
+  - Invoke platform-api from the production origin for privileged user actions
+  dependencies:
+  - package.json build script and Vite dist output
+  - Vercel Production environment variables
+  - Supabase Auth and platform-api Edge Function
+  failure_modes:
+  - Git integration points at another account or repository
+  - Missing build-time Vite variables leaves Live Supabase disconnected
+  - Edge Function CORS rejects the production origin
+  - Unauthenticated or unauthorized requests are denied by JWT and role checks
 - id: desktop_concept_review
   entrypoint: Sample UI/index.html
   steps:
@@ -245,6 +261,13 @@ flows:
   - Archived room
   - Network write fails
 manual_smoke_checks:
+- id: production_deployment
+  steps:
+  - Confirm Vercel Production is Ready for the intended GitHub main commit and itsahealthylife.vercel.app serves the app
+  - Open Live Supabase on the production host and confirm the connected sign-in form appears without browser errors
+  - Send platform-api OPTIONS from the production origin and confirm allow-origin matches it
+  - Confirm localhost remains allowed and an unknown origin returns null
+  - Send an unauthenticated POST and confirm it is denied
 - id: demo_track
   steps:
   - Open Track at desktop and phone widths; confirm quick add is visible early and no horizontal overflow

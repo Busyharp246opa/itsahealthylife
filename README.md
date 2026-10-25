@@ -14,6 +14,8 @@ npm run dev
 
 Open <http://127.0.0.1:5173/>. The local walkthrough works without credentials. For connected mode, set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`. The current workspace already has a local, ignored `.env.local` for the HealthyLife project. Never put a service role key in a Vite variable.
 
+The production preview is <https://itsahealthylife.vercel.app/>. GitHub `main` deploys through the Vercel `itsahealthylife` project. Its Production environment contains the same browser-safe Supabase URL and publishable key as local development; changes to those values require redeployment. The Supabase `platform-api` function permits requests from that production origin and localhost, with JWT and role checks still required.
+
 For the three desktop design concepts, open <http://127.0.0.1:5173/Sample%20UI/index.html>. You can also open `Sample UI/index.html` directly from the project folder; its links target each concept's `index.html` rather than a directory. Daily Workbench now includes clickable program details, full exercise browsing, illustrative animated exercise previews, technique details, add-to-day targets, and an expert sharing preview. These concept actions stay in memory and never write to Supabase. Its member desktop navigation has also been adapted into the React app, with role-scoped Find a feature search (Ctrl/Cmd+K); the existing admin panel keeps its UI. Browser Back and Forward now follow workspace pages and the training catalog, including its filters. Design rationale is in `Sample UI/DESIGN.md`.
 
 On the mobile member demo, use the green **Live** button in the purple top bar to switch to **Live Supabase**. The demo role selector only previews local sample data and does not authenticate. Create or sign in to an account there. The confirmed account `itsahealthylifeltd@gmail.com` has the first admin grant; refresh after signing in to load it. Any signed-in member can choose **Apply as expert**. An admin must approve the submitted application before the expert appears in discovery or can be booked.
@@ -49,4 +51,4 @@ The local walkthrough has been exercised in a browser from expert selection thro
 
 ## Scope still requiring integrations
 
-The product spec’s real payment provider, calls, media uploads, calendar sync, notification delivery, advanced food search, charts, and social publishing need additional integration and policy decisions. The current build is suitable for local review and connected workflow testing; it is not a production commerce or telehealth release.
+The product spec’s real payment provider, calls, media uploads, calendar sync, notification delivery, advanced food search, charts, and social publishing need additional integration and policy decisions. The hosted build is a product preview for connected workflow testing; it is not a production commerce or telehealth release.
