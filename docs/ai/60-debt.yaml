@@ -1,5 +1,6 @@
 schema_version: 1
 deferred_cleanup:
+- The new noindex landing sample is available for review under Sample UI/04-landing/. The public root still routes to /member; changing the main entrypoint awaits selection of a landing direction and final legal/commercial copy.
 - Daily Workbench is the selected desktop direction; the React member shell now uses its navigation pattern. The
   three concept previews remain standalone and in-memory.
 - The live training tables, RLS, and activation RPC passed rolled-back authenticated SQL checks. A signed-in member/expert

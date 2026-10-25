@@ -1,6 +1,7 @@
 docs/ai/                     Architecture, contracts, flows, guardrails, and debt
 DESIGN.md                   Healthy Life Circle art direction and Awwwards-informed layout decisions
-Sample UI/                   Three directly openable member/expert desktop concepts; Daily Workbench includes a standalone training builder and catalog copy
+Sample UI/                   Three member/expert desktop concepts and a public landing-page sample
+Sample UI/04-landing/        Awwwards-informed noindex landing page, story and 404 pages, original images, and role-specific account links
 src/main.tsx                 Live-only React entrypoint and role-path initialization
 src/App.tsx                  Unmounted browser-storage demo reference
 src/CloudApp.tsx             Supabase-connected /member, /experts, and /admin shells
@@ -19,6 +20,7 @@ src/data.ts                 Local demo records and persistence
 src/styles.css              Responsive Figma-derived visual system and training layouts
 public/data/                FitCircle-derived English exercise text plus Flow SVG preview assets, provenance, and notices
 scripts/import-flow-exercises.mjs  Reproducible matching-ID Flow artwork import
+scripts/copy-samples.mjs       Copies standalone Sample UI pages into the Vite production dist
 supabase/migrations/        Core schema, training, Circle, private booking message attachments, RLS, and atomic activation RPC
 supabase/functions/platform-api/index.ts  JWT-protected state transitions
 supabase/config.toml        Local Supabase function configuration

@@ -10,7 +10,7 @@ modules:
   - Group 46831.png
   purpose: Standalone, interactive member/expert design studies using copied brand assets and sample data. Daily
     Workbench owns its training.js preview, catalog copy, weekly planner, and sample sharing; no live Supabase writes
-    and no admin sample UI.
+    and no admin sample UI. The landing sample in 04-landing/ has real links to role-specific connected auth forms.
 - owner_module: local_demo
   allowed_edit_paths:
   - src/App.tsx
@@ -144,7 +144,8 @@ modules:
   - vercel.json
   - src/main.tsx
   - README.md
+  - scripts/copy-samples.mjs
   must_not_move_without:
   - src/main.tsx
   - supabase/config.toml
-  purpose: Build, local configuration, Git ignore rules, remote source tracking, and development instructions.
+  purpose: Build, Sample UI distribution, local configuration, Git ignore rules, remote source tracking, and development instructions.

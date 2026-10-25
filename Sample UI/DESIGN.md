@@ -1,5 +1,7 @@
 # Desktop concept study
 
+The separate public [landing page sample](04-landing/index.html) introduces both audiences before they enter the live app. Its research, imagery, interaction and QA notes are in [04-landing/DESIGN.md](04-landing/DESIGN.md). It is linked from the concept index but is not a fourth desktop workspace concept.
+
 These are standalone, front-end desktop prototypes for member and expert roles. They use the existing logo, plum, lime, lavender, rounded controls, and the local demo's sample records. Daily Workbench now informs the member desktop shell in `src/`; the admin console keeps its existing UI.
 
 ## Shared brief

@@ -96,7 +96,7 @@ export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
 }
 
 function Auth({role}:{role:Role}) {
-  const [view,setView]=useState<'login'|'signup'|'reset'>('login');
+  const [view,setView]=useState<'login'|'signup'|'reset'>(()=>role!=='admin'&&new URLSearchParams(window.location.search).get('auth')==='signup'?'signup':'login');
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
   const [name,setName]=useState('');

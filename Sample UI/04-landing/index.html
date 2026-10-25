@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#45254f">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="A healthier day starts here. Build your training rhythm, track everyday habits, and connect with expert support through It's a Healthy Life.">
+  <meta property="og:title" content="A healthier day starts here | It's a Healthy Life">
+  <meta property="og:description" content="Movement, food, expert guidance and community for real life.">
+  <meta property="og:image" content="/Sample%20UI/04-landing/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://itsahealthylife.vercel.app/Sample%20UI/04-landing/index.html">
+  <link rel="icon" href="./assets/brand-mark.png" type="image/png">
+  <link rel="preload" href="./assets/fonts/bricolage-grotesque-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/host-grotesk-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/morning-movement.webp" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="./style.css">
+  <title>A healthier day starts here | It's a Healthy Life</title>
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="top">
+    <a class="brand" href="./index.html" aria-label="It's a Healthy Life home"><img src="./assets/brand-mark.png" alt="" width="48" height="48"><span>IT’S A<br>HEALTHY LIFE</span></a>
+    <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false"><span></span><span></span><span class="sr-only">Toggle menu</span></button>
+    <nav class="site-nav" id="primary-nav" aria-label="Primary navigation">
+      <a href="#approach">The approach</a>
+      <a href="#coaching">Expert support</a>
+      <a href="#your-path">Choose your path</a>
+      <a href="./about.html">Our story</a>
+      <a class="mobile-auth" data-app-path="/member?auth=login" href="https://itsahealthylife.vercel.app/member?auth=login">Member log in ↗</a>
+      <a class="mobile-auth" data-app-path="/experts?auth=login" href="https://itsahealthylife.vercel.app/experts?auth=login">Trainer log in ↗</a>
+    </nav>
+    <div class="header-actions"><a data-app-path="/member?auth=login" href="https://itsahealthylife.vercel.app/member?auth=login">Member log in</a><a class="header-trainer" data-app-path="/experts?auth=login" href="https://itsahealthylife.vercel.app/experts?auth=login">Trainer log in <span aria-hidden="true">↗</span></a></div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-photo"><img src="./assets/morning-movement.webp" alt="A runner moving up outdoor steps in the morning light" width="1586" height="992" fetchpriority="high"><div class="photo-shade"></div></div>
+      <div class="hero-content">
+        <p class="hero-kicker"><span class="pulse-dot"></span> WELLNESS FOR REAL LIFE <span class="kicker-end">/ MADE FOR YOUR DAY</span></p>
+        <h1 id="hero-title">A healthy life<br>happens <em>today.</em></h1>
+        <p class="hero-copy">Find your rhythm with movement, everyday food and the right people in your corner. Start where you are. Build from there.</p>
+        <div class="hero-actions"><a class="button button-lime" data-app-path="/member?auth=signup" href="https://itsahealthylife.vercel.app/member?auth=signup"><span>Join as a member</span><span class="button-arrow" aria-hidden="true">↗</span></a><a class="button button-outline" data-app-path="/experts?auth=signup" href="https://itsahealthylife.vercel.app/experts?auth=signup"><span>Join as a trainer</span><span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="hero-side-note" aria-hidden="true"><span>MOVE</span><span>FUEL</span><span>CONNECT</span><span>GROW</span></div>
+      <a class="scroll-cue" href="#approach"><span class="scroll-line" aria-hidden="true"></span> EXPLORE THE DAY</a>
+      <div class="hero-counter" aria-hidden="true"><strong>01</strong><span>/ 04</span></div>
+    </section>
+
+    <section class="ticker" aria-label="Healthy living themes"><div><span>MOVE WELL</span><b aria-hidden="true">✳</b><span>EAT WELL</span><b aria-hidden="true">✳</b><span>FEEL CONNECTED</span><b aria-hidden="true">✳</b><span>MOVE WELL</span><b aria-hidden="true">✳</b><span>EAT WELL</span><b aria-hidden="true">✳</b><span>FEEL CONNECTED</span></div></section>
+
+    <section class="approach section-wrap" id="approach" aria-labelledby="approach-title">
+      <div class="section-heading"><p class="eyebrow">01 / THE EVERYDAY APPROACH</p><h2 id="approach-title">The whole day <span>counts.</span></h2><p>Health is built in ordinary moments. Explore the parts of your day that Healthy Life helps bring together.</p></div>
+      <div class="day-layout">
+        <div class="day-choices" role="tablist" aria-label="Explore the Healthy Life approach">
+          <button class="day-choice is-active" id="tab-move" type="button" role="tab" aria-selected="true" aria-controls="day-panel" data-step="0"><span class="choice-number">01</span><span class="choice-name">Move</span><span class="choice-arrow" aria-hidden="true">↗</span></button>
+          <button class="day-choice" id="tab-nourish" type="button" role="tab" aria-selected="false" aria-controls="day-panel" tabindex="-1" data-step="1"><span class="choice-number">02</span><span class="choice-name">Nourish</span><span class="choice-arrow" aria-hidden="true">↗</span></button>
+          <button class="day-choice" id="tab-connect" type="button" role="tab" aria-selected="false" aria-controls="day-panel" tabindex="-1" data-step="2"><span class="choice-number">03</span><span class="choice-name">Connect</span><span class="choice-arrow" aria-hidden="true">↗</span></button>
+          <button class="day-choice" id="tab-grow" type="button" role="tab" aria-selected="false" aria-controls="day-panel" tabindex="-1" data-step="3"><span class="choice-number">04</span><span class="choice-name">Grow</span><span class="choice-arrow" aria-hidden="true">↗</span></button>
+        </div>
+        <div class="day-stage" id="day-panel" role="tabpanel" aria-labelledby="tab-move" tabindex="0">
+          <div class="day-orbit" aria-hidden="true"><div class="orbit-track orbit-track-outer"></div><div class="orbit-track orbit-track-inner"></div><div class="orbit-marker"><span></span></div><div class="orbit-center"><span>YOUR<br>DAY</span><small>YOUR PACE</small></div></div>
+          <div class="day-story" aria-live="polite"><p class="story-index">01 / 04 · MOVEMENT</p><h3>Make movement your own.</h3><p>Build a weekly training plan, discover exercises and record the reps you actually do.</p><a data-app-path="/member?auth=signup" href="https://itsahealthylife.vercel.app/member?auth=signup">Start your plan <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="coaching" id="coaching" aria-labelledby="coaching-title">
+      <div class="coaching-photo"><img src="./assets/guided-training.webp" alt="A trainer supporting a client during a mobility stretch" width="1536" height="1024" loading="lazy"><span class="photo-label">SUPPORT THAT MOVES WITH YOU · 02 / 04</span></div>
+      <div class="coaching-copy"><p class="eyebrow">A HUMAN SIDE TO PROGRESS</p><h2 id="coaching-title">Your goals.<br><em>Good company.</em></h2><p>Find expert guidance that fits how you like to move. Choose a trainer, book a session, and share your plan when you want feedback.</p><div class="coaching-rule"></div><div class="coaching-list"><span>01</span><p>Discover trainers by what matters to you.</p></div><div class="coaching-list"><span>02</span><p>Plan your own week or build one together.</p></div><div class="coaching-list"><span>03</span><p>Keep the conversation going between sessions.</p></div><a class="text-cta" data-app-path="/member?auth=signup" href="https://itsahealthylife.vercel.app/member?auth=signup">Find your next step <span aria-hidden="true">↗</span></a></div>
+    </section>
+
+    <section class="paths section-wrap" id="your-path" aria-labelledby="paths-title"><div class="paths-head"><p class="eyebrow">03 / TWO WAYS IN</p><h2 id="paths-title">This is your <span>starting line.</span></h2><p>Whether you’re here for your own wellbeing or to guide someone else, there’s a place for you.</p></div><div class="path-grid">
+      <article class="path-card path-member"><div class="path-top"><span class="path-icon" aria-hidden="true">✳</span><span>FOR MEMBERS / TRAINEES</span></div><div><p class="path-overline">YOUR DAY, YOUR PACE</p><h3>Start feeling<br>more like you.</h3><p>Plan workouts, log meals, find expert help and share encouragement with a community that gets it.</p></div><div class="path-actions"><a class="button button-dark" data-app-path="/member?auth=signup" href="https://itsahealthylife.vercel.app/member?auth=signup">Register as a member <span aria-hidden="true">↗</span></a><a class="path-login" data-app-path="/member?auth=login" href="https://itsahealthylife.vercel.app/member?auth=login">Already a member? Log in <span aria-hidden="true">↗</span></a></div></article>
+      <article class="path-card path-trainer"><div class="path-top"><span class="path-icon" aria-hidden="true">↗</span><span>FOR TRAINERS / EXPERTS</span></div><div><p class="path-overline">YOUR PRACTICE, CONNECTED</p><h3>Help progress<br>find its people.</h3><p>Apply for verification, offer sessions, manage availability and support clients with their training plans.</p></div><div class="path-actions"><a class="button button-white" data-app-path="/experts?auth=signup" href="https://itsahealthylife.vercel.app/experts?auth=signup">Register as a trainer <span aria-hidden="true">↗</span></a><a class="path-login" data-app-path="/experts?auth=login" href="https://itsahealthylife.vercel.app/experts?auth=login">Already a trainer? Log in <span aria-hidden="true">↗</span></a></div></article>
+    </div><p class="path-note">Trainer accounts begin with an application. The expert workspace opens after approval.</p></section>
+
+    <section class="faq section-wrap" id="questions" aria-labelledby="faq-title"><div><p class="eyebrow">04 / GOOD TO KNOW</p><h2 id="faq-title">A little clarity<br>goes a long way.</h2><p>More about Healthy Life is on our <a href="./about.html">story page</a>.</p></div><div class="faq-list"><details><summary>Do I need a trainer to get started?<span aria-hidden="true">+</span></summary><p>No. You can build your own weekly training programs, track activity and food, and explore the community. Expert support is there when you want it.</p></details><details><summary>Can I use Healthy Life on my phone?<span aria-hidden="true">+</span></summary><p>Yes. The member and trainer workspaces are responsive web experiences that work on phone and desktop browsers.</p></details><details><summary>How does a trainer join?<span aria-hidden="true">+</span></summary><p>Create an account, complete the expert application, and submit your credentials for review. Approved experts can then use the full trainer workspace.</p></details></div></section>
+
+    <section class="closing" aria-labelledby="closing-title"><div class="closing-orbit" aria-hidden="true"></div><p class="eyebrow">IT STARTS WITH TODAY</p><h2 id="closing-title">Your healthy life<br>is already <em>in motion.</em></h2><div class="closing-actions"><a class="button button-lime" data-app-path="/member?auth=signup" href="https://itsahealthylife.vercel.app/member?auth=signup">Join as a member <span aria-hidden="true">↗</span></a><a data-app-path="/experts?auth=signup" href="https://itsahealthylife.vercel.app/experts?auth=signup">Join as a trainer <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+
+  <footer class="site-footer"><div><a class="footer-brand" href="./index.html" aria-label="It's a Healthy Life home"><img src="./assets/brand-mark.png" alt="" width="48" height="48"><span>IT’S A<br>HEALTHY LIFE</span></a><p>Made for real days. Built to keep moving.</p></div><nav aria-label="Footer navigation"><a href="./about.html">Our story</a><a href="#approach">The approach</a><a href="#your-path">Join Healthy Life</a><a href="https://www.itsahealthylife.co.uk/" target="_blank" rel="noopener noreferrer">Original website ↗</a></nav><div class="footer-bottom"><span>© 2026 IT’S A HEALTHY LIFE · LANDING PAGE CONCEPT</span><a href="#top">BACK TO TOP ↑</a></div></footer>
+  <script src="./assets/gsap.min.js" defer></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>

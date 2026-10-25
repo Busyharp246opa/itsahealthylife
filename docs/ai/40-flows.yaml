@@ -41,6 +41,22 @@ flows:
   - external fonts unavailable
   - sample state resets on reload
   - Flow frame missing or failed to load
+- id: landing_page_preview
+  entrypoint: Sample UI/04-landing/index.html
+  steps:
+  - Open the noindex landing sample from the comparison page or its direct URL
+  - Explore the four day chapters by pointer or arrow keys
+  - Follow member and trainer registration/login links to the role-specific connected forms
+  - Open the story page and return to the landing page
+  dependencies:
+  - Sample UI/04-landing/
+  - src/CloudApp.tsx auth intent
+  - scripts/copy-samples.mjs
+  failure_modes:
+  - Sample files omitted from dist
+  - Auth query parameter ignored
+  - Link from a file URL resolves to a nonexistent local route
+  - Image or font file unavailable
 - id: local_demo
   entrypoint: Unmounted src/App.tsx development reference
   steps:
@@ -91,6 +107,7 @@ flows:
   entrypoint: src/CloudApp.tsx
   steps:
   - Sign up or sign in with Supabase Auth
+  - Optional auth=signup URL intent opens registration in the member or expert shell
   - profile/member role trigger
   - load RLS-visible rows
   - choose the requested shell from the URL
@@ -264,6 +281,15 @@ flows:
   - Archived room
   - Network write fails
 manual_smoke_checks:
+- id: landing_preview
+  steps:
+  - Open Sample UI/04-landing/index.html at 1440 and 390 px, locally and from the built static files
+  - Confirm original photos, local fonts, brand mark, and all section content load without errors or horizontal overflow
+  - Operate Move/Nourish/Connect/Grow tabs with click and arrow keys; check reduced motion and focus visibility
+  - Open and close the mobile menu and inspect FAQ disclosure controls
+  - Follow member and trainer registration and login links; verify each reaches the matching role and form
+  - Open about.html and the designed 404.html directly
+  - Confirm the root application still opens /member and admin layout is untouched
 - id: production_deployment
   steps:
   - Confirm Vercel Production is Ready for the intended GitHub main commit and itsahealthylife.vercel.app serves the app
@@ -314,6 +340,7 @@ manual_smoke_checks:
 - id: desktop_concepts
   steps:
   - Open Sample UI/index.html at desktop and mobile widths through the local server
+  - Open the landing-page sample callout and return to the concept index
   - follow all three explicit HTML concept links and check branding/layout
   - switch member/expert and navigate sections
   - confirm no admin role control and admin query falls back to member

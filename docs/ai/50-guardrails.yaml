@@ -2,7 +2,9 @@ schema_version: 1
 guardrails:
 - id: desktop_concept_isolation
   rule: Sample UI/ is a member/expert design review area. Keep its state local to the page, label sample data, and
-    preserve the shipped mobile and existing admin UI while comparing directions.
+    preserve the shipped mobile and existing admin UI while comparing directions. Keep hosted samples noindex.
+- id: landing_sample_boundary
+  rule: Keep the noindex landing sample separate from the live root route until selected for launch. Registration and login CTAs must resolve to the correct member or expert shell and account form. Trainers still require application and approval; do not imply real charges or mobile app-store availability.
 - id: no_secrets
   rule: Keep OAuth tokens, passwords, and service keys out of source, docs, logs, and browser bundles. Only publishable
     credentials may enter Vite.
@@ -46,6 +48,13 @@ guardrails:
     and visual kit.
 must_retest_if_changed:
 - paths:
+  - Sample UI/04-landing/
+  - scripts/copy-samples.mjs
+  - package.json
+  smoke_groups:
+  - landing_preview
+  - production_deployment
+- paths:
   - src/main.tsx
   - vercel.json
   smoke_groups:
@@ -68,6 +77,7 @@ must_retest_if_changed:
   - Sample UI/
   smoke_groups:
   - desktop_concepts
+  - landing_preview
 - paths:
   - src/Training.tsx
   - src/ExerciseBrowser.tsx
@@ -111,6 +121,7 @@ must_retest_if_changed:
   - demo_circle
   - app_navigation
   - shell_routes
+  - landing_preview
 - paths:
   - src/App.tsx
   - src/data.ts

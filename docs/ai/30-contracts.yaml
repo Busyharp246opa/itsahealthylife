@@ -2,6 +2,7 @@ schema_version: 1
 contracts:
   desktop_concepts:
     entrypoint: Sample UI/index.html
+    indexing: Standalone design samples are noindex; the live role shells remain the production entry points.
     routes:
     - Sample UI/01-daily-workbench/index.html
     - Sample UI/02-guided-journey/index.html
@@ -19,6 +20,11 @@ contracts:
     backend: None; controls in these previews never write to Supabase or the local demo's browser storage.
     brand: Frame.png and Group 46831.png copies in Sample UI/assets/; plum, lime, and lavender match the existing
       shell.
+  landing_sample:
+    entrypoint: Sample UI/04-landing/index.html; about.html and 404.html share its visual system.
+    deployment: scripts/copy-samples.mjs copies all Sample UI files into dist after Vite build; Vercel serves the sample at /Sample%20UI/04-landing/index.html without changing /.
+    auth_links: Member register/login go to /member?auth=signup or auth=login. Trainer register/login go to /experts?auth=signup or auth=login. On file URLs, links use the Vercel production host; on local Vite they use the local host.
+    boundary: Standalone noindex marketing sample; it has no Supabase client or sample data writes. The existing role shells enforce grants and expert approval.
   supabase_mcp:
     name: HealthyLife
     project_ref: jqtrzwiyeohcljdvfkss
@@ -39,6 +45,7 @@ contracts:
     production_configuration: Vercel Production Config values are embedded into the Vite browser bundle at build time; changes require a redeploy. Never use a Supabase service role key here.
     authorization: Supabase Auth session plus RLS; role_grants is server controlled.
     shell_access: /member requires a member grant; /admin requires an admin grant. /experts permits an authenticated applicant to view only the application screen until an expert grant and latest approved review exist. URL selection never grants data access.
+    auth_intent: auth=signup opens the public member or expert account form; auth=login or an absent intent opens sign-in. The admin shell never offers signup.
     direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
       progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
       reactions and blocks; admin may manage rooms, guidelines, and hide posts via RLS.

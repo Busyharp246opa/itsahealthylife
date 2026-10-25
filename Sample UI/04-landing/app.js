@@ -1,0 +1,89 @@
+(() => {
+  const appHost = location.hostname === 'itsahealthylife.vercel.app' ||
+    (/^(localhost|127\.0\.0\.1)$/i.test(location.hostname) && /^(5173|4173|4174)$/.test(location.port));
+  if (location.protocol !== 'file:' && appHost) {
+    document.querySelectorAll('[data-app-path]').forEach(link => {
+      link.href = `${location.origin}${link.dataset.appPath}`;
+    });
+  }
+
+  const menu = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.site-nav');
+  if (menu && nav) {
+    const closeMenu = () => { menu.setAttribute('aria-expanded', 'false'); nav.classList.remove('is-open'); };
+    menu.addEventListener('click', () => {
+      const open = menu.getAttribute('aria-expanded') !== 'true';
+      menu.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+    });
+    nav.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+  }
+
+  const dayTabs = [...document.querySelectorAll('.day-choice')];
+  const dayPanel = document.getElementById('day-panel');
+  const dayStory = document.querySelector('.day-story');
+  const orbitMarker = document.querySelector('.orbit-marker');
+  const stories = [
+    { index: '01 / 04 · MOVEMENT', title: 'Make movement your own.', body: 'Build a weekly training plan, discover exercises and record the reps you actually do.', action: 'Start your plan' },
+    { index: '02 / 04 · NOURISHMENT', title: 'Notice what fuels you.', body: 'Make a quick meal check-in and see the everyday patterns that help you feel good.', action: 'Track your day' },
+    { index: '03 / 04 · CONNECTION', title: 'Find your people.', body: 'Meet expert trainers, book a session and share a training plan when you want their input.', action: 'Meet the experts' },
+    { index: '04 / 04 · MOMENTUM', title: 'Keep going together.', body: 'Celebrate your progress, join a challenge and share encouragement in the Circle.', action: 'Find your circle' },
+  ];
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const gsap = window.gsap;
+  let activeStep = 0;
+  function selectStep(index, focus = false) {
+    if (!dayTabs.length || !dayStory || !dayPanel) return;
+    const step = stories[index];
+    const update = () => {
+      dayTabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === index;
+        tab.classList.toggle('is-active', selected);
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      dayPanel.setAttribute('aria-labelledby', dayTabs[index].id);
+      dayStory.querySelector('.story-index').textContent = step.index;
+      dayStory.querySelector('h3').textContent = step.title;
+      dayStory.querySelector('p:not(.story-index)').textContent = step.body;
+      dayStory.querySelector('a').firstChild.textContent = `${step.action} `;
+      if (focus) dayTabs[index].focus();
+    };
+    if (gsap && !reducedMotion.matches && index !== activeStep) {
+      gsap.to(dayStory, { opacity: 0, y: 10, duration: .17, onComplete: () => {
+        update();
+        gsap.fromTo(dayStory, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .34, ease: 'power2.out' });
+      }});
+      gsap.to(orbitMarker, { rotation: index * 90, duration: .72, ease: 'power3.inOut', overwrite: true });
+    } else {
+      update();
+      if (orbitMarker) orbitMarker.style.transform = `rotate(${index * 90}deg)`;
+    }
+    activeStep = index;
+  }
+  dayTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectStep(index));
+    tab.addEventListener('keydown', event => {
+      const next = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? (index + 1) % dayTabs.length
+        : event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? (index + dayTabs.length - 1) % dayTabs.length
+        : event.key === 'Home' ? 0 : event.key === 'End' ? dayTabs.length - 1 : -1;
+      if (next !== -1) { event.preventDefault(); selectStep(next, true); }
+    });
+  });
+
+  if (gsap && !reducedMotion.matches) {
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .from('.hero-kicker', { y: 14, opacity: 0, duration: .55 })
+      .from('.hero h1', { y: 26, opacity: 0, duration: .78 }, '-=.28')
+      .from('.hero-copy, .hero-actions', { y: 20, opacity: 0, duration: .58, stagger: .12 }, '-=.43');
+    gsap.to('.orbit-track-inner', { rotation: 360, duration: 80, ease: 'none', repeat: -1 });
+    gsap.to('.ticker>div', { x: -450, duration: 30, ease: 'none', repeat: -1 });
+  }
+
+  document.querySelectorAll('.faq-list details').forEach(detail => {
+    detail.addEventListener('toggle', () => {
+      if (detail.open) document.querySelectorAll('.faq-list details').forEach(other => { if (other !== detail) other.open = false; });
+    });
+  });
+})();

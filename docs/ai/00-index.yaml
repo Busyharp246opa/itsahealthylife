@@ -14,7 +14,7 @@ read_order:
 summary: Responsive member, expert, and admin clients share a Supabase backend at /member, /experts, and /admin.
   The public entrypoint mounts the connected client only; the old browser-storage demo remains as reference code.
   Members author weekly training programs, track sets, and optionally share with booked experts. Checkout
-  and orders are simulated. Three standalone member/expert desktop concept previews live in Sample UI/; Daily Workbench
+  and orders are simulated. Three standalone member/expert desktop concept previews and a public landing-page sample live in Sample UI/; Daily Workbench
   training informs the member desktop app. Members open programs, browse and filter the full exercise catalog, review
   technique, and add movements to a selected day. Role-scoped command search navigates member, expert, and admin
   features while the admin console keeps its layout. Browser Back and Forward follow pages within the selected shell and the nested training browser. Circle now has member topic rooms and a separate approved-expert
@@ -30,6 +30,13 @@ task_routing:
     - 40-flows.yaml
     - 50-guardrails.yaml
     owner: Sample UI/
+  landing_page_sample:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: Sample UI/04-landing/, src/CloudApp.tsx, scripts/copy-samples.mjs
   training:
     read:
     - 20-modules.yaml
