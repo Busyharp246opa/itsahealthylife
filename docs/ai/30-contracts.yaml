@@ -55,6 +55,7 @@ contracts:
     shell_access: /member requires a member grant; /admin requires an admin grant. /experts permits an authenticated applicant to view only the application screen until an expert grant and latest approved review exist. URL selection never grants data access.
     auth_intent: auth=signup opens the public member or expert account form; auth=login or an absent intent opens sign-in. The admin shell never offers signup. Successful password sign-in reloads the canonical requested role path so an admin login remains in /admin.
     auth_email_redirects: Signup confirmation and password recovery pass the exact production role URL to Supabase Auth. The Auth Site URL is the production origin and its redirect allow list includes /member, /experts, and /admin. A recovery callback opens the new-password form and updates the password through the authenticated Supabase client.
+    sign_out: Ordinary member, expert, and admin logout actions clear only the current Supabase session. Password recovery completion signs out globally after changing credentials.
     direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
       progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
       reactions and blocks; admin may manage rooms, guidelines, and hide posts via RLS.

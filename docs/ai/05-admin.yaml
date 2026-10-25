@@ -27,7 +27,7 @@ decisions:
     overview
   navigation: Browser paths identify live roles; history state tracks page and member training location within a shell, with Back and Forward restoring them.
   search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Admin search sits above Admin console and Overview in its sidebar, with an icon trigger on narrow screens. Expert search keeps its top-bar placement.
-  admin_session_entry: Password sign-in returns to the requested role shell; direct /admin/ normalizes to /admin and remains the admin shell. Admin sidebar has a logout action.
+  admin_session_entry: Password sign-in returns to the requested role shell; direct /admin/ normalizes to /admin and remains the admin shell. Admin sidebar has a pinned current-session logout action.
   session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
   daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.
   exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.
