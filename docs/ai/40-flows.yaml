@@ -127,6 +127,7 @@ flows:
   steps:
   - Sign up or sign in with Supabase Auth
   - Optional auth=signup URL intent opens registration in the member or expert shell
+  - Confirmation and recovery emails return to the matching production role route, where the client consumes the session; recovery then prompts for a new password
   - profile/member role trigger
   - load RLS-visible rows
   - choose the requested shell from the URL
@@ -140,6 +141,7 @@ flows:
   - Unconfirmed email
   - expired session
   - unavailable Supabase
+  - Hosted Auth Site URL or allowed redirects still point to localhost, causing email links to leave the deployed app
 - id: booking_messages
   entrypoint: src/App.tsx or src/CloudApp.tsx Session messages
   steps:
@@ -430,6 +432,13 @@ manual_smoke_checks:
   - verify the matching sign-in and reset controls render
   - verify only member and expert routes offer signup
   - verify no local demo control appears
+- id: auth_email_redirects
+  steps:
+  - Confirm hosted Supabase Auth Site URL is https://itsahealthylife.vercel.app and exact member, expert, and admin callback URLs are allowed
+  - Confirm member and expert signup calls pass their matching production emailRedirectTo URL, even when initiated locally
+  - Confirm all three password reset calls pass their matching production redirectTo URL
+  - Follow a fresh confirmation link and verify its destination opens the matching live workspace without a localhost address
+  - Follow a fresh recovery link, set a new password, and sign in again
 - id: live_member
   steps:
   - Sign in as member

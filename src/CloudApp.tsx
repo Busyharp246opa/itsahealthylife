@@ -16,6 +16,7 @@ type Tables = Record<string, Row[]>;
 const url = import.meta.env.VITE_SUPABASE_URL as string|undefined;
 const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string|undefined;
 const supabase = url && key ? createClient(url,key) : null;
+const authReturnUrl = (role:Role) => new URL(role==='expert'?'/experts':role==='admin'?'/admin':'/member', 'https://itsahealthylife.vercel.app').toString();
 const downloadSessionAttachment=async(path:string):Promise<Blob>=>{const {data,error}=await supabase!.storage.from(attachmentBucket).download(path);if(error||!data)throw error||new Error('Attachment unavailable');return data};
 const tableNames = ['profiles','role_grants','member_health','expert_profiles','expert_reviews','availability_slots','policy_versions','bookings','payment_transactions','payouts','conversations','messages','meal_entries','activity_entries','training_programs','training_workout_logs','training_sessions','content_items','saved_content','challenges','challenge_steps','challenge_progress','community_posts','community_comments','community_reports','community_reactions','community_blocks','circle_rooms','circle_guidelines','products','orders','order_items','support_tickets','audit_events'];
 const money = (n:number,currency='USD') => new Intl.NumberFormat('en-US',{style:'currency',currency}).format(n);
@@ -38,6 +39,7 @@ export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
   const [notice,setNotice]=useState('');
   const [error,setError]=useState('');
   const [accessError,setAccessError]=useState('');
+  const [recoveringPassword,setRecoveringPassword]=useState(()=>new URLSearchParams(window.location.hash.slice(1)).get('type')==='recovery');
   const rows=(name:string)=>tables[name]??[];
   const profile=rows('profiles').find(x=>x.id===user?.id);
   const health=rows('member_health').find(x=>x.user_id===user?.id);
@@ -64,11 +66,12 @@ export default function CloudApp(_props: {onDemo?:()=>void} = {}) {
     if(location?.mode!=='live'||location.role!==selected){replaceLocation({mode:'live',role:selected,page:'home'});setPage('home')}
   },[]);
   useEffect(()=>{const restore=()=>{const requested=shellRole();const location=readLocation();if(location?.mode==='live'&&location.role===requested){setRole(requested);setPage(location.page)}else{replaceLocation({mode:'live',role:requested,page:'home'});setRole(requested);setPage('home')}scrollToPageTop()};window.addEventListener('popstate',restore);return()=>window.removeEventListener('popstate',restore)},[]);
-  useEffect(()=>{if(!supabase){setLoading(false);return}supabase.auth.getUser().then(({data})=>{setUser(data.user);refresh(data.user)});const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{setUser(session?.user??null);if(!session?.user){setTables({});setAccessError('');setRole(shellRole());setPage('home');setLoading(false);replaceLocation({mode:'live',role:shellRole(),page:'home'})}else refresh(session.user)});return()=>subscription.unsubscribe()},[refresh]);
+  useEffect(()=>{if(!supabase){setLoading(false);return}supabase.auth.getUser().then(({data})=>{setUser(data.user);refresh(data.user)});const {data:{subscription}}=supabase.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY')setRecoveringPassword(true);setUser(session?.user??null);if(!session?.user){setTables({});setAccessError('');setRole(shellRole());setPage('home');setLoading(false);replaceLocation({mode:'live',role:shellRole(),page:'home'})}else refresh(session.user)});return()=>subscription.unsubscribe()},[refresh]);
   useEffect(()=>{if(!notice)return;const timer=window.setTimeout(()=>setNotice(''),4000);return()=>window.clearTimeout(timer)},[notice]);
   const act=async(operation:()=>Promise<unknown>,success:string)=>{setBusy(true);setError('');try{await operation();await refresh(user);setNotice(success)}catch(e){setError(e instanceof Error?e.message:String(e))}finally{setBusy(false)}};
   const edge=async(action:string,payload:Row={})=>{if(!supabase)throw Error('Supabase is not configured');const {data,error}=await supabase.functions.invoke('platform-api',{body:{action,...payload}});if(error){let message=error.message;try{const body=await error.context?.json();message=body?.error||body?.message||message}catch{}throw Error(message)}if(data?.error)throw Error(data.error);return data};
   if(!supabase)return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Service unavailable</h1><p>This workspace is temporarily unavailable. Please try again later.</p></div></div>;
+  if(recoveringPassword&&user)return <PasswordRecovery onComplete={()=>setRecoveringPassword(false)}/>;
   if(loading&&!user)return <div className="cloud-auth"><div className="auth-card">Connecting to Healthy Life…</div></div>;
   if(!user)return <Auth role={role}/>;
   if(loading)return <div className="cloud-auth"><div className="auth-card">Loading your workspace…</div></div>;
@@ -109,11 +112,11 @@ function Auth({role}:{role:Role}) {
     setBusy(true);setError('');setFeedback('');
     try{
       if(view==='reset'){
-        const {error}=await supabase.auth.resetPasswordForEmail(email);
+        const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:authReturnUrl(role)});
         if(error)throw error;
         setFeedback('Check your email for a reset link.');
       }else if(view==='signup'){
-        const {error}=await supabase.auth.signUp({email,password,options:{data:{name}}});
+        const {error}=await supabase.auth.signUp({email,password,options:{data:{name},emailRedirectTo:authReturnUrl(role)}});
         if(error)throw error;
         setFeedback('Account created. Check your email if verification is required.');
       }else{
@@ -143,6 +146,24 @@ function Auth({role}:{role:Role}) {
     </div>
     {role!=='member'&&<a className="text-link" href="/member">Member workspace <ArrowRight size={15}/></a>}
   </div></div>
+}
+
+function PasswordRecovery({onComplete}:{onComplete:()=>void}) {
+  const [password,setPassword]=useState('');
+  const [confirmation,setConfirmation]=useState('');
+  const [busy,setBusy]=useState(false);
+  const [error,setError]=useState('');
+  const submit=async(e:React.FormEvent)=>{
+    e.preventDefault();
+    if(password!==confirmation){setError('Passwords do not match.');return}
+    if(!supabase)return;
+    setBusy(true);setError('');
+    const {error:changeError}=await supabase.auth.updateUser({password});
+    if(changeError){setError(changeError.message);setBusy(false);return}
+    await supabase.auth.signOut();
+    onComplete();
+  };
+  return <div className="cloud-auth"><div className="auth-card"><img src={fullLogo} alt="It's a Healthy Life"/><h1>Choose a new password</h1><p>Update your password, then sign in again.</p><form className="form-card" onSubmit={submit}><Field label="New password" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={e=>setPassword(e.target.value)}/><Field label="Confirm password" type="password" autoComplete="new-password" minLength={8} required value={confirmation} onChange={e=>setConfirmation(e.target.value)}/><button className="btn primary full" disabled={busy}>{busy?'Updating…':'Update password'}</button></form>{error&&<p className="auth-error" role="alert">{error}</p>}</div></div>;
 }
 
 type CloudProps={page:string;user:User;rows:(name:string)=>Row[];profile?:Row;health?:Row;myExpert?:Row;latestReview:(id:string)=>Row|undefined;name:(id:string)=>string;go:(page:string)=>void;act:(operation:()=>Promise<unknown>,success:string)=>Promise<void>;edge:(action:string,payload?:Row)=>Promise<any>;busy:boolean};

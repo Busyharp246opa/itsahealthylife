@@ -22,6 +22,7 @@ decisions:
   public_shells: / is the public landing page; /about is the public story page. /member serves members, /experts serves approved experts or applicants, and /admin serves granted admins. Vercel rewrites the three role paths to app.html.
   shell_access: URL chooses the workspace. Member and admin shells verify role_grants; the expert shell shows the application until an expert grant and approved review exist. The demo role/mode dock is absent from the public app.
   production_configuration: Vercel Production holds VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY as browser-readable Config values. No service role key is present. Supabase platform-api allows this production origin and local development origins.
+  auth_email_redirects: Supabase Auth Site URL is the production host; exact /member, /experts, and /admin URLs are allowed. CloudApp requests role-specific production URLs for confirmation and password recovery, including signups started locally. Hosted Auth settings are managed in the Supabase dashboard; supabase/config.toml mirrors them for local Supabase.
   first_admin_email: itsahealthylifeltd@gmail.com
   first_admin_state: confirmed account has admin and member grants; initial grant audited; user confirmed live admin
     overview

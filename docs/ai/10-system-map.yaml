@@ -35,6 +35,7 @@ external_services:
     setup_status: OAuth refreshed; native MCP calls working on 2026-10-25
     public_schema_tables: 34
     edge_function: platform-api, deployed with JWT verification
+    auth_email_returns: Hosted Auth Site URL and exact production workspace redirect allow list are managed in Supabase URL Configuration; local supabase/config.toml mirrors them. CloudApp sends role-specific production callback URLs for signup confirmation and password recovery.
 load_order_contracts:
 - Generate root public HTML from Sample UI/04-landing/ before Vite dev/build; keep the sample noindex, while the generated public pages have canonical URLs and no review-only labels.
 - Build index.html, about.html, 404.html, and app.html as separate Vite HTML entrypoints; copy Sample UI/ into dist afterward so shared classic scripts and sample pages remain available.

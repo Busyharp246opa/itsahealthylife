@@ -28,7 +28,7 @@ scripts/import-flow-exercises.mjs  Reproducible matching-ID Flow artwork import
 scripts/copy-samples.mjs       Copies standalone Sample UI pages into the Vite production dist
 supabase/migrations/        Core schema, training, Circle, private booking message attachments, RLS, and atomic activation RPC
 supabase/functions/platform-api/index.ts  JWT-protected state transitions
-supabase/config.toml        Local Supabase function configuration
+supabase/config.toml        Local Supabase configuration, including production Auth return URL mirrors
 Frame.png                   Brand mark
 Group 46831.png             Full logo
 index.html                  Vite page
