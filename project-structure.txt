@@ -9,12 +9,12 @@ vite.config.ts                Multi-page build and local role-route rewrites
 scripts/prepare-public-pages.mjs  Generates public pages from the approved design before dev/build
 src/main.tsx                 Live-only React entrypoint and role-path initialization
 src/App.tsx                  Unmounted browser-storage demo reference
-src/CloudApp.tsx             Supabase-connected /member, /experts, and /admin shells
+src/CloudApp.tsx             Supabase-connected role shells, canonical login landing, admin overview and sidebar controls
 src/Training.tsx            Shared training program list, weekly planner, set logger, and expert review UI
 src/ExerciseBrowser.tsx     Full category/filter/pagination exercise browse and add-to-day flow
 src/ExercisePreview.tsx     Lazy SVG frame playback with pause, visibility, and reduced-motion support
 src/FeatureSearch.tsx       Role-scoped command search with demo/live route mapping
-src/navigation.ts          Role shell paths and browser history for pages and nested training screens
+src/navigation.ts          Role shell paths (including trailing-slash normalization) and browser history
 src/Circle.tsx              Shared member rooms and expert Circle feed, posts, replies, likes, and safety UI
 src/ChatAttachment.tsx      Shared booking attachment picker, validation, previews, and demo IndexedDB files
 src/DailyTracker.tsx        Shared compact member Track page and quick meal/activity entry

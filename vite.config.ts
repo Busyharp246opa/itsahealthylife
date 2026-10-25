@@ -6,7 +6,7 @@ const root = import.meta.dirname;
 function workspaceRoutes(): Plugin {
   const rewrite = (request: { url?: string }, _response: unknown, next: () => void) => {
     const [pathname, query] = (request.url ?? '/').split('?');
-    if (['/member', '/experts', '/admin'].includes(pathname)) {
+    if (['/member', '/experts', '/admin', '/member/', '/experts/', '/admin/'].includes(pathname)) {
       request.url = `/app.html${query ? `?${query}` : ''}`;
     }
     next();

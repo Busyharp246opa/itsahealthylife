@@ -16,8 +16,10 @@ export type AppLocation = {
 
 export const shellPath = (role: AppLocation['role']) => role === 'expert' ? '/experts' : `/${role}`;
 
-export const shellRole = (pathname = window.location.pathname): AppLocation['role'] =>
-  pathname === '/admin' ? 'admin' : pathname === '/experts' ? 'expert' : 'member';
+export const shellRole = (pathname = window.location.pathname): AppLocation['role'] => {
+  const normalized = pathname.replace(/\/+$/, '') || '/';
+  return normalized === '/admin' ? 'admin' : normalized === '/experts' ? 'expert' : 'member';
+};
 
 type HistoryEntry = AppLocation & { index: number; parent?: AppLocation };
 

@@ -28,14 +28,14 @@ guardrails:
     explicit per-program share choice. Experts cannot edit member training. Only one program per member is active.
     Never copy FitCircle's separately licensed exercise images or GIFs into the catalog. Flow artwork must retain source, license, NOTICE, and provenance; label it illustrative because generation prompts and form review are incomplete.
 - id: browser_navigation
-  rule: The pathname selects /member, /experts, or /admin; browser history stores only navigation and catalog filter state. Back/Forward must restore the page and nested training location within that shell without exposing protected data or changing authorization. Member/admin grants and expert approval must be checked after loading or restoring a route. Keep the existing admin visual layout.
+  rule: The pathname selects /member, /experts, or /admin, with optional trailing slash normalized to the same shell; browser history stores only navigation and catalog filter state. Back/Forward must restore the page and nested training location within that shell without exposing protected data or changing authorization. Member/admin grants and expert approval must be checked after loading or restoring a route. Keep the admin console's sidebar and panel structure.
 - id: live_shell_access
   rule: The public entrypoint mounts only the connected app. Do not render the demo role/mode switch. A URL or history state cannot grant admin or expert access; unapproved experts see only their application. Keep a visible sign-out path in each shell.
 - id: auth_email_returns
   rule: Confirmation and recovery links must return to exact production member, expert, or admin shell URLs allowed by Supabase Auth. Never include tokens in source, docs, logs, or navigation state. Keep public signup off the admin shell, and handle password recovery before rendering workspace content.
 - id: feature_search_roles
   rule: Command search only lists current-role destinations. Route keys must exist in the corresponding demo or
-    connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep expert/admin layouts unchanged.
+    connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep the admin trigger in its sidebar above Overview. Expert placement is unchanged.
 - id: messaging_privacy
   rule: Booking conversation messages and private attachments are visible only to participants while the booking is confirmed. Storage paths bind the conversation and sender. Keep upload and download behind RLS; never use public URLs. Preserve message-only sends and allow file-only sends.
 - id: daily_tracking_data

@@ -24,6 +24,8 @@ The approved landing design combines movement, food, expert support, and communi
 
 Create or sign in to an account from `/member`. The confirmed account `itsahealthylifeltd@gmail.com` has the first admin grant and may open `/admin`. Members can open `/experts` to apply; until approval, that shell shows only the application and review status. An admin must approve the application before the full expert workspace opens and the expert appears in discovery.
 
+Admin password sign-in stays on `/admin`, including when the URL has a trailing slash. The admin dashboard has aligned metric cards, feature search above the sidebar navigation, and a sidebar Log out button. The overview counts registered profiles, approved experts, bookings, and simulated checkout records; it does not add amounts across different currencies.
+
 ## What works
 
 - Member: account creation/sign-in/reset, health profile and sharing choice, expert discovery, available slots, simulated booking/cancellation, booking-linked messages, meal and activity logs, **member-authored weekly training programs with a 1,324-item searchable and filtered exercise browser, technique details, target sets/reps, per-set rep and weight logging, completion history, one active program, and optional sharing with a booked expert**, reviewed library saves, challenge steps, member Circle rooms and posts, likes, comments, reports, blocks, and people views, shop orders, and support requests.

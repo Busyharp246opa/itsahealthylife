@@ -29,7 +29,7 @@ modules:
   must_not_move_without:
   - supabase/migrations/
   - supabase/functions/platform-api/index.ts
-  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs.
+  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs, canonical password-login shell landing, and the admin overview and sidebar actions.
 - owner_module: design_shell
   allowed_edit_paths:
   - src/styles.css

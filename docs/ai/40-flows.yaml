@@ -114,6 +114,7 @@ flows:
   - search role-scoped features
   - use arrows and Enter or click to navigate
   - Escape or backdrop to close
+  - Confirm admin search sits above Overview in the sidebar and remains reachable as an icon at narrow widths
   dependencies:
   - src/App.tsx
   - src/CloudApp.tsx
@@ -132,6 +133,7 @@ flows:
   - load RLS-visible rows
   - choose the requested shell from the URL
   - verify member and admin grants before rendering; restrict unapproved expert applicants to their application
+  - After password sign-in, reload the exact requested role shell; /admin and /admin/ must both land in the admin console for an admin-granted user
   dependencies:
   - profiles
   - role_grants
@@ -329,6 +331,7 @@ manual_smoke_checks:
   - Confirm the bottom demo role/mode switch and local demo entry points are absent
   - Sign in as a member and verify /admin cannot render the admin console
   - Sign in as an admin and verify /admin renders the console while /member still renders member pages
+  - Load /admin/ and confirm it normalizes to /admin and shows Admin sign in or the admin console, never member content
   - Sign in as an unapproved expert applicant and verify only the application screen appears at /experts
   - Verify an approved expert can use the full /experts navigation and can reach /member
   - Check Back/Forward in member training, refresh, and sign out without changing the current shell path
@@ -457,7 +460,9 @@ manual_smoke_checks:
 - id: live_admin
   steps:
   - Sign in as confirmed admin
-  - see Platform overview
+  - see Platform overview with aligned Account, Verified expert, Booking, and Simulated checkout cards linked to their respective pages
+  - Find a feature above Overview in the sidebar; check Ctrl/Cmd+K and icon access at narrow widths
+  - Log out from the sidebar footer and confirm /admin remains on Admin sign in
   - review expert
   - inspect booking/payment/payout
   - publish content and policy

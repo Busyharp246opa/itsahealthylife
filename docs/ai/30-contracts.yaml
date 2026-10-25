@@ -53,7 +53,7 @@ contracts:
     production_configuration: Vercel Production Config values are embedded into the Vite browser bundle at build time; changes require a redeploy. Never use a Supabase service role key here.
     authorization: Supabase Auth session plus RLS; role_grants is server controlled.
     shell_access: /member requires a member grant; /admin requires an admin grant. /experts permits an authenticated applicant to view only the application screen until an expert grant and latest approved review exist. URL selection never grants data access.
-    auth_intent: auth=signup opens the public member or expert account form; auth=login or an absent intent opens sign-in. The admin shell never offers signup.
+    auth_intent: auth=signup opens the public member or expert account form; auth=login or an absent intent opens sign-in. The admin shell never offers signup. Successful password sign-in reloads the canonical requested role path so an admin login remains in /admin.
     auth_email_redirects: Signup confirmation and password recovery pass the exact production role URL to Supabase Auth. The Auth Site URL is the production origin and its redirect allow list includes /member, /experts, and /admin. A recovery callback opens the new-password form and updates the password through the authenticated Supabase client.
     direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
       progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
@@ -69,14 +69,14 @@ contracts:
     slot_constraint: one_active_booking_per_slot unique partial index.
     policy_version: Stored on each booking and used for cancellation math.
   navigation:
-    shell_paths: / is public landing, /about is public story, and /member, /experts, and /admin are live role shells. vercel.json rewrites direct shell requests to app.html.
+    shell_paths: / is public landing, /about is public story, and /member, /experts, and /admin are live role shells. A trailing slash normalizes to the same role path. Vite and vercel.json rewrite direct shell requests to app.html.
     state: The pathname selects the live role. history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
     behavior: CloudApp pushes page changes under the current shell path; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
     boundary: URL and history state contain route and filter state only; no auth tokens, health records, or training logs. Neither grants access. Member, expert, and admin rendering checks server-managed grants and review status.
   feature_search:
     source: src/FeatureSearch.tsx contains role-scoped Healthy Life feature destinations and keyword ranking adapted
       from FitCircle.
-    placement: Member desktop trigger is positioned in the sidebar above Your workspace; member mobile keeps the compact header trigger. Expert and admin trigger placement is unchanged.
+    placement: Member desktop trigger is positioned in the sidebar above Your workspace; member mobile keeps the compact header trigger. Admin trigger sits above Overview in the sidebar and collapses to an icon on narrow screens. Expert trigger placement is unchanged.
     behavior: Click or Ctrl/Cmd+K opens a dialog; typing filters current-role destinations, arrow keys move, Enter
       navigates, and Escape closes. Demo and connected workspaces map to their own implemented page keys.
     boundary: Search exposes only destinations for the current role and never changes role or data.

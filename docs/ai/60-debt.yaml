@@ -5,7 +5,7 @@ deferred_cleanup:
 - Daily Workbench is the selected desktop direction; the React member shell now uses its navigation pattern. The
   three concept previews remain standalone and in-memory.
 - The live training tables, RLS, and activation RPC passed rolled-back authenticated SQL checks. A signed-in member/expert
-  browser pass still needs an approved expert and confirmed booking; the current Supabase project has one profile
+  browser pass still needs an approved expert and confirmed booking; the current Supabase project has two profiles
   and no expert profiles or bookings.
 - The three role shells have shareable paths; pages and training filters within a shell remain in history state rather than shareable URLs.
 - The old src/App.tsx browser-storage walkthrough remains as unmounted reference code; remove or extract its fixtures after connected QA no longer needs them.
@@ -25,7 +25,7 @@ deferred_cleanup:
 - The live client loads all RLS-visible rows per table on refresh; add pagination and focused queries for larger
   datasets.
 - Live Circle member and approved-expert browser QA needs additional signed-in test accounts; this project currently
-  has only the first admin and no approved expert. SQL, RLS, and local demo checks are complete.
+  has two profiles but no approved expert. SQL, RLS, and local demo checks are complete.
 - Flow Exercise Dataset previews are imported for 1257 exercises. Its NOTICE reports incomplete generation prompts,
   third-party rights uncertainty, and unreviewed AI-generated form. Complete a human rights and movement-accuracy
   review before relying on the artwork for coaching or public release; 67 exercises remain instructions-only.
