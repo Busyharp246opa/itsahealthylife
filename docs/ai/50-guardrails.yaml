@@ -1,0 +1,110 @@
+schema_version: 1
+guardrails:
+- id: desktop_concept_isolation
+  rule: Sample UI/ is a member/expert design review area. Keep its state local to the page, label sample data, and
+    preserve the shipped mobile and existing admin UI while comparing directions.
+- id: no_secrets
+  rule: Keep OAuth tokens, passwords, and service keys out of source, docs, logs, and browser bundles. Only publishable
+    credentials may enter Vite.
+- id: role_boundaries
+  rule: Browser cannot grant roles or directly change booking, payment, payout, approval, or policy state. Server
+    actions derive actor from JWT and check grants.
+- id: expert_review
+  rule: Credential and price changes create a submitted review; direct authenticated expert_profiles updates are
+    revoked.
+- id: booking_integrity
+  rule: A slot has at most one active booking and booked slots are hidden from member discovery; booking/payment/payout
+    are separate states; cancellation uses booked policy version.
+- id: health_privacy
+  rule: Member health rows require explicit consent, are self-only unless sharing is enabled for a booked expert,
+    and can be removed by the member; admin cannot browse them by default.
+- id: training_privacy
+  rule: Members own and write their training programs, set logs, and completed sessions. A program can be shared
+    only with a confirmed or completed booked expert; expert reads require that booking to remain eligible and the
+    explicit per-program share choice. Experts cannot edit member training. Only one program per member is active.
+    Never copy FitCircle's separately licensed exercise images or GIFs into the catalog. Flow artwork must retain source, license, NOTICE, and provenance; label it illustrative because generation prompts and form review are incomplete.
+- id: browser_navigation
+  rule: Browser history stores only navigation and catalog filter state. Back/Forward must restore mode, role, page, and nested training location without exposing protected data or changing authorization. Live admin role restoration must check the user's grant. Keep the existing admin visual layout.
+- id: feature_search_roles
+  rule: Command search only lists current-role destinations. Route keys must exist in the corresponding demo or
+    connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep expert/admin layouts unchanged.
+- id: messaging_privacy
+  rule: Booking conversation messages and private attachments are visible only to participants while the booking is confirmed. Storage paths bind the conversation and sender. Keep upload and download behind RLS; never use public URLs. Preserve message-only sends and allow file-only sends.
+- id: simulation_honesty
+  rule: UI identifies payments and orders as simulated; do not display real charge or payout claims.
+- id: architecture_alignment
+  rule: Update affected YAMLs and project-structure.txt after changing implementation or boundaries.
+- id: circle_privacy
+  rule: Keep member and approved-expert Circle feeds separate in RLS, not only in the UI. Posts, comments, likes,
+    reports, and blocks require a visible parent or actor ownership. Admin moderation keeps the existing admin navigation
+    and visual kit.
+must_retest_if_changed:
+- paths:
+  - src/ChatAttachment.tsx
+  - supabase/migrations/20261025111755_session_message_attachments.sql
+  smoke_groups:
+  - demo_messages
+  - live_messages
+  - security_boundary
+- paths:
+  - Sample UI/
+  smoke_groups:
+  - desktop_concepts
+- paths:
+  - src/Training.tsx
+  - src/ExerciseBrowser.tsx
+  - src/navigation.ts
+  - src/ExercisePreview.tsx
+  - scripts/import-flow-exercises.mjs
+  - public/data/flow/
+  - src/TrainingDemo.tsx
+  - public/data/exercises.json
+  smoke_groups:
+  - demo_training
+  - desktop_concepts
+  - app_navigation
+- paths:
+  - src/TrainingCloud.tsx
+  smoke_groups:
+  - live_training
+  - security_boundary
+- paths:
+  - supabase/migrations/
+  - supabase/functions/platform-api/index.ts
+  smoke_groups:
+  - security_boundary
+  - live_member
+  - live_expert
+  - live_admin
+  - live_training
+- paths:
+  - src/CloudApp.tsx
+  - src/FeatureSearch.tsx
+  smoke_groups:
+  - feature_search
+  - live_signed_out
+  - live_member
+  - live_expert
+  - live_admin
+  - live_training
+  - live_circle
+  - demo_circle
+  - app_navigation
+- paths:
+  - src/App.tsx
+  - src/data.ts
+  - src/styles.css
+  smoke_groups:
+  - feature_search
+  - demo_member_booking
+  - demo_training
+  - live_signed_out
+  - demo_circle
+  - app_navigation
+- paths:
+  - src/Circle.tsx
+  - supabase/migrations/20261025101324_circle_spaces.sql
+  smoke_groups:
+  - demo_circle
+  - live_circle
+  - security_boundary

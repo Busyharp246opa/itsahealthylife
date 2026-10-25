@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.local
+.playwright-cli/
+output/
+.supabase/
+.vercel/
+*.log
+.DS_Store
+.directory
+.hallmark/
+supabase/.temp/

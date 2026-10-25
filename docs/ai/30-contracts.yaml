@@ -1,0 +1,126 @@
+schema_version: 1
+contracts:
+  desktop_concepts:
+    entrypoint: Sample UI/index.html
+    routes:
+    - Sample UI/01-daily-workbench/index.html
+    - Sample UI/02-guided-journey/index.html
+    - Sample UI/03-signal-index/index.html
+    loading: Classic shared/model.js script exposes window.HealthyLife before each concept app.js; explicit HTML
+      links work from a directory opened in a browser and through the Vite server.
+    state: Sample UI/shared/model.js owns in-memory sample records and role/view transitions; Daily Workbench training.js
+      adds program cards that open a weekly schedule, full 1324-item category/search/equipment/target filtering
+      with pagination, exercise details and add-to-day targets, rep counts, Flow SVG previews with pause controls, and sample booked-expert sharing. Query
+      parameters select initial role and view. File URLs skip history.replaceState.
+    roles:
+    - member
+    - expert
+    invalid_role: Unknown roles, including admin, fall back to the member preview.
+    backend: None; controls in these previews never write to Supabase or the local demo's browser storage.
+    brand: Frame.png and Group 46831.png copies in Sample UI/assets/; plum, lime, and lavender match the existing
+      shell.
+  supabase_mcp:
+    name: HealthyLife
+    project_ref: jqtrzwiyeohcljdvfkss
+    feature_groups:
+    - docs
+    - account
+    - database
+    - debugging
+    - development
+    - functions
+    - branching
+    authentication: OAuth through Codex CLI
+    verification: Native get_project_url, list_tables, apply_migration, get_advisors, and list_migrations calls
+      succeeded on 2026-10-25.
+    access_tokens: Never commit or print tokens.
+  browser_to_supabase:
+    configuration: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+    authorization: Supabase Auth session plus RLS; role_grants is server controlled.
+    direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
+      progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
+      reactions and blocks; admin may manage rooms, guidelines, and hide posts via RLS.
+    server_actions: platform-api handles booking, order, expert application/review, publishing, policy, support
+      and report transitions.
+  database:
+    public_tables: 34
+    all_public_tables_have_rls: true
+    private_helpers: private.has_role, private.is_approved_expert, and private.is_slot_open are security definer
+      functions with fixed search_path.
+    simulated_transactions: Separate bookings, payment_transactions, payouts, orders, and audit_events records.
+    slot_constraint: one_active_booking_per_slot unique partial index.
+    policy_version: Stored on each booking and used for cancellation math.
+  navigation:
+    state: history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
+    behavior: DemoApp and CloudApp push page/role changes; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
+    boundary: History state contains route and filter state only; no auth tokens, health records, or training logs. It does not grant access. Live admin restoration checks the current user's grant.
+  feature_search:
+    source: src/FeatureSearch.tsx contains role-scoped Healthy Life feature destinations and keyword ranking adapted
+      from FitCircle.
+    placement: Member desktop trigger is positioned in the sidebar above Your workspace; member mobile keeps the compact header trigger. Expert and admin trigger placement is unchanged.
+    behavior: Click or Ctrl/Cmd+K opens a dialog; typing filters current-role destinations, arrow keys move, Enter
+      navigates, and Escape closes. Demo and connected workspaces map to their own implemented page keys.
+    boundary: Search exposes only destinations for the current role and never changes role or data.
+  booking_messages:
+    source: src/ChatAttachment.tsx provides a single file picker, validation, image preview, and document download UI shared by member and expert threads.
+    attachments: One optional JPG, PNG, WebP, GIF, PDF, TXT, DOC, or DOCX file per message, maximum 10 MB. Text may be empty only when a file is attached.
+    demo: Message metadata persists in localStorage; file blobs persist by random ID in IndexedDB healthy-life-chat-files.
+    live: public.messages holds attachment path, name, MIME, and size. Files use the private session-attachments bucket at conversation-ID/sender-ID/random-ID.extension. Upload precedes message insert; an insert failure attempts to remove the orphan.
+    access: Storage SELECT and INSERT require a confirmed booking participant; INSERT also requires the sender path. Message INSERT requires an existing Storage object for attachments. Orphan DELETE requires the uploading sender.
+    boundary: Browser file controls are convenience validation; database constraints, Storage bucket restrictions, and RLS enforce the server boundary. Cancelled booking messages and attachments are not readable.
+  training:
+    catalog: public/data/exercises.json is static English text derived from FitCircle's MIT exercise data. Animation metadata points to public/data/flow/assets SVG frames from Flow Exercise Dataset. The original FitCircle GIFs remain excluded.
+    tables:
+    - training_programs
+    - training_workout_logs
+    - training_sessions
+    previews: src/ExercisePreview.tsx displays three SVG frames in sequence 0,1,2,1 at 180 ms for 1257 exercises. Previews animate only near the viewport, pause when hidden, respect reduced-motion preference, and have manual play/pause. The other 67 show instructions only. Visuals are illustrative and unreviewed.
+    browser_flow: src/Training.tsx opens a selected program from the list; src/ExerciseBrowser.tsx provides browse
+      home, filtered/paginated results, technique detail, and add-to-selected-day targets. The demo and Supabase
+      adapters persist the same schedule shape. Exercise detail includes a sticky top Back button and a bottom Back
+      button. Category and filter state are kept when using browser Back and Forward.
+    schedule: training_programs.schedule is a JSON object keyed by Monday=0 through Sunday=6; each day holds exercise
+      instances with catalog ID, name, target sets, and target reps.
+    active_program: Partial unique index allows one active program per member. public.activate_training_program
+      switches active status atomically as the authenticated caller.
+    sharing: Member sets shared_expert_id on a program. A trigger accepts only an expert with a confirmed or completed
+      booking; RLS requires the same current booking for expert reads of programs, logs, and sessions. Members own
+      all writes; experts have read-only access.
+    logs: One row per program, date, exercise instance, and set; reps are 1-1000 and optional weight is stored in
+      kilograms. Completed sessions are recorded separately.
+    indexes: Program/member composite indexes cover the foreign keys on log and session tables; member/date indexes
+      support history views.
+  function:
+    path: supabase/functions/platform-api/index.ts
+    deployment: platform-api active with JWT verification.
+    origin: Localhost and 127.0.0.1 CORS allowlist for local testing.
+    actor: Authenticated JWT user ID; roles read from role_grants, never request body.
+  circle:
+    source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts
+      Supabase.
+    spaces: Members use the member Circle with topic rooms. Approved experts use a separate expert Circle. Admin
+      sees reports in the existing support page.
+    tables:
+    - community_posts
+    - community_comments
+    - community_reports
+    - community_reactions
+    - community_blocks
+    - circle_rooms
+    - circle_guidelines
+    actions:
+    - create post with kind and optional room
+    - view person posts
+    - toggle like
+    - comment up to 2000 characters
+    - report once
+    - block or unblock author
+    - delete own post
+    - admin hide/dismiss reports
+    - admin create or archive rooms
+    - admin edit guidelines
+    security: RLS filters member and expert posts at the database, requires approved expert status for expert posts,
+      requires authenticated ownership for mutations, hides blocked authors, and guards comments/reactions/reports
+      by visible parent posts.
+    demo: Local data contains separate seeded feeds, member rooms, guidelines, blocks, reports, and admin moderation.
+    load: Connected client refreshes the seven Circle tables with the shared table list.

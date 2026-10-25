@@ -1,0 +1,36 @@
+schema_version: 1
+workspace:
+  state: implemented_local_and_connected
+  entrypoint: index.html -> src/main.tsx -> src/App.tsx
+  local_demo: src/App.tsx + src/data.ts + src/TrainingDemo.tsx + localStorage + IndexedDB chat files + src/Circle.tsx
+  connected_app: src/CloudApp.tsx + src/TrainingCloud.tsx + Supabase JS client + private session-attachments Storage bucket + src/Circle.tsx
+  design: src/styles.css + src/Training.tsx + src/ExerciseBrowser.tsx + src/FeatureSearch.tsx + Frame.png + Group
+    46831.png + Circle styles + DESIGN.md
+  desktop_concepts: Sample UI/index.html comparison page; Sample UI/shared/model.js member/expert sample model;
+    Daily Workbench training.js has program, browse, results, and exercise-detail screens with Flow previews; three standalone HTML/CSS/JS
+    concept folders. The main app retains its existing admin panel. Pages use explicit index.html links and classic
+    scripts, so they can be opened directly or served by Vite.
+  exercise_catalog: public/data/exercises.json holds 1324 English text records adapted from FitCircle; Sample UI/shared/exercises.json
+    is the standalone preview copy. public/data/flow/assets/ stores 3771 SVG frames for 1257 exercises; 67 have no frames. Both clients use the same animation metadata.
+  navigation: src/navigation.ts stores the demo/live route in browser history state; App, CloudApp, Training, and ExerciseBrowser restore on popstate.
+  messaging: src/ChatAttachment.tsx owns file validation, picker, and attachment display. Messages remain booking scoped.
+  application_stack: React 19, TypeScript 7, Vite 8, Supabase JS 2
+  hosting: local Vite development server; no production deployment
+  source_repository: https://github.com/Busyharp246opa/itsahealthylife; local Git main tracks origin/main
+external_services:
+  supabase:
+    codex_mcp_name: HealthyLife
+    project_ref: jqtrzwiyeohcljdvfkss
+    url: https://jqtrzwiyeohcljdvfkss.supabase.co
+    configuration_location: Codex user MCP configuration and project .mcp.json
+    setup_status: OAuth refreshed; native MCP calls working on 2026-10-25
+    public_schema_tables: 34
+    edge_function: platform-api, deployed with JWT verification
+load_order_contracts:
+- Load Vite variables from ignored .env.local; never bundle a service role key.
+- Auth user creation trigger adds profiles and member role before connected role selection.
+- Apply core schema, indexes, actions, directory/content, edit restriction, slot visibility, then four training
+  migrations in filename order.
+- Apply 20261025101324_circle_spaces.sql after the training migrations; its policies depend on existing role and
+  expert approval helpers.
+- Apply 20261025111755_session_message_attachments.sql after core messages and conversations; its Storage policies depend on booking participant RLS.

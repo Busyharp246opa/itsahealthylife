@@ -1,0 +1,361 @@
+schema_version: 1
+flows:
+- id: desktop_concept_review
+  entrypoint: Sample UI/index.html
+  steps:
+  - Open comparison page
+  - choose one of three concepts
+  - switch between member and expert
+  - navigate sections
+  - try sample action
+  - open a Daily Workbench program
+  - browse categories and filters
+  - inspect exercise detail
+  - add to a selected day
+  - count reps and preview expert sharing
+  dependencies:
+  - Sample UI/shared/model.js
+  - Sample UI/shared/exercises.json
+  - public/data/flow/assets/
+  - Sample UI/01-daily-workbench/training.js
+  - Sample UI/assets/
+  - standalone concept HTML/CSS/JS
+  failure_modes:
+  - Directory link opened instead of index.html
+  - external fonts unavailable
+  - sample state resets on reload
+  - Flow frame missing or failed to load
+- id: local_demo
+  entrypoint: src/App.tsx
+  steps:
+  - Select demo role
+  - navigate member/expert/admin surfaces
+  - mutate localStorage-backed data
+  dependencies:
+  - src/data.ts
+  - src/styles.css
+  failure_modes:
+  - Browser storage disabled
+  - stale local demo state
+- id: app_navigation
+  entrypoint: src/navigation.ts via src/App.tsx and src/CloudApp.tsx
+  steps:
+  - Navigate between workspace pages or demo/live modes
+  - Open a training program, browse exercises, filter results, and open detail
+  - Use browser Back and Forward or the in-app Back controls
+  - Restore the matching page, filters, and top scroll position
+  dependencies:
+  - src/navigation.ts
+  - src/App.tsx
+  - src/CloudApp.tsx
+  - src/Training.tsx
+  - src/ExerciseBrowser.tsx
+  failure_modes:
+  - Browser history state missing after direct entry
+  - Stale scroll position obscures the page heading
+  - Wrong role or mode restored
+- id: feature_search
+  entrypoint: src/FeatureSearch.tsx in local or connected shell
+  steps:
+  - Click Find a feature or press Ctrl/Cmd+K
+  - search role-scoped features
+  - use arrows and Enter or click to navigate
+  - Escape or backdrop to close
+  dependencies:
+  - src/App.tsx
+  - src/CloudApp.tsx
+  - src/styles.css
+  failure_modes:
+  - Wrong role destination
+  - stale active result
+  - command trigger overlap at narrow widths
+- id: connected_auth_and_roles
+  entrypoint: src/CloudApp.tsx
+  steps:
+  - Sign up or sign in with Supabase Auth
+  - profile/member role trigger
+  - load RLS-visible rows
+  - choose admin or expert workspace from role grants and profile
+  dependencies:
+  - profiles
+  - role_grants
+  - expert_profiles
+  - Supabase Auth
+  failure_modes:
+  - Unconfirmed email
+  - expired session
+  - unavailable Supabase
+- id: booking_messages
+  entrypoint: src/App.tsx or src/CloudApp.tsx Session messages
+  steps:
+  - Open a confirmed booking conversation as member or expert
+  - choose an image or document and optionally type a message
+  - send and display an image preview or document download link
+  - reopen or reload the thread and retrieve the file
+  dependencies:
+  - src/ChatAttachment.tsx
+  - src/data.ts
+  - IndexedDB in local demo
+  - public.messages attachment columns
+  - private session-attachments Storage bucket and policies
+  failure_modes:
+  - Booking no longer confirmed
+  - File type or 10 MB limit rejected
+  - Browser IndexedDB unavailable
+  - Storage upload or download denied
+  - Message insert fails after upload; orphan removal attempted
+- id: simulated_booking
+  entrypoint: src/CloudApp.tsx member expert directory
+  steps:
+  - Read approved expert and unbooked slots
+  - choose format and time
+  - invoke booking.create
+  - atomic SQL writes booking/payment/payout/conversation/audit
+  - member or expert may cancel
+  - expert completes
+  - member confirms or disputes
+  dependencies:
+  - platform-api
+  - create_simulated_booking
+  - cancel_simulated_booking
+  - complete_simulated_booking
+  - resolve_simulated_booking
+  - policy_versions
+  failure_modes:
+  - Slot booked by another member
+  - expert no longer approved
+  - auth expired
+  - function unavailable
+- id: expert_verification
+  entrypoint: src/CloudApp.tsx expert profile and admin experts
+  steps:
+  - Member applies as expert
+  - platform-api stores profile and submitted review
+  - admin decides
+  - RLS directory shows approved experts only
+  dependencies:
+  - platform-api
+  - expert_profiles
+  - expert_reviews
+  - role_grants
+  failure_modes:
+  - Missing fields
+  - reviewer note required
+  - function unavailable
+- id: member_engagement
+  entrypoint: src/CloudApp.tsx
+  steps:
+  - Member writes own logs
+  - saves content
+  - checks challenge steps
+  - posts/comments/reports
+  - creates support tickets and simulated orders
+  dependencies:
+  - RLS
+  - content_items
+  - challenges
+  - community_posts
+  - products
+  - create_simulated_order
+  failure_modes:
+  - Invalid fields
+  - duplicate reports
+  - out-of-stock product
+- id: member_training
+  entrypoint: src/App.tsx or src/CloudApp.tsx member Train
+  steps:
+  - Create a program
+  - click its card to open the weekly schedule
+  - select weekday
+  - browse the 1324-item catalog by category or search/filter/pagination
+  - open technique detail
+  - add with target sets and reps
+  - edit targets
+  - activate one program
+  - log actual reps and optional weight today
+  - complete session
+  - optionally share with a booked expert
+  - expert reviews read-only
+  dependencies:
+  - src/Training.tsx
+  - src/ExerciseBrowser.tsx
+  - src/ExercisePreview.tsx
+  - public/data/flow/assets/
+  - src/TrainingDemo.tsx
+  - src/TrainingCloud.tsx
+  - public/data/exercises.json
+  - training_programs
+  - training_workout_logs
+  - training_sessions
+  - activate_training_program
+  - bookings RLS
+  failure_modes:
+  - Exercise catalog unavailable
+  - Flow preview frame unavailable or incomplete
+  - invalid targets
+  - inactive program cannot log
+  - booking no longer eligible
+  - sharing revoked
+  - network failure
+  - duplicate set log
+- id: circle
+  entrypoint: Member or expert Circle navigation in src/App.tsx or src/CloudApp.tsx
+  steps:
+  - Member opens a topic room or full feed
+  - Open a person feed
+  - Create a typed post
+  - Like and comment
+  - Report or block another author
+  - Admin dismisses or hides a reported post
+  - Admin manages rooms and guidelines
+  - Approved expert uses a separate expert feed
+  dependencies:
+  - src/Circle.tsx
+  - src/data.ts
+  - src/CloudApp.tsx
+  - supabase/migrations/20261025101324_circle_spaces.sql
+  - community_posts
+  - community_comments
+  - community_reports
+  - community_reactions
+  - community_blocks
+  - circle_rooms
+  - circle_guidelines
+  failure_modes:
+  - Missing approved expert
+  - RLS denies incorrect role
+  - Duplicate report
+  - Archived room
+  - Network write fails
+manual_smoke_checks:
+- id: demo_messages
+  steps:
+  - Book a simulated member session and open its messages
+  - send an image without text and a document with text
+  - send a text-only message to confirm the existing path still works
+  - reload and confirm both preview/download links persist
+  - switch to expert, open the same booking, and confirm both files are readable
+  - verify an unsupported file is rejected and the Send button needs text or a file
+- id: live_messages
+  steps:
+  - With a confirmed booking, sign in as member and upload an image and document
+  - sign in as that expert and download both files; reply with an attachment
+  - confirm another account cannot read or upload into that conversation
+  - cancel booking and confirm the thread and files are no longer readable
+- id: desktop_concepts
+  steps:
+  - Open Sample UI/index.html at desktop and mobile widths through the local server
+  - follow all three explicit HTML concept links and check branding/layout
+  - switch member/expert and navigate sections
+  - confirm no admin role control and admin query falls back to member
+  - add a sample meal and confirm total changes
+  - create and activate a Daily Workbench program
+  - browse categories and filters
+  - verify an animated card preview, pause/play, and instructions-only fallback
+  - open an exercise detail and add it to a weekday
+  - count reps
+  - add sample booking and share to expert preview
+  - verify no horizontal page overflow or browser console errors
+  - manually verify direct file opening when the browser permits file URLs
+  - Open Daily Workbench exercise browsing and confirm the Back control remains usable while scrolling and returns
+    to the program
+- id: app_navigation
+  steps:
+  - In local demo, navigate Home to Train to a program, browse home, results, and exercise detail
+  - Use both in-app Back and browser Back/Forward through those screens
+  - Confirm selected filters and result page return, with the catalog heading visible at scroll position zero
+  - Navigate Plan to expert discovery and back; switch demo member/admin role and back
+  - Enter Live Supabase signed-out mode and use browser Back to restore the local demo
+  - Repeat the training Back path at phone width and check no horizontal overflow or console errors
+- id: feature_search
+  steps:
+  - At desktop width find the member search trigger above Your workspace in the sidebar; at phone width use the compact header trigger
+  - Check expert and admin search placement remains unchanged
+  - type exercise and navigate to Train with Enter
+  - reopen with Ctrl/Cmd+K
+  - use arrows and Escape
+  - switch to expert and admin demo roles and verify only their destinations appear
+- id: demo_training
+  steps:
+  - At desktop and phone widths open local member Train
+  - create two programs and activate one
+  - add different exercises to weekdays
+  - log reps and weight for today's sets
+  - complete and reopen today's session
+  - reload to confirm browser storage persistence
+  - book a demo expert and share one program
+  - switch to expert Shared training and confirm read-only access
+  - unshare and confirm removal
+  - Open an exercise detail and use the bottom Back control after scrolling; confirm it returns to filtered results
+  - Verify animated result and detail previews, pause/play, missing-art fallback, and reduced-motion behavior
+- id: live_training
+  steps:
+  - Sign in as a member
+  - create two programs
+  - activate the saved one
+  - add an exercise
+  - log a set and complete a session
+  - reload to confirm Supabase persistence
+  - confirm sharing is unavailable before an eligible booking
+  - book and share with an approved expert
+  - sign in as that expert and verify read-only program and log access
+  - unshare or cancel booking and verify access ends
+- id: demo_member_booking
+  steps:
+  - Open local demo
+  - choose Plan then expert and slot
+  - confirm simulated booking
+  - see booking/payment/payout states in calendar
+- id: live_signed_out
+  steps:
+  - Switch to Live Supabase
+  - verify sign-in/sign-up/reset controls render
+  - return to local demo
+- id: live_member
+  steps:
+  - Sign in as member
+  - save profile and consent
+  - log meal and activity
+  - browse library/challenge/shop
+  - create support request
+  - Check the Food log and Add a meal form have a visible gap
+- id: live_expert
+  steps:
+  - Apply as expert
+  - admin approves
+  - add availability
+  - create content draft
+  - inspect assigned booking and message
+- id: live_admin
+  steps:
+  - Sign in as confirmed admin
+  - see Platform overview
+  - review expert
+  - inspect booking/payment/payout
+  - publish content and policy
+  - triage support
+- id: security_boundary
+  steps:
+  - Run Supabase security advisor
+  - verify all public tables including three training tables have RLS and no anon SELECT grants
+  - verify a signed-in member can create training rows and a different identity cannot read them
+  - verify activation RPC switches one program atomically
+  - verify unauthenticated platform-api POST returns 401
+- id: demo_circle
+  steps:
+  - At desktop and phone widths open member Circle and check no horizontal overflow
+  - Open a room and return
+  - Create a post in that room and in full Circle
+  - Like and comment on a post
+  - Report and block another author, then unblock
+  - Open an author feed
+  - Switch to expert and confirm only expert posts appear
+  - Switch to admin and dismiss or hide a report, create a room and edit guidelines
+  - Reload to confirm local demo persistence
+- id: live_circle
+  steps:
+  - Sign in as member and create a room or full Circle post, like, comment, report, block and unblock
+  - Verify a member cannot read or write expert Circle rows using RLS
+  - Sign in as approved expert and post in expert Circle while member feed stays separate
+  - Sign in as admin and hide/dismiss reports, create/archive room and update guidelines
+  - Run security advisor and verify all four new public tables have RLS and no anon grants

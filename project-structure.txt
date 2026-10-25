@@ -1,0 +1,31 @@
+docs/ai/                     Architecture, contracts, flows, guardrails, and debt
+DESIGN.md                   Healthy Life Circle art direction and Awwwards-informed layout decisions
+Sample UI/                   Three directly openable member/expert desktop concepts; Daily Workbench includes a standalone training builder and catalog copy
+src/main.tsx                 React entrypoint
+src/App.tsx                  Local demo, member desktop shell, and mode switch
+src/CloudApp.tsx             Supabase-connected member, expert, and admin client
+src/Training.tsx            Shared training program list, weekly planner, set logger, and expert review UI
+src/ExerciseBrowser.tsx     Full category/filter/pagination exercise browse and add-to-day flow
+src/ExercisePreview.tsx     Lazy SVG frame playback with pause, visibility, and reduced-motion support
+src/FeatureSearch.tsx       Role-scoped command search with demo/live route mapping
+src/navigation.ts          Browser history for app pages and nested training screens
+src/Circle.tsx              Shared member rooms and expert Circle feed, posts, replies, likes, and safety UI
+src/ChatAttachment.tsx      Shared booking attachment picker, validation, previews, and demo IndexedDB files
+src/TrainingDemo.tsx        Browser-storage training adapter
+src/TrainingCloud.tsx       Supabase training adapter
+src/data.ts                 Local demo records and persistence
+src/styles.css              Responsive Figma-derived visual system and training layouts
+public/data/                FitCircle-derived English exercise text plus Flow SVG preview assets, provenance, and notices
+scripts/import-flow-exercises.mjs  Reproducible matching-ID Flow artwork import
+supabase/migrations/        Core schema, training, Circle, private booking message attachments, RLS, and atomic activation RPC
+supabase/functions/platform-api/index.ts  JWT-protected state transitions
+supabase/config.toml        Local Supabase function configuration
+Frame.png                   Brand mark
+Group 46831.png             Full logo
+index.html                  Vite page
+.env.example                Public environment variable names
+.mcp.json                   Project HealthyLife MCP registration
+.gitignore                  Excludes local credentials, dependencies, builds, and QA output from Git
+README.md                   Setup, architecture, and verification notes
+healthy-life-mobile-web-platform-spec.md  Product specification
+User Roles.xlsx             Role workbook

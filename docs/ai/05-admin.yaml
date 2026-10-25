@@ -1,0 +1,44 @@
+schema_version: 1
+phase: locally_hosted_build
+decisions:
+  desktop_design_review: Three interactive concepts in Sample UI/ cover member and expert only. Daily Workbench
+    is the selected member desktop direction and now includes a program detail and full exercise browse flow. The
+    React member shell uses its navigation pattern. The existing admin panel keeps its UI; role-scoped command search
+    adds a small entry point.
+  training: Members may save multiple weekly programs with one active program, log sets and completed sessions,
+    and share a program only with a confirmed or completed booked expert. Expert access is read only and revoked
+    by unsharing or loss of booking eligibility.
+  desktop_preview_opening: Comparison links target each concept's index.html explicitly; concept scripts are classic
+    scripts for direct-file or local-server viewing.
+  visual_source: Figma member, expert, and admin screens plus supplied logos
+  frontend: React 19, TypeScript, Vite 8
+  backend: Supabase Auth, Postgres, RLS, Edge Function
+  checkout: simulated; no payment provider or fund transfer
+  local_testing: http://127.0.0.1:5173/
+  source_repository: https://github.com/Busyharp246opa/itsahealthylife (public; local main branch tracks origin/main)
+  first_admin_email: itsahealthylifeltd@gmail.com
+  first_admin_state: confirmed account has admin and member grants; initial grant audited; user confirmed live admin
+    overview
+  navigation: Browser history tracks the current mode, role, page, and member training location; browser Back and Forward restore these states.
+  member_search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Expert and admin layouts keep their existing search position.
+  session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
+  exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.
+    1257 animated previews, 67 instructions-only; artwork is illustrative and unreviewed.
+  circle: Member topic rooms and an approved-expert-only Circle use the existing admin support layout for reports
+    and settings. Local demo persists Circle activity in browser storage; live interactions use RLS-protected Supabase
+    tables. Existing admin navigation and visual kit remain.
+maintenance:
+  source_of_truth: Code and SQL migrations for behavior; docs/ai for navigation and retest routing.
+  update_when:
+  - module boundaries change
+  - schema or policies change
+  - role flows change
+  - desktop concepts change
+  - smoke checks change
+  - MCP configuration changes
+  secrets: Never store OAuth tokens, passwords, or service role keys in project files. .env.local contains only
+    the publishable key and is ignored.
+  migration_rule: Keep local migration filenames aligned with Supabase migration history; apply changes through
+    HealthyLife MCP. Training migrations are 20261025091715, 20261025091915, 20261025092137, and 20261025092951.
+    Circle migration 20261025101324 adds four public tables and role-separated policies.
+    Session attachment migration 20261025111755 adds message metadata and a private Storage bucket/policies.

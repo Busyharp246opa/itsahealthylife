@@ -1,0 +1,91 @@
+schema_version: 1
+project: HealthyLife
+status: local_build_and_live_supabase
+timezone: Asia/Dubai
+read_order:
+- 00-index.yaml
+- 05-admin.yaml
+- 10-system-map.yaml
+- 30-contracts.yaml
+- 20-modules.yaml
+- 40-flows.yaml
+- 50-guardrails.yaml
+- 60-debt.yaml
+summary: Responsive member, expert, and admin clients share a Supabase backend. A separate local demo uses browser
+  storage. Members author weekly training programs, track sets, and optionally share with booked experts. Checkout
+  and orders are simulated. Three standalone member/expert desktop concept previews live in Sample UI/; Daily Workbench
+  training informs the member desktop app. Members open programs, browse and filter the full exercise catalog, review
+  technique, and add movements to a selected day. Role-scoped command search navigates member, expert, and admin
+  features while the admin console keeps its layout. Browser Back and Forward follow demo/live pages and the nested training browser. Circle now has member topic rooms and a separate approved-expert
+  feed, with posts, kinds, likes, comments, safety actions, people views, guidelines, and admin moderation. Exercise
+  detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
+  Booking messages now support one private image or document attachment per message in demo and live modes.
+task_routing:
+  desktop_concepts:
+    read:
+    - 20-modules.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: Sample UI/
+  training:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/Training.tsx, src/ExerciseBrowser.tsx, src/ExercisePreview.tsx, src/TrainingDemo.tsx, src/TrainingCloud.tsx, public/data/exercises.json,
+      supabase/migrations/
+  navigation:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/navigation.ts, src/App.tsx, src/CloudApp.tsx, src/Training.tsx, src/ExerciseBrowser.tsx
+  feature_search:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/FeatureSearch.tsx, src/App.tsx, src/CloudApp.tsx, src/styles.css
+  messaging:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/ChatAttachment.tsx, src/App.tsx, src/CloudApp.tsx, src/data.ts, src/styles.css,
+      supabase/migrations/20261025111755_session_message_attachments.sql
+  frontend:
+    read:
+    - 20-modules.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/App.tsx and src/CloudApp.tsx
+  database:
+    read:
+    - 10-system-map.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: supabase/migrations/
+  server_actions:
+    read:
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: supabase/functions/platform-api/index.ts
+  refactors:
+    read:
+    - 20-modules.yaml
+    - 10-system-map.yaml
+    - 50-guardrails.yaml
+    - 60-debt.yaml
+  circle:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/Circle.tsx, src/App.tsx, src/CloudApp.tsx, src/data.ts, supabase/migrations/
