@@ -80,7 +80,7 @@ task_routing:
     - 30-contracts.yaml
     - 40-flows.yaml
     - 50-guardrails.yaml
-    owner: src/ProductImages.tsx, src/CloudApp.tsx, src/styles.css, supabase/migrations/20261025171436_product_images.sql,
+    owner: src/ProductImages.tsx, src/CloudApp.tsx, src/styles.css, supabase/migrations/20261025171436_product_images.sql, supabase/migrations/20261025171918_fix_product_image_policy.sql,
       supabase/functions/platform-api/index.ts
   deployment:
     read:

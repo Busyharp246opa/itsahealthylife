@@ -48,3 +48,4 @@ load_order_contracts:
   expert approval helpers.
 - Apply 20261025111755_session_message_attachments.sql after core messages and conversations; its Storage policies depend on booking participant RLS.
 - Apply 20261025171436_product_images.sql after the core products table and admin role helper; its public bucket permits admin-only uploads and deletes.
+- Apply 20261025171918_fix_product_image_policy.sql after the initial product image migration; it corrects UUID path matching for uploads.

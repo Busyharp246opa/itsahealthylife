@@ -129,7 +129,7 @@ contracts:
     store: Products and Orders are separate in-page views. Add product opens the create form with optional image previews; descriptions and image management expand in place. Admins can add or remove images later. The first image is the cover in inventory and the member shop; products without images retain the existing placeholder. Hide/Show keeps using platform-api. Orders remain simulated.
     refresh: Successful writes refresh the current page in the background and preserve the open view.
   product_images:
-    source: src/ProductImages.tsx, src/CloudApp.tsx, supabase/functions/platform-api/index.ts, and supabase/migrations/20261025171436_product_images.sql.
+    source: src/ProductImages.tsx, src/CloudApp.tsx, supabase/functions/platform-api/index.ts, and product image migrations 20261025171436 and 20261025171918.
     storage: Public product-images bucket for intentional shop imagery; JPG, PNG, or WebP only, 5 MB per file. Authenticated admins alone may insert or delete objects through Storage RLS. No browser service key.
     schema: public.products.image_paths is a non-null text array with a maximum of five product-scoped paths. Existing products default to no images.
     write_flow: The admin browser validates and uploads images to a new product UUID folder, then calls product.create or product.images.update. Failed server writes remove newly uploaded objects. Server actions verify every path exists in the bucket. Removing an image updates the product and deletes the old object.

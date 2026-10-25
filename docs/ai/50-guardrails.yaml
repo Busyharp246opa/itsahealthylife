@@ -97,6 +97,7 @@ must_retest_if_changed:
 - paths:
   - src/ProductImages.tsx
   - supabase/migrations/20261025171436_product_images.sql
+  - supabase/migrations/20261025171918_fix_product_image_policy.sql
   smoke_groups:
   - live_admin
   - live_member

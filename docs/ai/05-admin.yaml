@@ -55,4 +55,4 @@ maintenance:
     HealthyLife MCP. Training migrations are 20261025091715, 20261025091915, 20261025092137, and 20261025092951.
     Circle migration 20261025101324 adds four public tables and role-separated policies.
     Session attachment migration 20261025111755 adds message metadata and a private Storage bucket/policies.
-    Product image migration 20261025171436 adds product image paths and a public bucket with admin-only write policies.
+    Product image migration 20261025171436 adds product image paths and a public bucket with admin-only write policies; 20261025171918 corrects the Storage path regex after a live upload test.

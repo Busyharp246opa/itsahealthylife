@@ -20,7 +20,7 @@ deferred_cleanup:
 - Checkout and orders are simulated; real provider authorization, webhooks, reconciliation, fulfilment, and payout
   transfer require product decisions.
 - Live attachment browser QA still needs an approved expert and confirmed booking; the project has no confirmed bookings. The private bucket, columns, policies, and local member/expert flow were verified.
-- Release 2 and later spec features such as calls, media uploads outside booking messages, calendar sync, notification delivery, advanced
+- Release 2 and later spec features such as calls, media uploads outside booking messages and product images, calendar sync, notification delivery, advanced
   nutrition search, analytics, and content automation are not implemented.
 - The live client loads all RLS-visible rows per table on refresh; add pagination and focused queries for larger
   datasets.
