@@ -47,7 +47,7 @@ flows:
   - Open the noindex landing sample from the comparison page or its direct URL
   - Explore the four day chapters by pointer or arrow keys; each chapter displays its own photo and story
   - Follow member and trainer registration/login links to the role-specific connected forms
-  - Open the story page and return to the landing page
+  - Open the story page, confirm both story photos load, and return to the landing page
   dependencies:
   - Sample UI/04-landing/
   - src/CloudApp.tsx auth intent
@@ -288,7 +288,7 @@ manual_smoke_checks:
   - Operate Move/Nourish/Connect/Grow tabs with click and arrow keys; verify the selected photo and accessible image state, reduced motion, and focus visibility
   - Open and close the mobile menu and inspect FAQ disclosure controls
   - Follow member and trainer registration and login links; verify each reaches the matching role and form
-  - Open about.html and the designed 404.html directly
+  - Open about.html and the designed 404.html directly; inspect the story hero and meal photo at desktop and phone widths
   - Confirm the root application still opens /member and admin layout is untouched
 - id: production_deployment
   steps:

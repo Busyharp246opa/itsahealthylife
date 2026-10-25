@@ -24,6 +24,7 @@ contracts:
     entrypoint: Sample UI/04-landing/index.html; about.html and 404.html share its visual system.
     deployment: scripts/copy-samples.mjs copies all Sample UI files into dist after Vite build; Vercel serves the sample at /Sample%20UI/04-landing/index.html without changing /.
     approach_tabs: Move, Nourish, Connect, and Grow select corresponding original photographs and story copy. Images remain local WebP files and inactive images are hidden from assistive technology.
+    story_page: about.html has a two-column photographic hero, an editorial reading section with a second image, and the existing member/trainer account paths. Its photos are local WebP files with descriptive alt text; the hero serves a smaller image on phones.
     auth_links: Member register/login go to /member?auth=signup or auth=login. Trainer register/login go to /experts?auth=signup or auth=login. On file URLs, links use the Vercel production host; on local Vite they use the local host.
     boundary: Standalone noindex marketing sample; it has no Supabase client or sample data writes. The existing role shells enforce grants and expert approval.
   supabase_mcp:
