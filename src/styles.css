@@ -45,12 +45,13 @@
 .desktop-account-actions>a,.desktop-account-actions>button{border:0;background:none;color:#52305c;font:inherit;font-weight:700;text-decoration:none;white-space:nowrap;cursor:pointer}
 .desktop-account-actions>a:hover,.desktop-account-actions>button:hover{text-decoration:underline}
 .desktop-account-actions .desktop-user{padding-left:15px;border-left:1px solid #e7e1e9}
-.app-shell.admin .sidebar{overflow-y:auto}
+.app-shell.admin .sidebar{overflow:hidden}
+.app-shell.admin .sidebar nav{flex:1;min-height:0;overflow-y:auto}
 .app-shell.admin .admin-search-slot{margin:28px 8px 0}
 .app-shell.admin .admin-search-slot .feature-search-trigger{position:static;width:100%;justify-content:flex-start;background:#ffffff14;border-color:#ffffff3d;color:#fff;box-shadow:none}
 .app-shell.admin .admin-search-slot .feature-search-trigger kbd{margin-left:auto;color:#e9dcec;border-color:#ffffff55}
 .app-shell.admin .sidebar-label{margin-top:30px}
-.admin-sidebar-footer{margin:auto 8px 0;padding-top:16px;border-top:1px solid #ffffff30}
+.admin-sidebar-footer{margin:12px 8px 0;padding-top:12px;border-top:1px solid #ffffff30;flex:none}
 .admin-sidebar-footer button{display:flex;align-items:center;gap:12px;width:100%;min-height:42px;padding:0 10px;border:1px solid #ffffff4a;border-radius:11px;background:#ffffff12;color:#fff;font-size:12px;font-weight:700;text-align:left}
 .admin-sidebar-footer button:hover,.admin-sidebar-footer button:focus-visible{background:#ffffff24;outline-color:#75d100}
 .admin-overview-stats .admin-stat{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0;min-height:150px;padding:18px;border:1px solid #ebe5ee;text-align:left;color:#141217;transition:border-color .15s,transform .15s,box-shadow .15s}
@@ -71,4 +72,4 @@
 @media(max-width:760px){.desktop-account-actions{gap:9px}.desktop-account-actions .desktop-user{display:none}}
 @media(max-width:1150px){.admin-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:920px) and (min-width:601px){.app-shell.admin .admin-search-slot{margin:25px 3px 0}.app-shell.admin .admin-search-slot .feature-search-trigger{justify-content:center;width:46px;height:42px;padding:0}.app-shell.admin .admin-search-slot .feature-search-trigger span,.app-shell.admin .admin-search-slot .feature-search-trigger kbd,.admin-sidebar-footer span{display:none}.app-shell.admin .sidebar-label{margin:18px 0 16px}.admin-sidebar-footer{margin-left:3px;margin-right:3px}.admin-sidebar-footer button{justify-content:center;padding:0}}
-@media(max-width:600px){.app-shell.admin .sidebar{display:flex;align-items:center;gap:8px;overflow:visible}.app-shell.admin .sidebar nav{order:1;min-width:0;flex:1}.app-shell.admin .admin-search-slot{order:2;margin:0}.app-shell.admin .admin-search-slot .feature-search-trigger{justify-content:center;width:39px;height:39px;padding:0}.app-shell.admin .admin-search-slot .feature-search-trigger span,.app-shell.admin .admin-search-slot .feature-search-trigger kbd,.app-shell.admin .admin-sidebar-footer{display:none}.admin-overview-stats .admin-stat{min-height:137px;padding:14px}.admin-overview-stats .admin-stat strong{font-size:25px}}
+@media(max-width:600px){.app-shell.admin .sidebar{display:flex;align-items:center;gap:8px;overflow:visible}.app-shell.admin .sidebar nav{order:1;min-width:0;flex:1;overflow-y:visible}.app-shell.admin .admin-search-slot{order:2;margin:0}.app-shell.admin .admin-search-slot .feature-search-trigger{justify-content:center;width:39px;height:39px;padding:0}.app-shell.admin .admin-search-slot .feature-search-trigger span,.app-shell.admin .admin-search-slot .feature-search-trigger kbd,.app-shell.admin .admin-sidebar-footer{display:none}.admin-overview-stats .admin-stat{min-height:137px;padding:14px}.admin-overview-stats .admin-stat strong{font-size:25px}}
