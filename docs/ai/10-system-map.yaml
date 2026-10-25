@@ -10,7 +10,7 @@ workspace:
     Daily Workbench training.js has program, browse, results, and exercise-detail screens with Flow previews; three standalone HTML/CSS/JS
     desktop concept folders and Sample UI/04-landing/ public landing-page sample. The main app retains its existing admin panel. Pages use explicit index.html links and classic
     scripts, so they can be opened directly or served by Vite.
-  landing_sample: Sample UI/04-landing/index.html, about.html, 404.html, style.css, app.js, local fonts, original photos, and local GSAP. scripts/copy-samples.mjs copies Sample UI into dist after Vite build; no landing sample is mounted at /.
+  landing_sample: Sample UI/04-landing/index.html, about.html, 404.html, style.css, app.js, local fonts, original photos including four tab-specific approach photos, and local GSAP. scripts/copy-samples.mjs copies Sample UI into dist after Vite build; no landing sample is mounted at /.
   exercise_catalog: public/data/exercises.json holds 1324 English text records adapted from FitCircle; Sample UI/shared/exercises.json
     is the standalone preview copy. public/data/flow/assets/ stores 3771 SVG frames for 1257 exercises; 67 have no frames. Both clients use the same animation metadata.
   navigation: src/navigation.ts maps /member, /experts, and /admin to role shells and stores inner page/training state in browser history. CloudApp, Training, and ExerciseBrowser restore on popstate; vercel.json rewrites direct shell requests to index.html.

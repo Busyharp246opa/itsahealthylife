@@ -10,7 +10,7 @@ decisions:
     by unsharing or loss of booking eligibility.
   desktop_preview_opening: Comparison links target each concept's index.html explicitly; concept scripts are classic
     scripts for direct-file or local-server viewing.
-  landing_sample: Sample UI/04-landing/index.html is a noindex public landing-page design preview, linked from the concept index and copied into Vercel dist. It uses original generated imagery, the supplied brand mark, and paired member/trainer register and login links. It does not replace the live root route.
+  landing_sample: Sample UI/04-landing/index.html is a noindex public landing-page design preview, linked from the concept index and copied into Vercel dist. Its Move, Nourish, Connect, and Grow tabs each show an original generated photograph. It uses the supplied brand mark and paired member/trainer register and login links. It does not replace the live root route.
   landing_auth_links: /member?auth=signup and /experts?auth=signup open the connected registration form; the corresponding auth=login links open sign-in. Trainers create an account, then submit an expert application for approval.
   visual_source: Figma member, expert, and admin screens plus supplied logos
   frontend: React 19, TypeScript, Vite 8

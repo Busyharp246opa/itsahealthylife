@@ -1,7 +1,7 @@
 docs/ai/                     Architecture, contracts, flows, guardrails, and debt
 DESIGN.md                   Healthy Life Circle art direction and Awwwards-informed layout decisions
 Sample UI/                   Three member/expert desktop concepts and a public landing-page sample
-Sample UI/04-landing/        Awwwards-informed noindex landing page, story and 404 pages, original images, and role-specific account links
+Sample UI/04-landing/        Awwwards-informed noindex landing page, story and 404 pages, four original approach photos, and role-specific account links
 src/main.tsx                 Live-only React entrypoint and role-path initialization
 src/App.tsx                  Unmounted browser-storage demo reference
 src/CloudApp.tsx             Supabase-connected /member, /experts, and /admin shells

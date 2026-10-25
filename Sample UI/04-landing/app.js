@@ -23,7 +23,8 @@
   const dayTabs = [...document.querySelectorAll('.day-choice')];
   const dayPanel = document.getElementById('day-panel');
   const dayStory = document.querySelector('.day-story');
-  const orbitMarker = document.querySelector('.orbit-marker');
+  const dayImages = [...document.querySelectorAll('[data-step-image]')];
+  const dayVisualLabel = document.querySelector('.day-visual-label');
   const stories = [
     { index: '01 / 04 · MOVEMENT', title: 'Make movement your own.', body: 'Build a weekly training plan, discover exercises and record the reps you actually do.', action: 'Start your plan' },
     { index: '02 / 04 · NOURISHMENT', title: 'Notice what fuels you.', body: 'Make a quick meal check-in and see the everyday patterns that help you feel good.', action: 'Track your day' },
@@ -44,6 +45,13 @@
         tab.tabIndex = selected ? 0 : -1;
       });
       dayPanel.setAttribute('aria-labelledby', dayTabs[index].id);
+      dayImages.forEach((image, imageIndex) => {
+        const selected = imageIndex === index;
+        image.classList.toggle('is-active', selected);
+        if (selected) image.removeAttribute('aria-hidden');
+        else image.setAttribute('aria-hidden', 'true');
+      });
+      if (dayVisualLabel) dayVisualLabel.textContent = `${String(index + 1).padStart(2, '0')} / ${dayTabs[index].querySelector('.choice-name').textContent.toUpperCase()}`;
       dayStory.querySelector('.story-index').textContent = step.index;
       dayStory.querySelector('h3').textContent = step.title;
       dayStory.querySelector('p:not(.story-index)').textContent = step.body;
@@ -55,10 +63,8 @@
         update();
         gsap.fromTo(dayStory, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .34, ease: 'power2.out' });
       }});
-      gsap.to(orbitMarker, { rotation: index * 90, duration: .72, ease: 'power3.inOut', overwrite: true });
     } else {
       update();
-      if (orbitMarker) orbitMarker.style.transform = `rotate(${index * 90}deg)`;
     }
     activeStep = index;
   }
@@ -77,7 +83,6 @@
       .from('.hero-kicker', { y: 14, opacity: 0, duration: .55 })
       .from('.hero h1', { y: 26, opacity: 0, duration: .78 }, '-=.28')
       .from('.hero-copy, .hero-actions', { y: 20, opacity: 0, duration: .58, stagger: .12 }, '-=.43');
-    gsap.to('.orbit-track-inner', { rotation: 360, duration: 80, ease: 'none', repeat: -1 });
     gsap.to('.ticker>div', { x: -450, duration: 30, ease: 'none', repeat: -1 });
   }
 
