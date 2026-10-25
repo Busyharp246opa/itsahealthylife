@@ -55,4 +55,6 @@ The local walkthrough has been exercised in a browser from expert selection thro
 
 ## Scope still requiring integrations
 
+Auth URL Configuration was updated on 2026-10-25 and read back from the hosted Supabase dashboard: the Site URL is the production origin, and the member, expert, and admin return URLs are allowed. The default confirmation and recovery templates use Supabase's confirmation URL. A fresh email click remains to be checked with an inbox controlled by the product owner.
+
 The product spec’s real payment provider, calls, media uploads, calendar sync, notification delivery, advanced food search, charts, and social publishing need additional integration and policy decisions. The hosted build is a product preview for connected workflow testing; it is not a production commerce or telehealth release.

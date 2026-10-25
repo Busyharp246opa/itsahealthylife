@@ -1,5 +1,6 @@
 schema_version: 1
 deferred_cleanup:
+- Supabase Auth Site URL and exact production member/expert/admin redirect URLs were saved and read back on 2026-10-25; default confirmation and recovery templates use ConfirmationURL. A fresh email click and password recovery through the browser still need QA with an inbox controlled by the product owner.
 - The approved landing design now serves / and /about; the noindex Sample UI source remains for review. Replace the Vercel preview domain in canonical URLs and the sitemap if a custom public domain is connected, and review final commercial/legal copy before a commerce release.
 - Daily Workbench is the selected desktop direction; the React member shell now uses its navigation pattern. The
   three concept previews remain standalone and in-memory.
