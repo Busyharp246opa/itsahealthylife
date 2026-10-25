@@ -63,6 +63,13 @@
 .admin-overview-stats .admin-stat-label{font-size:11px;color:#665b6e;font-weight:700}
 .admin-overview-stats .admin-stat strong{font-size:29px;line-height:1;letter-spacing:-.04em}
 .admin-overview-stats .admin-stat small{grid-column:auto;margin-top:auto;font-size:10px;color:#81768a}
+.admin-payment-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+.admin-payment-card{display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0;min-height:165px;padding:20px 22px;background:#fff;border:1px solid #ebe5ee;border-radius:18px}
+.admin-payment-card-head{display:flex;align-items:center;gap:11px;min-width:0;color:#675b70;font-size:12px;font-weight:700}
+.admin-payment-card-head .stat-icon{flex:none}.admin-payment-card-head .stat-icon.green{color:#352244}
+.admin-payment-card strong{display:block;max-width:100%;font-size:clamp(25px,2.3vw,32px);line-height:1;letter-spacing:-.045em;overflow-wrap:anywhere}
+.admin-payment-card small{margin-top:auto;color:#81768a;font-size:11px}
+.admin-payments-panel{min-height:220px}.admin-payments-panel .empty{padding:24px 12px 8px}
 .admin-search-slot .feature-search-layer{color:#141217}
 .shell-account{display:grid;gap:10px;margin-top:22px}
 .shell-account h2{margin:0 0 4px}
@@ -71,5 +78,7 @@
 .auth-card>.text-link{margin-top:12px}
 @media(max-width:760px){.desktop-account-actions{gap:9px}.desktop-account-actions .desktop-user{display:none}}
 @media(max-width:1150px){.admin-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:920px){.admin-payment-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.admin-payment-stats{grid-template-columns:1fr}.admin-payment-card{min-height:140px;padding:17px}.admin-payment-card strong{font-size:27px}}
 @media(max-width:920px) and (min-width:601px){.app-shell.admin .admin-search-slot{margin:25px 3px 0}.app-shell.admin .admin-search-slot .feature-search-trigger{justify-content:center;width:46px;height:42px;padding:0}.app-shell.admin .admin-search-slot .feature-search-trigger span,.app-shell.admin .admin-search-slot .feature-search-trigger kbd,.admin-sidebar-footer span{display:none}.app-shell.admin .sidebar-label{margin:18px 0 16px}.admin-sidebar-footer{margin-left:3px;margin-right:3px}.admin-sidebar-footer button{justify-content:center;padding:0}}
 @media(max-width:600px){.app-shell.admin .sidebar{display:flex;align-items:center;gap:8px;overflow:visible}.app-shell.admin .sidebar nav{order:1;min-width:0;flex:1;overflow-y:visible}.app-shell.admin .admin-search-slot{order:2;margin:0}.app-shell.admin .admin-search-slot .feature-search-trigger{justify-content:center;width:39px;height:39px;padding:0}.app-shell.admin .admin-search-slot .feature-search-trigger span,.app-shell.admin .admin-search-slot .feature-search-trigger kbd,.app-shell.admin .admin-sidebar-footer{display:none}.admin-overview-stats .admin-stat{min-height:137px;padding:14px}.admin-overview-stats .admin-stat strong{font-size:25px}}

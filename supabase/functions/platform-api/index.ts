@@ -94,12 +94,30 @@ const secureHandler = withSupabase({ auth: 'user' }, async (request, ctx) => {
     await admin.from('challenges').update({ active: true }).eq('id', challenge.id);
     return result({ challengeId: challenge.id }, 201);
   }
+  if (action === 'challenge.update') {
+    const denied = needAdmin(); if (denied) return denied;
+    if (!uuid(body.challengeId) || typeof body.active !== 'boolean') return result({ error: 'Invalid challenge update' }, 400);
+    const { data, error } = await admin.from('challenges').update({ active: body.active }).eq('id', body.challengeId).select('id').maybeSingle();
+    if (error) return result({ error: error.message }, 400);
+    if (!data) return result({ error: 'Challenge not found' }, 404);
+    await admin.from('audit_events').insert({ actor_id: actor, action: body.active ? 'challenge_resumed' : 'challenge_paused', subject_type: 'challenge', subject_id: body.challengeId });
+    return result({ ok: true });
+  }
   if (action === 'product.create') {
     const denied = needAdmin(); if (denied) return denied;
     const name = short(body.name,160), price = Number(body.price), stock = Number(body.stock);
     if (!name || !Number.isFinite(price) || price < 0 || !Number.isInteger(stock) || stock < 0) return result({ error: 'Invalid product' }, 400);
     const { error } = await admin.from('products').insert({ name, description: short(body.description,2000), price, stock, currency: 'USD', active: true });
     return error ? result({ error: error.message }, 400) : result({ ok: true }, 201);
+  }
+  if (action === 'product.update') {
+    const denied = needAdmin(); if (denied) return denied;
+    if (!uuid(body.productId) || typeof body.active !== 'boolean') return result({ error: 'Invalid product update' }, 400);
+    const { data, error } = await admin.from('products').update({ active: body.active }).eq('id', body.productId).select('id').maybeSingle();
+    if (error) return result({ error: error.message }, 400);
+    if (!data) return result({ error: 'Product not found' }, 404);
+    await admin.from('audit_events').insert({ actor_id: actor, action: body.active ? 'product_shown' : 'product_hidden', subject_type: 'product', subject_id: body.productId });
+    return result({ ok: true });
   }
   if (action === 'ticket.update') {
     const denied = needAdmin(); if (denied) return denied;

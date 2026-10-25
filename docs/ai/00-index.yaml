@@ -17,7 +17,7 @@ summary: The approved public landing page opens at /, with an About page at /abo
   and orders are simulated. Three standalone member/expert desktop concept previews and a public landing-page sample live in Sample UI/; Daily Workbench
   training informs the member desktop app. Members open programs, browse and filter the full exercise catalog, review
   technique, and add movements to a selected day. Role-scoped command search navigates member, expert, and admin
-  features; admin search sits in the sidebar above Overview, its metric cards use a complete layout, and logout is visible below navigation. Browser Back and Forward follow pages within the selected shell and the nested training browser. Circle now has member topic rooms and a separate approved-expert
+  features; admin search sits in the sidebar above Overview, overview and payment metric cards use complete layouts, and logout is visible below navigation. Admin Challenges and Store can toggle publication status. Browser Back and Forward follow pages within the selected shell and the nested training browser. Circle now has member topic rooms and a separate approved-expert
   feed, with posts, kinds, likes, comments, safety actions, people views, guidelines, and admin moderation. Exercise
   detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
   Booking messages support one private image or document attachment per message.

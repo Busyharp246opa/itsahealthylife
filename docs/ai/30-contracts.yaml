@@ -121,6 +121,7 @@ contracts:
     deployment: platform-api active with JWT verification.
     origin: Explicit CORS allowlist for https://itsahealthylife.vercel.app and localhost or 127.0.0.1 with optional development port. Other origins receive null. Preflight permits the Supabase client headers including x-retry-count.
     actor: Authenticated JWT user ID; roles read from role_grants, never request body.
+    admin_management: challenge.update and product.update accept a validated UUID and boolean active flag from an admin only; successful changes add audit_events. Content publishing, support triage, and policy publishing remain server actions.
   circle:
     source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts
       Supabase.

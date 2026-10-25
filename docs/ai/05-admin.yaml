@@ -3,7 +3,7 @@ phase: production_preview_on_vercel
 decisions:
   desktop_design_review: Three interactive concepts in Sample UI/ cover member and expert only. Daily Workbench
     is the selected member desktop direction and now includes a program detail and full exercise browse flow. The
-    React member shell uses its navigation pattern. The admin console retains its sidebar and panels, with search above the sidebar navigation, four corrected overview metric cards, and a sidebar logout action.
+    React member shell uses its navigation pattern. The admin console retains its sidebar and panels, with search above the sidebar navigation, four corrected overview metric cards, three separately aligned payment cards, and a sidebar logout action.
   training: Members may save multiple weekly programs with one active program, log sets and completed sessions,
     and share a program only with a confirmed or completed booked expert. Expert access is read only and revoked
     by unsharing or loss of booking eligibility.
@@ -28,6 +28,7 @@ decisions:
   navigation: Browser paths identify live roles; history state tracks page and member training location within a shell, with Back and Forward restoring them.
   search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Admin search sits above Admin console and Overview in its sidebar, with an icon trigger on narrow screens. Expert search keeps its top-bar placement.
   admin_session_entry: Password sign-in returns to the requested role shell; direct /admin/ normalizes to /admin and remains the admin shell. Admin sidebar has a pinned current-session logout action.
+  admin_management: Content, Challenges, Store, Support, and Settings are reachable from the admin sidebar. Challenge Pause/Resume and Store Hide/Show use admin-only platform-api actions and record audit events.
   session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
   daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.
   exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.

@@ -12,7 +12,7 @@ guardrails:
   rule: Vercel Production may embed only the Supabase project URL and publishable key. Keep platform-api CORS limited to the verified production host and local development; do not allow arbitrary origins. Preserve JWT verification and role checks.
 - id: role_boundaries
   rule: Browser cannot grant roles or directly change booking, payment, payout, approval, or policy state. Server
-    actions derive actor from JWT and check grants.
+    actions derive actor from JWT and check grants. Challenge and product visibility changes also require an admin role on the server and must be audited.
 - id: expert_review
   rule: Credential and price changes create a submitted review; direct authenticated expert_profiles updates are
     revoked.
