@@ -509,6 +509,7 @@ manual_smoke_checks:
   - Pause and resume a challenge, then hide and show a store product; verify the visible status changes after refresh and audit events are recorded
   - Confirm Challenges and Store initially show compact item lists; open and close both create forms, expand item details, and switch Store Products/Orders at desktop and phone widths
   - Select product images in Add product and check previews; after publishing, confirm the first image appears in inventory and the member shop
+  - Close and reopen Add product before publishing; confirm the abandoned image selection and draft fields are cleared
   - Add and remove an image from an existing inventory item; verify the gallery and cover update after refresh
   - Open each Support section; confirm only its relevant queue or settings appears and the default page stays compact
   - After changing room status or guidelines, confirm Circle settings stays selected while the updated data appears
