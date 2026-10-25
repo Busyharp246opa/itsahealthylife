@@ -22,6 +22,7 @@ decisions:
   navigation: Browser history tracks the current mode, role, page, and member training location; browser Back and Forward restore these states.
   member_search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Expert and admin layouts keep their existing search position.
   session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
+  daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.
   exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.
     1257 animated previews, 67 instructions-only; artwork is illustrative and unreviewed.
   circle: Member topic rooms and an approved-expert-only Circle use the existing admin support layout for reports

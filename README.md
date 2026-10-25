@@ -29,6 +29,8 @@ Checkout and shop orders are **simulated**. No card is charged, no funds move, a
 
 Confirmed booking messages support one image or document attachment per message (up to 10 MB). Demo files stay in browser IndexedDB; Live Supabase files use a private Storage bucket that only the booked member and expert can access while the booking is confirmed.
 
+Member **Track** has compact nutrition and movement totals, a quick meal/activity form, optional macros, and repeat/remove controls in today's log. The same page works in local demo and Live Supabase modes.
+
 ## Backend
 
 The `HealthyLife` Supabase MCP targets project `jqtrzwiyeohcljdvfkss`. SQL migrations live in `supabase/migrations/`; the deployed `platform-api` Edge Function is in `supabase/functions/platform-api/index.ts`. The browser uses a publishable key and user JWT. Row level security limits reads and direct writes; the Edge Function checks roles and performs privileged state transitions. The database has separate booking, payment, payout, and audit records. All 34 public tables have RLS enabled. Training rows have member ownership policies; an expert sees a program and its logs only while the member shares it and a confirmed or completed booking connects them.

@@ -68,6 +68,12 @@ contracts:
     live: public.messages holds attachment path, name, MIME, and size. Files use the private session-attachments bucket at conversation-ID/sender-ID/random-ID.extension. Upload precedes message insert; an insert failure attempts to remove the orphan.
     access: Storage SELECT and INSERT require a confirmed booking participant; INSERT also requires the sender path. Message INSERT requires an existing Storage object for attachments. Orphan DELETE requires the uploading sender.
     boundary: Browser file controls are convenience validation; database constraints, Storage bucket restrictions, and RLS enforce the server boundary. Cancelled booking messages and attachments are not readable.
+  daily_tracking:
+    source: src/DailyTracker.tsx and src/DailyTracker.css are the shared member Track page in demo and connected modes.
+    layout: Desktop shows nutrition and movement totals, then a quick entry card beside today's log. Mobile places quick entry before the log.
+    quick_entry: Meal requires name and calories, with meal slot defaulting to the current time; protein, carbs, and fat are optional in an expandable section. Activity requires name and minutes. Existing entries can be repeated or removed.
+    persistence: Demo uses src/data.ts localStorage records; live uses member-owned meal_entries and activity_entries with existing RLS. The UI derives totals from today's visible records.
+    boundary: An entry is added only after its write succeeds; admin and expert UI layouts are unchanged.
   training:
     catalog: public/data/exercises.json is static English text derived from FitCircle's MIT exercise data. Animation metadata points to public/data/flow/assets SVG frames from Flow Exercise Dataset. The original FitCircle GIFs remain excluded.
     tables:

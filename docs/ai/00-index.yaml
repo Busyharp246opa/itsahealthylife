@@ -20,6 +20,7 @@ summary: Responsive member, expert, and admin clients share a Supabase backend. 
   feed, with posts, kinds, likes, comments, safety actions, people views, guidelines, and admin moderation. Exercise
   detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
   Booking messages now support one private image or document attachment per message in demo and live modes.
+  Member Track uses a compact daily check-in with side-by-side totals, quick meal/activity entry, optional macros, and one-click repeat from today's log.
 task_routing:
   desktop_concepts:
     read:
@@ -57,6 +58,13 @@ task_routing:
     - 50-guardrails.yaml
     owner: src/ChatAttachment.tsx, src/App.tsx, src/CloudApp.tsx, src/data.ts, src/styles.css,
       supabase/migrations/20261025111755_session_message_attachments.sql
+  daily_tracking:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/DailyTracker.tsx, src/DailyTracker.css, src/App.tsx, src/CloudApp.tsx
   frontend:
     read:
     - 20-modules.yaml

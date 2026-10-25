@@ -29,3 +29,15 @@ This is a utility product with an established mobile kit. Daily Workbench is the
 - **Content:** Named rooms and seed posts are demo content. Live rooms and posts come from Supabase; no synthetic counts or invented public profiles are presented as real.
 
 The Awwwards usability bar informed the scan order, mobile composition, accessible labels, and desktop/phone QA. This is a working product surface, so clarity takes precedence over spectacle.
+
+## Daily tracking direction
+
+The Track page serves members who want to record a meal or movement in seconds. Three layout ideas were considered: a detailed nutrition ledger, a step-by-step entry wizard, and a daily check-in with a visible quick form. The daily check-in was chosen because the primary action stays on screen with today's totals and log.
+
+- **Idea:** One small entry updates the picture of today immediately.
+- **Metaphor:** A personal day card with a short note area and a running record.
+- **Signature:** The lime nutrition total and lavender movement total update beside a quick entry card; an existing entry can be repeated with one click.
+- **Motion verb:** Settle. Tabs and controls respond quickly without adding scroll or autoplay animation.
+- **Screenshot:** Two concise totals above a side-by-side quick entry and today's log on desktop.
+- **Grid:** On desktop, a narrow quick entry card sits beside a wider log. On phones, quick entry comes first and optional macros stay collapsed.
+- **Palette and type:** Existing plum, lime, lavender, warm white, and sans-serif kit. Large numeric totals carry emphasis; labels and action targets remain legible.

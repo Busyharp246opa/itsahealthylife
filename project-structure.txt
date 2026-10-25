@@ -11,6 +11,8 @@ src/FeatureSearch.tsx       Role-scoped command search with demo/live route mapp
 src/navigation.ts          Browser history for app pages and nested training screens
 src/Circle.tsx              Shared member rooms and expert Circle feed, posts, replies, likes, and safety UI
 src/ChatAttachment.tsx      Shared booking attachment picker, validation, previews, and demo IndexedDB files
+src/DailyTracker.tsx        Shared compact member Track page and quick meal/activity entry
+src/DailyTracker.css        Responsive daily tracking layout
 src/TrainingDemo.tsx        Browser-storage training adapter
 src/TrainingCloud.tsx       Supabase training adapter
 src/data.ts                 Local demo records and persistence

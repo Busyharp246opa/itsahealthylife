@@ -4,7 +4,7 @@ workspace:
   entrypoint: index.html -> src/main.tsx -> src/App.tsx
   local_demo: src/App.tsx + src/data.ts + src/TrainingDemo.tsx + localStorage + IndexedDB chat files + src/Circle.tsx
   connected_app: src/CloudApp.tsx + src/TrainingCloud.tsx + Supabase JS client + private session-attachments Storage bucket + src/Circle.tsx
-  design: src/styles.css + src/Training.tsx + src/ExerciseBrowser.tsx + src/FeatureSearch.tsx + Frame.png + Group
+  design: src/styles.css + src/DailyTracker.tsx + src/DailyTracker.css + src/Training.tsx + src/ExerciseBrowser.tsx + src/FeatureSearch.tsx + Frame.png + Group
     46831.png + Circle styles + DESIGN.md
   desktop_concepts: Sample UI/index.html comparison page; Sample UI/shared/model.js member/expert sample model;
     Daily Workbench training.js has program, browse, results, and exercise-detail screens with Flow previews; three standalone HTML/CSS/JS
@@ -14,6 +14,7 @@ workspace:
     is the standalone preview copy. public/data/flow/assets/ stores 3771 SVG frames for 1257 exercises; 67 have no frames. Both clients use the same animation metadata.
   navigation: src/navigation.ts stores the demo/live route in browser history state; App, CloudApp, Training, and ExerciseBrowser restore on popstate.
   messaging: src/ChatAttachment.tsx owns file validation, picker, and attachment display. Messages remain booking scoped.
+  daily_tracking: src/DailyTracker.tsx owns the shared compact Track presentation and form state. App and CloudApp adapt it to local demo data or Supabase meal_entries and activity_entries.
   application_stack: React 19, TypeScript 7, Vite 8, Supabase JS 2
   hosting: local Vite development server; no production deployment
   source_repository: https://github.com/Busyharp246opa/itsahealthylife; local Git main tracks origin/main

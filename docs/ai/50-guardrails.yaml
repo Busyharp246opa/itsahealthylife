@@ -30,6 +30,8 @@ guardrails:
     connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep expert/admin layouts unchanged.
 - id: messaging_privacy
   rule: Booking conversation messages and private attachments are visible only to participants while the booking is confirmed. Storage paths bind the conversation and sender. Keep upload and download behind RLS; never use public URLs. Preserve message-only sends and allow file-only sends.
+- id: daily_tracking_data
+  rule: Track totals are derived from today's visible member records. Keep quick entry writes within existing member-owned demo or Supabase paths, and clear form fields only after a successful write. Preserve the admin and expert layouts.
 - id: simulation_honesty
   rule: UI identifies payments and orders as simulated; do not display real charge or payout claims.
 - id: architecture_alignment
@@ -39,6 +41,12 @@ guardrails:
     reports, and blocks require a visible parent or actor ownership. Admin moderation keeps the existing admin navigation
     and visual kit.
 must_retest_if_changed:
+- paths:
+  - src/DailyTracker.tsx
+  - src/DailyTracker.css
+  smoke_groups:
+  - demo_track
+  - live_track
 - paths:
   - src/ChatAttachment.tsx
   - supabase/migrations/20261025111755_session_message_attachments.sql

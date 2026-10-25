@@ -95,6 +95,17 @@ modules:
   - supabase/migrations/20261025080612_healthy_life_core.sql
   - src/navigation.ts
   purpose: Confirmed-booking conversation composer, local IndexedDB files, private live Storage files, message metadata, and participant-only access.
+- owner_module: daily_tracking
+  allowed_edit_paths:
+  - src/DailyTracker.tsx
+  - src/DailyTracker.css
+  - src/App.tsx
+  - src/CloudApp.tsx
+  - DESIGN.md
+  must_not_move_without:
+  - src/data.ts
+  - supabase/migrations/20261025080612_healthy_life_core.sql
+  purpose: Shared compact member Track layout and quick meal/activity form, with demo and live persistence adapters.
 - owner_module: feature_search
   allowed_edit_paths:
   - src/FeatureSearch.tsx

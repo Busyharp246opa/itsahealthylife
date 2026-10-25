@@ -161,6 +161,23 @@ flows:
   - Invalid fields
   - duplicate reports
   - out-of-stock product
+- id: daily_tracking
+  entrypoint: Member Track in src/App.tsx or src/CloudApp.tsx
+  steps:
+  - Review today's nutrition and movement totals
+  - enter a meal name, slot, and calories; optionally expand macros
+  - switch to Activity and log minutes
+  - repeat or remove an entry in today's log
+  - reload and confirm totals and entries persist
+  dependencies:
+  - src/DailyTracker.tsx
+  - src/DailyTracker.css
+  - src/data.ts local demo persistence
+  - meal_entries and activity_entries RLS in live mode
+  failure_modes:
+  - Invalid or missing entry fields
+  - Supabase write fails
+  - Browser localStorage unavailable
 - id: member_training
   entrypoint: src/App.tsx or src/CloudApp.tsx member Train
   steps:
@@ -228,6 +245,21 @@ flows:
   - Archived room
   - Network write fails
 manual_smoke_checks:
+- id: demo_track
+  steps:
+  - Open Track at desktop and phone widths; confirm quick add is visible early and no horizontal overflow
+  - Add a meal with only name and calories; confirm total updates
+  - Expand macros and add a second meal with values; confirm totals
+  - Repeat and remove a meal; confirm totals and entry count
+  - Switch to Activity, log minutes, repeat and remove it
+  - Reload and confirm the log and totals persist
+  - Check keyboard labels, focus and browser console
+- id: live_track
+  steps:
+  - Sign in as member and open Track
+  - Add a meal and an activity through the quick forms
+  - Repeat and remove entries; confirm changes after refresh
+  - Verify another identity cannot read the member's entries
 - id: demo_messages
   steps:
   - Book a simulated member session and open its messages
@@ -318,7 +350,7 @@ manual_smoke_checks:
   - log meal and activity
   - browse library/challenge/shop
   - create support request
-  - Check the Food log and Add a meal form have a visible gap
+  - Check quick add, today's log, and totals fit the member desktop and phone layouts
 - id: live_expert
   steps:
   - Apply as expert
