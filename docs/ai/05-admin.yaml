@@ -29,11 +29,12 @@ decisions:
   search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Admin search sits above Admin console and Overview in its sidebar, with an icon trigger on narrow screens. Expert search keeps its top-bar placement.
   admin_session_entry: Password sign-in returns to the requested role shell; direct /admin/ normalizes to /admin and remains the admin shell. Admin sidebar has a pinned current-session logout action.
   admin_management: Content, Challenges, Store, Support, and Settings are reachable from the admin sidebar. Challenge Pause/Resume and Store Hide/Show use admin-only platform-api actions and record audit events.
+  admin_support: The Support center has separate Requests, Reports, and Circle settings views with visible queue counts. Requests show unresolved items by default, can reveal resolved items, and offer Start review, Resolve, and Reopen. Circle room creation and guideline editing open on demand.
   session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
   daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.
   exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.
     1257 animated previews, 67 instructions-only; artwork is illustrative and unreviewed.
-  circle: Member topic rooms and an approved-expert-only Circle use the existing admin support layout for reports
+  circle: Member topic rooms and an approved-expert-only Circle use dedicated admin Support views for reports
     and settings. Local demo persists Circle activity in browser storage; live interactions use RLS-protected Supabase
     tables. Existing admin navigation and visual kit remain.
 maintenance:

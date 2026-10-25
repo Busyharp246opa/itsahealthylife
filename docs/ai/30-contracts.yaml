@@ -56,6 +56,7 @@ contracts:
     auth_intent: auth=signup opens the public member or expert account form; auth=login or an absent intent opens sign-in. The admin shell never offers signup. Successful password sign-in reloads the canonical requested role path so an admin login remains in /admin.
     auth_email_redirects: Signup confirmation and password recovery pass the exact production role URL to Supabase Auth. The Auth Site URL is the production origin and its redirect allow list includes /member, /experts, and /admin. A recovery callback opens the new-password form and updates the password through the authenticated Supabase client.
     sign_out: Ordinary member, expert, and admin logout actions clear only the current Supabase session. Password recovery completion signs out globally after changing credentials.
+    mutation_refresh: Successful workspace actions refresh RLS-visible rows in the background, keeping the current page and its local selection mounted while new data arrives.
     direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
       progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
       reactions and blocks; admin may manage rooms, guidelines, and hide posts via RLS.
@@ -126,7 +127,8 @@ contracts:
     source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts
       Supabase.
     spaces: Members use the member Circle with topic rooms. Approved experts use a separate expert Circle. Admin
-      sees reports in the existing support page.
+      sees reports and room/guideline controls in separate Support center views.
+    admin_support_ui: Requests and reports each have a focused queue view; Circle settings list rooms and preview guidelines, with create/edit forms opened on demand. Ticket status can move from open to in_progress to resolved and back to open using existing platform-api actions.
     tables:
     - community_posts
     - community_comments

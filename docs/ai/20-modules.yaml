@@ -71,7 +71,7 @@ modules:
   - src/FeatureSearch.tsx
   - supabase/functions/platform-api/index.ts
   purpose: Shared member/expert Circle UI and adapters, topic rooms, social actions, safety controls, and role-separated
-    Supabase RLS. Existing admin support layout owns Circle moderation and settings.
+    Supabase RLS. The admin Support center has separate report moderation and Circle settings views.
 - owner_module: training_domain
   allowed_edit_paths:
   - src/Training.tsx

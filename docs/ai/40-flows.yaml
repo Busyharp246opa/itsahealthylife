@@ -303,6 +303,24 @@ flows:
   - Duplicate report
   - Archived room
   - Network write fails
+- id: admin_support
+  entrypoint: src/CloudApp.tsx admin Support
+  steps:
+  - Open Requests, Reports, and Circle settings through the three Support section cards
+  - Show unresolved tickets by default; optionally reveal resolved tickets and use Start review, Resolve, or Reopen
+  - Dismiss or action an open report
+  - Open the Add room or Edit guidelines form only when needed; save through existing Supabase RLS writes
+  - After a mutation, refresh records without leaving the selected Support section
+  dependencies:
+  - support_tickets
+  - community_reports
+  - circle_rooms
+  - circle_guidelines
+  - platform-api
+  failure_modes:
+  - Stale queue after a write
+  - Room or guideline write denied by RLS
+  - Ticket or report transition denied by the server
 manual_smoke_checks:
 - id: landing_preview
   steps:
@@ -469,7 +487,10 @@ manual_smoke_checks:
   - publish content and policy
   - Open Content, Challenges, Store, Support, and Settings from the sidebar; confirm each destination renders its own heading and controls
   - Pause and resume a challenge, then hide and show a store product; verify the visible status changes after refresh and audit events are recorded
-  - triage support
+  - Open each Support section; confirm only its relevant queue or settings appears and the default page stays compact
+  - After changing room status or guidelines, confirm Circle settings stays selected while the updated data appears
+  - Start, resolve, and reopen a support ticket; dismiss or action a report when test records are available
+  - Open and close Circle room and guideline editors; confirm room archiving and guideline saving still work
 - id: security_boundary
   steps:
   - Run Supabase security advisor
