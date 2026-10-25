@@ -24,12 +24,13 @@ modules:
 - owner_module: connected_client
   allowed_edit_paths:
   - src/CloudApp.tsx
+  - src/ProductImages.tsx
   - src/TrainingCloud.tsx
   - src/Circle.tsx
   must_not_move_without:
   - supabase/migrations/
   - supabase/functions/platform-api/index.ts
-  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs, canonical password-login shell landing, and admin overview, payments, navigation, and management actions.
+  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs, canonical password-login shell landing, admin management actions, and product image selection, upload, and gallery display.
 - owner_module: design_shell
   allowed_edit_paths:
   - src/styles.css

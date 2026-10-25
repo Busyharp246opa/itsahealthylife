@@ -74,6 +74,14 @@ task_routing:
     - 40-flows.yaml
     - 50-guardrails.yaml
     owner: src/DailyTracker.tsx, src/DailyTracker.css, src/App.tsx, src/CloudApp.tsx
+  product_images:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/ProductImages.tsx, src/CloudApp.tsx, src/styles.css, supabase/migrations/20261025171436_product_images.sql,
+      supabase/functions/platform-api/index.ts
   deployment:
     read:
     - 10-system-map.yaml

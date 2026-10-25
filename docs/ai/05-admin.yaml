@@ -29,9 +29,10 @@ decisions:
   search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Admin search sits above Admin console and Overview in its sidebar, with an icon trigger on narrow screens. Expert search keeps its top-bar placement.
   admin_session_entry: Password sign-in returns to the requested role shell; direct /admin/ normalizes to /admin and remains the admin shell. Admin sidebar has a pinned current-session logout action.
   admin_management: Content, Challenges, Store, Support, and Settings are reachable from the admin sidebar. Challenge Pause/Resume and Store Hide/Show use admin-only platform-api actions and record audit events.
-  admin_catalogue_layout: Challenges and Store open with compact item lists. New challenge and Add product reveal their forms on demand. Challenge steps and product descriptions expand per item. Store Products and Orders have separate views, with item counts and existing server actions preserved.
+  admin_catalogue_layout: Challenges and Store open with compact item lists. New challenge and Add product reveal their forms on demand. Challenge steps and product descriptions expand per item. Store Products and Orders have separate views. Admins may upload up to five product JPG, PNG, or WebP images during creation or from an existing inventory item, remove them, and see the first image as the member shop cover.
   admin_support: The Support center has separate Requests, Reports, and Circle settings views with visible queue counts. Requests show unresolved items by default, can reveal resolved items, and offer Start review, Resolve, and Reopen. Circle room creation and guideline editing open on demand.
   session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
+  product_images: Product images use the public product-images Storage bucket, with admin-only upload and delete policies and a 5 MB per-file limit. Public URLs are intentional for shop imagery. Product image paths are saved on products through admin-only platform-api actions.
   daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.
   exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.
     1257 animated previews, 67 instructions-only; artwork is illustrative and unreviewed.
@@ -54,3 +55,4 @@ maintenance:
     HealthyLife MCP. Training migrations are 20261025091715, 20261025091915, 20261025092137, and 20261025092951.
     Circle migration 20261025101324 adds four public tables and role-separated policies.
     Session attachment migration 20261025111755 adds message metadata and a private Storage bucket/policies.
+    Product image migration 20261025171436 adds product image paths and a public bucket with admin-only write policies.

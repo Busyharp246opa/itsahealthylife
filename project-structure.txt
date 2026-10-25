@@ -17,6 +17,7 @@ src/FeatureSearch.tsx       Role-scoped command search with demo/live route mapp
 src/navigation.ts          Role shell paths (including trailing-slash normalization) and browser history
 src/Circle.tsx              Shared member rooms and expert Circle feed, posts, replies, likes, and safety UI
 src/ChatAttachment.tsx      Shared booking attachment picker, validation, previews, and demo IndexedDB files
+src/ProductImages.tsx       Product image validation, selection previews, and Storage path helpers
 src/DailyTracker.tsx        Shared compact member Track page and quick meal/activity entry
 src/DailyTracker.css        Responsive daily tracking layout
 src/TrainingDemo.tsx        Browser-storage training adapter
@@ -26,7 +27,7 @@ src/styles.css              Responsive Figma-derived visual system and training 
 public/data/                FitCircle-derived English exercise text plus Flow SVG preview assets, provenance, and notices
 scripts/import-flow-exercises.mjs  Reproducible matching-ID Flow artwork import
 scripts/copy-samples.mjs       Copies standalone Sample UI pages into the Vite production dist
-supabase/migrations/        Core schema, training, Circle, private booking message attachments, RLS, and atomic activation RPC
+supabase/migrations/        Core schema, training, Circle, private booking attachments, public product image bucket, RLS, and atomic activation RPC
 supabase/functions/platform-api/index.ts  JWT-protected state transitions
 supabase/config.toml        Local Supabase configuration, including production Auth return URL mirrors
 Frame.png                   Brand mark

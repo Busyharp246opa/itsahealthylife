@@ -14,6 +14,10 @@ const cors = (request: Request) => {
 const uuid = (value: unknown): value is string => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 const short = (value: unknown, max = 4000) => typeof value === 'string' ? value.trim().slice(0,max) : '';
 const result = (data: unknown, status = 200) => Response.json(data, { status });
+const productImageBucket = 'product-images';
+const validProductImagePaths = (productId: string, value: unknown): value is string[] =>
+  Array.isArray(value) && value.length <= 5 && new Set(value).size === value.length &&
+  value.every(path => typeof path === 'string' && new RegExp(`^${productId}/[0-9a-f-]{36}\\.(jpg|png|webp)$`, 'i').test(path));
 
 const secureHandler = withSupabase({ auth: 'user' }, async (request, ctx) => {
   if (request.method !== 'POST') return result({ error: 'Method not allowed' }, 405);
@@ -107,8 +111,15 @@ const secureHandler = withSupabase({ auth: 'user' }, async (request, ctx) => {
     const denied = needAdmin(); if (denied) return denied;
     const name = short(body.name,160), price = Number(body.price), stock = Number(body.stock);
     if (!name || !Number.isFinite(price) || price < 0 || !Number.isInteger(stock) || stock < 0) return result({ error: 'Invalid product' }, 400);
-    const { error } = await admin.from('products').insert({ name, description: short(body.description,2000), price, stock, currency: 'USD', active: true });
-    return error ? result({ error: error.message }, 400) : result({ ok: true }, 201);
+    const productId = uuid(body.productId) ? body.productId : crypto.randomUUID();
+    const imagePaths = body.imagePaths ?? [];
+    if (!validProductImagePaths(productId,imagePaths)) return result({ error: 'Invalid product images' }, 400);
+    if (imagePaths.length) {
+      const { data: objects, error: listError } = await admin.storage.from(productImageBucket).list(productId,{limit:100});
+      if (listError || !imagePaths.every(path => objects?.some(object => `${productId}/${object.name}` === path))) return result({ error: 'Product image upload is incomplete' }, 400);
+    }
+    const { error } = await admin.from('products').insert({ id: productId, name, description: short(body.description,2000), price, stock, currency: 'USD', active: true, image_paths: imagePaths });
+    return error ? result({ error: error.message }, 400) : result({ ok: true, productId }, 201);
   }
   if (action === 'product.update') {
     const denied = needAdmin(); if (denied) return denied;
@@ -117,6 +128,24 @@ const secureHandler = withSupabase({ auth: 'user' }, async (request, ctx) => {
     if (error) return result({ error: error.message }, 400);
     if (!data) return result({ error: 'Product not found' }, 404);
     await admin.from('audit_events').insert({ actor_id: actor, action: body.active ? 'product_shown' : 'product_hidden', subject_type: 'product', subject_id: body.productId });
+    return result({ ok: true });
+  }
+  if (action === 'product.images.update') {
+    const denied = needAdmin(); if (denied) return denied;
+    if (!uuid(body.productId) || !validProductImagePaths(body.productId,body.imagePaths)) return result({ error: 'Invalid product images' }, 400);
+    const { data: product, error: readError } = await admin.from('products').select('image_paths').eq('id',body.productId).maybeSingle();
+    if (readError) return result({ error: readError.message }, 400);
+    if (!product) return result({ error: 'Product not found' }, 404);
+    const imagePaths = body.imagePaths;
+    if (imagePaths.length) {
+      const { data: objects, error: listError } = await admin.storage.from(productImageBucket).list(body.productId,{limit:100});
+      if (listError || !imagePaths.every(path => objects?.some(object => `${body.productId}/${object.name}` === path))) return result({ error: 'Product image upload is incomplete' }, 400);
+    }
+    const { error } = await admin.from('products').update({ image_paths: imagePaths }).eq('id',body.productId);
+    if (error) return result({ error: error.message }, 400);
+    const removed = (product.image_paths as string[] ?? []).filter(path => !imagePaths.includes(path));
+    if (removed.length) await admin.storage.from(productImageBucket).remove(removed);
+    await admin.from('audit_events').insert({ actor_id: actor, action: 'product_images_updated', subject_type: 'product', subject_id: body.productId, detail: { image_count: imagePaths.length } });
     return result({ ok: true });
   }
   if (action === 'ticket.update') {

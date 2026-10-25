@@ -38,6 +38,8 @@ guardrails:
     connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep the admin trigger in its sidebar above Overview. Expert placement is unchanged.
 - id: messaging_privacy
   rule: Booking conversation messages and private attachments are visible only to participants while the booking is confirmed. Storage paths bind the conversation and sender. Keep upload and download behind RLS; never use public URLs. Preserve message-only sends and allow file-only sends.
+- id: product_image_access
+  rule: Product images are public shop assets, unlike private booking attachments. Only an authenticated admin may upload or delete them. Keep bucket MIME and size limits, the five-image product cap, product-scoped paths, and server-side path verification. Never expose the service key in the browser.
 - id: daily_tracking_data
   rule: Track totals are derived from today's visible member records. Keep quick entry writes within existing member-owned demo or Supabase paths, and clear form fields only after a successful write. Preserve the admin and expert layouts.
 - id: simulation_honesty
@@ -91,6 +93,13 @@ must_retest_if_changed:
   smoke_groups:
   - demo_messages
   - live_messages
+  - security_boundary
+- paths:
+  - src/ProductImages.tsx
+  - supabase/migrations/20261025171436_product_images.sql
+  smoke_groups:
+  - live_admin
+  - live_member
   - security_boundary
 - paths:
   - Sample UI/

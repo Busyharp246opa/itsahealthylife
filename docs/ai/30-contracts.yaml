@@ -122,12 +122,17 @@ contracts:
     deployment: platform-api active with JWT verification.
     origin: Explicit CORS allowlist for https://itsahealthylife.vercel.app and localhost or 127.0.0.1 with optional development port. Other origins receive null. Preflight permits the Supabase client headers including x-retry-count.
     actor: Authenticated JWT user ID; roles read from role_grants, never request body.
-    admin_management: challenge.update and product.update accept a validated UUID and boolean active flag from an admin only; successful changes add audit_events. Content publishing, support triage, and policy publishing remain server actions.
+    admin_management: challenge.update and product.update accept a validated UUID and boolean active flag from an admin only; successful changes add audit_events. product.create accepts an optional admin-supplied product UUID and up to five verified uploaded image paths. product.images.update validates product-scoped uploaded paths, saves image order, removes omitted objects, and records an audit event. Content publishing, support triage, and policy publishing remain server actions.
   admin_catalogue_ui:
     source: src/CloudApp.tsx and src/styles.css.
     challenges: Show the challenge list and status first; New challenge opens the existing create form, and each item's steps expand in place. Pause/Resume keeps using platform-api.
-    store: Products and Orders are separate in-page views. Add product opens the existing create form; descriptions expand in place and Hide/Show keeps using platform-api. Orders remain simulated.
+    store: Products and Orders are separate in-page views. Add product opens the create form with optional image previews; descriptions and image management expand in place. Admins can add or remove images later. The first image is the cover in inventory and the member shop; products without images retain the existing placeholder. Hide/Show keeps using platform-api. Orders remain simulated.
     refresh: Successful writes refresh the current page in the background and preserve the open view.
+  product_images:
+    source: src/ProductImages.tsx, src/CloudApp.tsx, supabase/functions/platform-api/index.ts, and supabase/migrations/20261025171436_product_images.sql.
+    storage: Public product-images bucket for intentional shop imagery; JPG, PNG, or WebP only, 5 MB per file. Authenticated admins alone may insert or delete objects through Storage RLS. No browser service key.
+    schema: public.products.image_paths is a non-null text array with a maximum of five product-scoped paths. Existing products default to no images.
+    write_flow: The admin browser validates and uploads images to a new product UUID folder, then calls product.create or product.images.update. Failed server writes remove newly uploaded objects. Server actions verify every path exists in the bucket. Removing an image updates the product and deletes the old object.
   circle:
     source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts
       Supabase.
