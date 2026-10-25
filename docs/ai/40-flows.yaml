@@ -5,6 +5,7 @@ flows:
   steps:
   - Push main and wait for a Ready Production deployment of the same commit
   - Build with Vercel Production VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+  - Open / and /about and confirm public pages and account links
   - Open /member, /experts, and /admin directly and confirm the shared sign-in and role-specific shell
   - Invoke platform-api from the production origin for privileged user actions
   dependencies:
@@ -57,6 +58,24 @@ flows:
   - Auth query parameter ignored
   - Link from a file URL resolves to a nonexistent local route
   - Image or font file unavailable
+- id: public_site
+  entrypoint: / and /about
+  steps:
+  - Generate root HTML from the approved noindex landing source
+  - Serve / as the public landing and /about as the story
+  - Navigate to member or trainer signup/login under separate role routes
+  - Keep /member, /experts, and /admin on app.html with Supabase role checks
+  dependencies:
+  - Sample UI/04-landing/
+  - scripts/prepare-public-pages.mjs
+  - vite.config.ts
+  - vercel.json
+  - app.html
+  failure_modes:
+  - Root HTML is stale relative to the approved design source
+  - Public noindex remains on the homepage
+  - A role route serves marketing HTML instead of app.html
+  - Assets fail to load after Vite rewrites URLs
 - id: local_demo
   entrypoint: Unmounted src/App.tsx development reference
   steps:
@@ -283,23 +302,26 @@ flows:
 manual_smoke_checks:
 - id: landing_preview
   steps:
+  - Open / and /about locally and from the built static files; confirm the approved landing and story are public and the noindex design copies remain under Sample UI/
+  - Confirm the homepage hero copy and member/trainer actions are visible on first paint at desktop and phone widths
   - Open Sample UI/04-landing/index.html at 1440 and 390 px, locally and from the built static files
   - Confirm the four approach photos, other original photos, local fonts, brand mark, and all section content load without errors or horizontal overflow
   - Operate Move/Nourish/Connect/Grow tabs with click and arrow keys; verify the selected photo and accessible image state, reduced motion, and focus visibility
   - Open and close the mobile menu and inspect FAQ disclosure controls
   - Follow member and trainer registration and login links; verify each reaches the matching role and form
   - Open about.html and the designed 404.html directly; inspect the story hero and meal photo at desktop and phone widths
-  - Confirm the root application still opens /member and admin layout is untouched
+  - Confirm /member, /experts, and /admin still open their connected shells and admin layout is untouched
 - id: production_deployment
   steps:
   - Confirm Vercel Production is Ready for the intended GitHub main commit and itsahealthylife.vercel.app serves the app
+  - Load / and /about directly and refresh both; confirm public pages, images, canonical URLs, and account links
   - Load /member, /experts, and /admin directly and refresh each; confirm the corresponding connected sign-in form appears without browser errors or demo controls
   - Send platform-api OPTIONS from the production origin and confirm allow-origin matches it
   - Confirm localhost remains allowed and an unknown origin returns null
   - Send an unauthenticated POST and confirm it is denied
 - id: shell_routes
   steps:
-  - Open / and confirm the browser URL becomes /member
+  - Open / and confirm the public landing stays at /, then follow member/trainer account links
   - Load and refresh /member, /experts, and /admin directly on the local server and production host
   - Confirm member signup is available, expert signup/application is available, and admin signup is absent
   - Confirm the bottom demo role/mode switch and local demo entry points are absent

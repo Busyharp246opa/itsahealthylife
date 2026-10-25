@@ -2,7 +2,7 @@
 
 ## Brief and source
 
-The public page introduces a responsive wellbeing platform to UK members/trainees and trainers, then sends each role to the correct live account form. It is a standalone design sample, not a replacement for `/member`, `/experts`, or `/admin`.
+The approved public page introduces a responsive wellbeing platform to UK members/trainees and trainers, then sends each role to the correct live account form. The noindex files here remain the design source; a preparation script generates the public homepage at `/` and story at `/about`. `/member`, `/experts`, and `/admin` remain separate workspaces.
 
 Research source: [the existing It's a Healthy Life website](https://www.itsahealthylife.co.uk/), reviewed on 25 October 2026. Its current positioning is a London-developed service for the UK that combines exercise, approachable food, expert mentorship and community. The new page paraphrases that positioning and describes capabilities already in the current web platform. It does not repeat the old site's price, app-store availability or unverified claims. None of the old site's restricted photographs or body copy were copied.
 
@@ -42,7 +42,7 @@ Selected: **Daily rhythm**, because the four-part system runs from hero to featu
 
 Display is Bricolage Grotesque 800 with tight tracking. Host Grotesk handles reading and UI. Both are locally served WOFF2s from Google Fonts under the Open Font License. Body copy is 16–18 px at comfortable line lengths. The grid uses generous outer gutters, a split hero, a tab list next to a photo and story panel, an image/text coaching spread, then equal member/trainer cards. Corners are mostly square.
 
-The page is mostly static at rest. GSAP drives a short hero entrance and an unobtrusive ticker. CSS fades the chapter photos. Reduced-motion mode keeps all content visible and disables continuous motion. There is no loader, WebGL or synthetic app screenshot.
+The hero copy and account actions are visible from the first paint. GSAP drives an unobtrusive ticker; CSS fades the chapter photos. Reduced-motion mode disables continuous motion. There is no loader, WebGL or synthetic app screenshot.
 
 ## Imagery and implementation
 
@@ -58,7 +58,7 @@ The page is mostly static at rest. GSAP drives a short hero entrance and an unob
 
 The member card links to `/member?auth=signup` and `/member?auth=login`. The trainer card links to `/experts?auth=signup` and `/experts?auth=login`. On the local Vite host those stay local; when opened from disk they point to the deployed app. The connected Auth screen reads `auth=signup` to open the correct form. Returning users also find both login paths in the desktop header and phone menu. No sample form writes data.
 
-Page set: `index.html`, `about.html`, and `404.html`. The sample is `noindex` until chosen as the production landing page. The source site's factual inspiration is linked in the footer. The page does not present a subscription price because the current checkout is simulated.
+Page set: `index.html`, `about.html`, and `404.html`. These source copies remain `noindex` for design review. The public copies have canonical `/` and `/about` URLs, omit review-only labels, and share the original imagery and interaction. The source site's factual inspiration is linked in the sample footer. The page does not present a subscription price because the current checkout is simulated.
 
 The Our story page uses a split plum hero with a large photograph, followed by a charcoal editorial reading section with a second photograph and three concise pillars. Both photographs have descriptive alt text and responsive crops. The same member and trainer links remain in the header, mobile menu, and closing section.
 
@@ -66,4 +66,4 @@ The story revision was checked in the production build at 1440 and 390 CSS px: b
 
 QA at 1440 and 390 CSS px: two full awwwards browser passes before the photography revision; zero console or failed requests, zero horizontal overflow, zero serious axe violations, visible keyboard focus, reduced-motion content visible, no inert primary hover target, mobile LCP 2384 ms under a throttled connection and CLS 0. The audit had zero failures. The remaining robots/sitemap warnings are intentional because this is a noindex sample. Member and trainer registration/login links were followed in the live local app and opened the expected form. After the photography revision, browser checks confirmed that all four selected photos load, the desktop and phone layouts have no horizontal overflow, and no console errors occur.
 
-Self-review from the captured frames: Design 8.4, Usability 8.2, Creativity 8.1, Content 8.2. A real commissioned brand campaign and final legal/commercial copy would improve it before replacing the public root.
+Self-review from the captured frames: Design 8.4, Usability 8.2, Creativity 8.1, Content 8.2. A real commissioned brand campaign and final legal/commercial copy would improve the public site before a commerce release.

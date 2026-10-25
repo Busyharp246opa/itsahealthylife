@@ -10,7 +10,7 @@ decisions:
     by unsharing or loss of booking eligibility.
   desktop_preview_opening: Comparison links target each concept's index.html explicitly; concept scripts are classic
     scripts for direct-file or local-server viewing.
-  landing_sample: Sample UI/04-landing/index.html is a noindex public landing-page design preview, linked from the concept index and copied into Vercel dist. Its Move, Nourish, Connect, and Grow tabs each show an original generated photograph; the Our story page has a photographic hero and editorial story section. It uses the supplied brand mark and paired member/trainer register and login links. It does not replace the live root route.
+  landing_sample: Sample UI/04-landing/index.html remains a noindex design preview. The approved design is generated into root index.html, about.html, and 404.html before Vite runs. The public homepage is / and the story page is /about; member, expert, and admin workspaces still use their own routes. Move, Nourish, Connect, and Grow show original photographs, and the story page has two original images.
   landing_auth_links: /member?auth=signup and /experts?auth=signup open the connected registration form; the corresponding auth=login links open sign-in. Trainers create an account, then submit an expert application for approval.
   visual_source: Figma member, expert, and admin screens plus supplied logos
   frontend: React 19, TypeScript, Vite 8
@@ -19,7 +19,7 @@ decisions:
   local_testing: http://127.0.0.1:5173/
   source_repository: https://github.com/Busyharp246opa/itsahealthylife (public; local main branch tracks origin/main)
   production_host: https://itsahealthylife.vercel.app/ (Vercel project itsahealthylife under the itsahealthylife Hobby account; main deploys automatically)
-  public_shells: /member for members, /experts for approved experts or applicants, and /admin for granted admins. Root redirects in the browser to /member. Vercel rewrites the three paths to the SPA entrypoint.
+  public_shells: / is the public landing page; /about is the public story page. /member serves members, /experts serves approved experts or applicants, and /admin serves granted admins. Vercel rewrites the three role paths to app.html.
   shell_access: URL chooses the workspace. Member and admin shells verify role_grants; the expert shell shows the application until an expert grant and approved review exist. The demo role/mode dock is absent from the public app.
   production_configuration: Vercel Production holds VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY as browser-readable Config values. No service role key is present. Supabase platform-api allows this production origin and local development origins.
   first_admin_email: itsahealthylifeltd@gmail.com

@@ -33,7 +33,7 @@ modules:
 - owner_module: design_shell
   allowed_edit_paths:
   - src/styles.css
-  - index.html
+  - app.html
   - Frame.png
   - Group 46831.png
   - DESIGN.md
@@ -41,6 +41,23 @@ modules:
   - src/App.tsx
   - src/CloudApp.tsx
   purpose: Shared responsive visual system sourced from Figma.
+- owner_module: public_site
+  allowed_edit_paths:
+  - Sample UI/04-landing/
+  - scripts/prepare-public-pages.mjs
+  - scripts/copy-samples.mjs
+  - index.html
+  - about.html
+  - 404.html
+  - vite.config.ts
+  - vercel.json
+  - public/robots.txt
+  - public/sitemap.xml
+  must_not_move_without:
+  - app.html
+  - src/main.tsx
+  - src/navigation.ts
+  purpose: Approved public homepage and story derived from the noindex design source, with SEO metadata and separate role-shell routing.
 - owner_module: circle_domain
   allowed_edit_paths:
   - src/Circle.tsx
@@ -74,6 +91,9 @@ modules:
     Flow SVG previews. Local and connected adapters own persistence.
 - owner_module: app_navigation
   allowed_edit_paths:
+  - app.html
+  - vite.config.ts
+  - vercel.json
   - src/navigation.ts
   - src/main.tsx
   - src/App.tsx

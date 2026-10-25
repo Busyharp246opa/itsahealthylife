@@ -4,7 +4,7 @@ guardrails:
   rule: Sample UI/ is a member/expert design review area. Keep its state local to the page, label sample data, and
     preserve the shipped mobile and existing admin UI while comparing directions. Keep hosted samples noindex.
 - id: landing_sample_boundary
-  rule: Keep the noindex landing sample separate from the live root route until selected for launch. Registration and login CTAs must resolve to the correct member or expert shell and account form. Trainers still require application and approval; do not imply real charges or mobile app-store availability.
+  rule: The approved landing design is now the public root and /about; keep the Sample UI copy noindex. Hero copy and account actions must be visible on first paint. Registration and login CTAs must resolve to the correct member or expert shell and account form. Trainers still require application and approval; do not imply real charges or mobile app-store availability.
 - id: no_secrets
   rule: Keep OAuth tokens, passwords, and service keys out of source, docs, logs, and browser bundles. Only publishable
     credentials may enter Vite.
@@ -47,6 +47,19 @@ guardrails:
     reports, and blocks require a visible parent or actor ownership. Admin moderation keeps the existing admin navigation
     and visual kit.
 must_retest_if_changed:
+- paths:
+  - index.html
+  - about.html
+  - 404.html
+  - app.html
+  - vite.config.ts
+  - scripts/prepare-public-pages.mjs
+  - public/robots.txt
+  - public/sitemap.xml
+  smoke_groups:
+  - landing_preview
+  - shell_routes
+  - production_deployment
 - paths:
   - Sample UI/04-landing/
   - scripts/copy-samples.mjs

@@ -1,7 +1,7 @@
 schema_version: 1
 workspace:
   state: implemented_local_and_connected
-  entrypoint: index.html -> src/main.tsx -> src/CloudApp.tsx
+  entrypoint: / -> index.html public landing; /about -> about.html public story; /member, /experts, /admin -> app.html -> src/main.tsx -> src/CloudApp.tsx
   local_demo: src/App.tsx + src/data.ts + src/TrainingDemo.tsx remain as unmounted development reference code
   connected_app: src/CloudApp.tsx + src/TrainingCloud.tsx + Supabase JS client + private session-attachments Storage bucket + src/Circle.tsx
   design: src/styles.css + src/DailyTracker.tsx + src/DailyTracker.css + src/Training.tsx + src/ExerciseBrowser.tsx + src/FeatureSearch.tsx + Frame.png + Group
@@ -10,10 +10,11 @@ workspace:
     Daily Workbench training.js has program, browse, results, and exercise-detail screens with Flow previews; three standalone HTML/CSS/JS
     desktop concept folders and Sample UI/04-landing/ public landing-page sample. The main app retains its existing admin panel. Pages use explicit index.html links and classic
     scripts, so they can be opened directly or served by Vite.
-  landing_sample: Sample UI/04-landing/index.html, about.html, 404.html, style.css, app.js, local fonts, original photos including four tab-specific approach photos and two story-page photos, and local GSAP. scripts/copy-samples.mjs copies Sample UI into dist after Vite build; no landing sample is mounted at /.
+  public_site: scripts/prepare-public-pages.mjs derives root index.html, about.html, and 404.html from the approved Sample UI/04-landing/ pages, stripping noindex and review-only labels and rewriting assets and navigation. vite.config.ts builds these alongside app.html and maps local role paths to app.html. Vercel serves root index.html and rewrites /about and the role paths. public/robots.txt and public/sitemap.xml list the public pages.
+  landing_sample: Sample UI/04-landing/index.html, about.html, 404.html, style.css, app.js, local fonts, original photos including four tab-specific approach photos and two story-page photos, and local GSAP. scripts/copy-samples.mjs copies the noindex sample into dist after Vite build.
   exercise_catalog: public/data/exercises.json holds 1324 English text records adapted from FitCircle; Sample UI/shared/exercises.json
     is the standalone preview copy. public/data/flow/assets/ stores 3771 SVG frames for 1257 exercises; 67 have no frames. Both clients use the same animation metadata.
-  navigation: src/navigation.ts maps /member, /experts, and /admin to role shells and stores inner page/training state in browser history. CloudApp, Training, and ExerciseBrowser restore on popstate; vercel.json rewrites direct shell requests to index.html.
+  navigation: src/navigation.ts maps /member, /experts, and /admin to role shells and stores inner page/training state in browser history. CloudApp, Training, and ExerciseBrowser restore on popstate; vercel.json rewrites direct shell requests to app.html.
   messaging: src/ChatAttachment.tsx owns file validation, picker, and attachment display. Messages remain booking scoped.
   daily_tracking: src/DailyTracker.tsx owns the shared compact Track presentation and form state. App and CloudApp adapt it to local demo data or Supabase meal_entries and activity_entries.
   application_stack: React 19, TypeScript 7, Vite 8, Supabase JS 2
@@ -35,6 +36,8 @@ external_services:
     public_schema_tables: 34
     edge_function: platform-api, deployed with JWT verification
 load_order_contracts:
+- Generate root public HTML from Sample UI/04-landing/ before Vite dev/build; keep the sample noindex, while the generated public pages have canonical URLs and no review-only labels.
+- Build index.html, about.html, 404.html, and app.html as separate Vite HTML entrypoints; copy Sample UI/ into dist afterward so shared classic scripts and sample pages remain available.
 - Load Vite variables from ignored .env.local; never bundle a service role key.
 - Vercel Production provides the same two browser-safe Vite variables at build time; changing them requires a redeploy.
 - Auth user creation trigger adds profiles and member role before connected role selection.

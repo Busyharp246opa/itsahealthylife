@@ -22,11 +22,17 @@ contracts:
       shell.
   landing_sample:
     entrypoint: Sample UI/04-landing/index.html; about.html and 404.html share its visual system.
-    deployment: scripts/copy-samples.mjs copies all Sample UI files into dist after Vite build; Vercel serves the sample at /Sample%20UI/04-landing/index.html without changing /.
+    deployment: scripts/copy-samples.mjs copies all Sample UI files into dist after Vite build; the noindex preview remains at /Sample%20UI/04-landing/index.html.
     approach_tabs: Move, Nourish, Connect, and Grow select corresponding original photographs and story copy. Images remain local WebP files and inactive images are hidden from assistive technology.
     story_page: about.html has a two-column photographic hero, an editorial reading section with a second image, and the existing member/trainer account paths. Its photos are local WebP files with descriptive alt text; the hero serves a smaller image on phones.
     auth_links: Member register/login go to /member?auth=signup or auth=login. Trainer register/login go to /experts?auth=signup or auth=login. On file URLs, links use the Vercel production host; on local Vite they use the local host.
     boundary: Standalone noindex marketing sample; it has no Supabase client or sample data writes. The existing role shells enforce grants and expert approval.
+  public_site:
+    source: scripts/prepare-public-pages.mjs derives root index.html, about.html, and 404.html from the approved Sample UI/04-landing/ markup before dev and build. The sample retains noindex while the public copies have canonical root/about URLs and omit design-review labels.
+    routes: / is the landing page; /about is the story page. app.html is the React role entrypoint. vite.config.ts maps local /member, /experts, and /admin requests to app.html; vercel.json does the same in production and rewrites /about to about.html.
+    assets: Public HTML uses the shared Sample UI/04-landing/ assets; Vite may bundle referenced images and CSS into hashed files. scripts/copy-samples.mjs preserves classic app.js and GSAP and the noindex sample after build.
+    indexing: public/robots.txt and public/sitemap.xml identify / and /about. The sample pages remain noindex; 404 remains noindex.
+    auth_links: Register/login links send members to /member and trainers to /experts with auth=signup or auth=login. app.html and server-managed role checks protect workspace data.
   supabase_mcp:
     name: HealthyLife
     project_ref: jqtrzwiyeohcljdvfkss
@@ -62,7 +68,7 @@ contracts:
     slot_constraint: one_active_booking_per_slot unique partial index.
     policy_version: Stored on each booking and used for cancellation math.
   navigation:
-    shell_paths: /member, /experts, and /admin; / opens /member. vercel.json rewrites direct shell requests to index.html.
+    shell_paths: / is public landing, /about is public story, and /member, /experts, and /admin are live role shells. vercel.json rewrites direct shell requests to app.html.
     state: The pathname selects the live role. history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
     behavior: CloudApp pushes page changes under the current shell path; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
     boundary: URL and history state contain route and filter state only; no auth tokens, health records, or training logs. Neither grants access. Member, expert, and admin rendering checks server-managed grants and review status.

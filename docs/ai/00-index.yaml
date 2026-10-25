@@ -11,8 +11,8 @@ read_order:
 - 40-flows.yaml
 - 50-guardrails.yaml
 - 60-debt.yaml
-summary: Responsive member, expert, and admin clients share a Supabase backend at /member, /experts, and /admin.
-  The public entrypoint mounts the connected client only; the old browser-storage demo remains as reference code.
+summary: The approved public landing page opens at /, with an About page at /about. Responsive member, expert, and admin clients share a Supabase backend at /member, /experts, and /admin.
+  The role entrypoint mounts the connected client only; the old browser-storage demo remains as reference code.
   Members author weekly training programs, track sets, and optionally share with booked experts. Checkout
   and orders are simulated. Three standalone member/expert desktop concept previews and a public landing-page sample live in Sample UI/; Daily Workbench
   training informs the member desktop app. Members open programs, browse and filter the full exercise catalog, review
@@ -36,7 +36,7 @@ task_routing:
     - 30-contracts.yaml
     - 40-flows.yaml
     - 50-guardrails.yaml
-    owner: Sample UI/04-landing/, src/CloudApp.tsx, scripts/copy-samples.mjs
+    owner: Sample UI/04-landing/, scripts/prepare-public-pages.mjs, index.html, about.html, 404.html, app.html, vite.config.ts, vercel.json
   training:
     read:
     - 20-modules.yaml

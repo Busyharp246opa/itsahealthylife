@@ -1,7 +1,12 @@
 docs/ai/                     Architecture, contracts, flows, guardrails, and debt
 DESIGN.md                   Healthy Life Circle art direction and Awwwards-informed layout decisions
 Sample UI/                   Three member/expert desktop concepts and a public landing-page sample
-Sample UI/04-landing/        Awwwards-informed noindex landing page, photographic story and 404 pages, original approach photos, and role-specific account links
+Sample UI/04-landing/        Approved landing design source and noindex preview, photographic story, original images, and role-specific account links
+index.html, about.html         Generated public landing and story pages served at / and /about
+404.html                      Generated public 404 page
+app.html                      React entrypoint for /member, /experts, and /admin
+vite.config.ts                Multi-page build and local role-route rewrites
+scripts/prepare-public-pages.mjs  Generates public pages from the approved design before dev/build
 src/main.tsx                 Live-only React entrypoint and role-path initialization
 src/App.tsx                  Unmounted browser-storage demo reference
 src/CloudApp.tsx             Supabase-connected /member, /experts, and /admin shells

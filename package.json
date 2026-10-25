@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build && node scripts/copy-samples.mjs",
+    "dev": "node scripts/prepare-public-pages.mjs && vite --host 127.0.0.1",
+    "build": "node scripts/prepare-public-pages.mjs && tsc --noEmit && vite build && node scripts/copy-samples.mjs",
     "preview": "vite preview --host 127.0.0.1"
   },
   "type": "module",

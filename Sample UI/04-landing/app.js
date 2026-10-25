@@ -1,6 +1,6 @@
 (() => {
   const appHost = location.hostname === 'itsahealthylife.vercel.app' ||
-    (/^(localhost|127\.0\.0\.1)$/i.test(location.hostname) && /^(5173|4173|4174)$/.test(location.port));
+    /^(localhost|127\.0\.0\.1)$/i.test(location.hostname);
   if (location.protocol !== 'file:' && appHost) {
     document.querySelectorAll('[data-app-path]').forEach(link => {
       link.href = `${location.origin}${link.dataset.appPath}`;
@@ -79,10 +79,6 @@
   });
 
   if (gsap && !reducedMotion.matches && document.body.dataset.page === 'home') {
-    gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.hero-kicker', { y: 14, opacity: 0, duration: .55 })
-      .from('.hero h1', { y: 26, opacity: 0, duration: .78 }, '-=.28')
-      .from('.hero-copy, .hero-actions', { y: 20, opacity: 0, duration: .58, stagger: .12 }, '-=.43');
     gsap.to('.ticker>div', { x: -450, duration: 30, ease: 'none', repeat: -1 });
   }
 
