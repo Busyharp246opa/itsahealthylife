@@ -72,7 +72,7 @@
     });
   });
 
-  if (gsap && !reducedMotion.matches) {
+  if (gsap && !reducedMotion.matches && document.body.dataset.page === 'home') {
     gsap.timeline({ defaults: { ease: 'power3.out' } })
       .from('.hero-kicker', { y: 14, opacity: 0, duration: .55 })
       .from('.hero h1', { y: 26, opacity: 0, duration: .78 }, '-=.28')
