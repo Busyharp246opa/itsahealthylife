@@ -16,6 +16,14 @@ if (exerciseMediaBaseUrl?.startsWith("http://") || exerciseMediaBaseUrl?.startsW
 const nextConfig: NextConfig = {
   images: { remotePatterns },
   experimental: { serverActions: { bodySizeLimit: "6mb" } },
+  async redirects() {
+    return [
+      { source: "/member", destination: "/trainee", permanent: false },
+      { source: "/member/:path*", destination: "/trainee", permanent: false },
+      { source: "/experts", destination: "/trainer", permanent: false },
+      { source: "/experts/:path*", destination: "/trainer", permanent: false },
+    ];
+  },
   async rewrites() {
     return { beforeFiles: [
       { source: "/", destination: "/landing/index.html" },

@@ -21,7 +21,7 @@ The hosted Supabase project is `jqtrzwiyeohcljdvfkss`. The original 14 migration
 
 ## Follow-up smoke checks
 
-On the Production deployment, open landing, About, login, member, trainer, and admin routes. Confirm guest role redirects, FitLoop and TDEE 404s, and the catalog view. Have an existing member and operator sign in to confirm saved program, social data, and role access. Restore the logical dump into an isolated project before relying on it as a tested recovery path.
+On the Production deployment, open landing, About, login, member, trainer, and admin routes. Confirm old `/member` and `/experts` bookmarks redirect into the new app, guest role redirects, FitLoop and TDEE 404s, and the catalog view. Have an existing member and operator sign in to confirm saved program, social data, and role access. Restore the logical dump into an isolated project before relying on it as a tested recovery path.
 
 ## Recovery
 

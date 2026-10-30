@@ -5,6 +5,7 @@ flows:
     manual_smoke_checks:
       - Open landing and About on desktop and phone; verify logo, colors, and registration links.
       - Open login and both registration routes; verify branding and Supabase connection.
+      - Open old /member and /experts bookmarks; verify they reach the new trainee and trainer entry routes.
   member:
     paths: [/trainee, /trainee/dashboard, /today, /circle, /train, /wellness, /store]
     manual_smoke_checks:

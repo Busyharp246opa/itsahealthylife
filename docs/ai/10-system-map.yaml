@@ -23,3 +23,4 @@ load_order_contracts:
   - On local reset, migrations run before exercise and demo seeds; legacy exercises absent from catalog become custom trainee exercises.
   - Next.js layouts and proxy enforce session entry; database RLS remains the authority for saved data.
   - Landing rewrite targets static public/landing files and must not shadow workspace routes.
+  - Legacy /member and /experts links redirect to the new trainee and trainer entry routes.

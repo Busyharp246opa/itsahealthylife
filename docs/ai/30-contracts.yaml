@@ -26,4 +26,5 @@ route_contracts:
   member: [/trainee, /today, /circle, /train, /wellness, /store]
   trainer: [/trainer]
   operator: [/admin]
+  legacy_redirects: {'/member': /trainee, '/member/*': /trainee, '/experts': /trainer, '/experts/*': /trainer}
   removed: [/fitloop, /wellness/tdee]
