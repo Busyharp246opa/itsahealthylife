@@ -1,6 +1,6 @@
 # Healthy Life hosted cutover
 
-**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Commit `7be5222` failed on Vercel because the project still expected Vite's `dist` folder. Root `vercel.json` now declares the Next.js framework and `.next` output. Check the replacement build, environment, and live site before any database change.
+**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Commit `7be5222` failed on Vercel because the project still expected Vite's `dist` folder. The project framework is now Next.js, and commit `7952a28` built successfully as a preview; its landing and login routes render. Production still serves the previous Vite deployment. The three browser-safe Next.js variables are set for Production; the server-only service role key, backup, and hosted migration remain pending.
 
 The hosted Supabase project is `jqtrzwiyeohcljdvfkss`. Its original 14 migration versions are represented by placeholder files in the current `supabase/migrations/` directory; the original SQL remains in `legacy/healthy-life-vite/supabase/migrations/`. This keeps local and hosted migration history aligned. The new migration chain uses `--include-all` because some new versions predate the original hosted versions.
 
@@ -17,7 +17,7 @@ The hosted inventory at review time was 2 Auth users, 2 profiles, 3 role grants,
 
 1. Secure a restorable database backup or logical dump and record the restore point. Supabase documents its backup and logical dump options at https://supabase.com/docs/guides/platform/backups. The archive migration preserves old rows, but a backup is still required for recovery from an incomplete cutover.
 2. Arrange a short write freeze, because old and new applications use incompatible public schemas. Record counts of `auth.users` and all old public tables.
-3. Ensure access to the actual Vercel project and its environment settings. The currently connected Vercel MCP account does not see `itsahealthylife`; the user’s old browser project tab also returned 404. Do not migrate the hosted database until the replacement deployment can be configured and launched.
+3. Use the owning Vercel account in Chrome to verify project settings and deployments. The connected Vercel MCP account does not see `itsahealthylife`. Confirm `SUPABASE_SERVICE_ROLE_KEY` is set as a server-only Production secret. Do not migrate the hosted database until the replacement deployment can be configured and launched.
 4. Confirm hosted Auth redirect URLs cover the new `/auth/confirm` and password recovery routes at the production origin.
 
 ## Ordered cutover

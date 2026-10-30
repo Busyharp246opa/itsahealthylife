@@ -7,7 +7,7 @@ current_state:
   hosted_database: HealthyLife Supabase project jqtrzwiyeohcljdvfkss still has the original public schema and Auth users.
   mcp: HealthyLife is configured in .mcp.json and OAuth login was verified on 2026-10-30.
   local_app: Next.js app on port 3390, with isolated local Supabase on ports 57320-57329.
-  deployment: Commit 7be5222 on main failed because Vercel expected the prior Vite dist output. Root vercel.json now declares Next.js and .next output. Hosted cutover remains pending until the replacement build, environment, and backup are verified.
+  deployment: Commit 7be5222 on main failed under Vite's dist output. Vercel is now set to Next.js and commit 7952a28 passed as a preview deployment. Production still serves the prior Vite app until database cutover and main push.
   original_docs: legacy/healthy-life-vite/docs/ai/
 maintenance:
   package_manager: npm; use npm ci for a clean install.
@@ -17,4 +17,6 @@ maintenance:
   preservation: Original public tables move to healthy_legacy and original private schema to healthy_legacy_private; Auth user IDs are retained.
   cutover_guide: CUTOVER.md
   rehearsal: Original 14-migration stack plus representative saved account and program migrated locally on 2026-10-30; sign-in and owner reads passed.
-  hosting_access: Connected Vercel MCP account does not have the itsahealthylife project; live cutover waits for access to the owning Vercel team.
+  hosting_access: Chrome is signed into the owning Vercel team. The connected Vercel MCP account still lacks this project, so use Chrome for project settings and deployment inspection.
+  hosting_environment: Production has NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, and NEXT_PUBLIC_APP_ORIGIN; SUPABASE_SERVICE_ROLE_KEY remains to be configured. Original VITE variables remain for the old deployment.
+  database_dashboard_access: Chrome Supabase Dashboard currently shows unrelated Table Top Org or Rays accounts; Healthy Life project access is pending for backup and server key setup. HealthyLife MCP remains operational.
