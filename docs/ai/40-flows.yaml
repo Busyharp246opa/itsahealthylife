@@ -17,10 +17,11 @@ flows:
   auth_and_roles:
     paths: [/trainer, /admin, /auth/admin]
     manual_smoke_checks:
-      - Enter a longer alphanumeric test value on the login page; verify digits remain in the field and the full value is submitted only when signed in with valid credentials.
+      - Confirm the login field has no length cap, then sign in with an existing account using its full password.
       - Confirm new account registration still applies its eight-character password rule.
       - Guest trainer and admin routes lead to the appropriate sign-in page.
       - Signed member cannot access trainer or operator data; existing admin retains operator access after cutover.
+    hosted_status: Existing member sign-in reached /trainee on 2026-10-30; operator access and cross-role restrictions remain unverified in the hosted browser.
   saved_data:
     paths: [supabase/migrations/, tests/new-flow-rls.test.mjs, tests/trainer-plan-rls.test.mjs]
     manual_smoke_checks:

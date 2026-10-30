@@ -7,7 +7,8 @@ current_state:
   hosted_database: HealthyLife Supabase project jqtrzwiyeohcljdvfkss has all 41 migration versions and 1324 catalog exercises; original Auth users remain and original tables are archived in healthy_legacy.
   mcp: HealthyLife is configured in .mcp.json and OAuth login was verified on 2026-10-30.
   local_app: Next.js app on port 3390, with isolated local Supabase on ports 57320-57329.
-  deployment: Vercel is configured for Next.js; commit 39b13a1 was the first successful Production build. Later Git deployments include the server secret.
+  deployment: Vercel Production deployment for main commit 93b3952 was Ready on 2026-10-30; it includes the server secret, existing-password login fix, unboxed workspace wordmark, and static landing navigation fix.
+  production_smoke: Existing member sign-in and /trainee were observed in Chrome. The unboxed sidebar wordmark, full navigation from trainee home to the public landing, public routes, 1324-exercise catalog, and removed FitLoop/TDEE routes were checked. Fresh app navigation showed no console errors; the root RSC prefetch 404 belonged to the prior deployment.
   original_docs: legacy/healthy-life-vite/docs/ai/
 maintenance:
   package_manager: npm; use npm ci for a clean install.
@@ -18,5 +19,5 @@ maintenance:
   cutover_guide: CUTOVER.md
   rehearsal: Original 14-migration stack plus representative saved account and program migrated locally on 2026-10-30; sign-in and owner reads passed.
   hosting_access: Chrome is signed into the owning Vercel team. The connected Vercel MCP account still lacks this project, so use Chrome for project settings and deployment inspection.
-  hosting_environment: Production has NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, NEXT_PUBLIC_APP_ORIGIN, and server-only SUPABASE_SERVICE_ROLE_KEY. Only deployments created after the secret was added include it.
+  hosting_environment: Production has NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, NEXT_PUBLIC_APP_ORIGIN, and server-only SUPABASE_SERVICE_ROLE_KEY. The current deployment was created after the secret was added.
   database_dashboard_access: Chrome Supabase Dashboard is signed into the Healthy Life project; HealthyLife MCP and Supabase CLI profile healthy-life are operational.

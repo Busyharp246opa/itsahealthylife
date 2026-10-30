@@ -17,6 +17,8 @@ runtime:
     tokens: tokens.css
     workspace_styles: app/globals.css and app/focus-circle.css
     assets: public/brand/ and public/landing/assets/
+    workspace_lockup: app/components/workspace-shell.tsx uses the Healthy Life mark with an unboxed text wordmark.
+    auth_lockup: app/auth/layout.tsx uses the same mark and text wordmark.
 load_order_contracts:
   - The archive migration runs before the imported core migration on a hosted cutover.
   - Imported migrations run by filename order; the legacy data mapping migration runs last.

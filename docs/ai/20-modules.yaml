@@ -2,7 +2,7 @@ schema_version: 1
 modules:
   brand:
     owner_module: brand
-    allowed_edit_paths: [tokens.css, app/focus-circle.css, app/globals.css, app/layout.tsx, public/brand/, public/landing/, next.config.ts]
+    allowed_edit_paths: [tokens.css, app/focus-circle.css, app/globals.css, app/layout.tsx, app/components/workspace-shell.tsx, app/auth/layout.tsx, public/brand/, public/landing/, next.config.ts]
     must_not_move_without: [workspace_shell, public_site]
   public_site:
     owner_module: public_site

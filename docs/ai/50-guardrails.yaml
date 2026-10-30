@@ -1,6 +1,8 @@
 schema_version: 1
 invariants:
   - Keep Healthy Life logo, Host/Bricolage typography, plum/lime/lavender/warm-white palette, and public landing identity.
+  - Keep the workspace wordmark unboxed beside the Healthy Life mark; the generic .fc-brand > span rule is for icon placeholders.
+  - Use native anchors when Next.js pages navigate to the static / landing route; App Router RSC prefetches for / return 404.
   - Do not restore FitLoop or the TDEE calculator in routes, navigation, schema, or tests.
   - Never expose SUPABASE_SERVICE_ROLE_KEY to the browser.
   - Preserve hosted Auth users and original data through healthy_legacy archival before new public schema creation.

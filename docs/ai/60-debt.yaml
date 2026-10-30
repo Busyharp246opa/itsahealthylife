@@ -1,8 +1,8 @@
 schema_version: 1
 deferred:
-  - item: Hosted account sign-in and role smoke checks
+  - item: Hosted operator and saved-data smoke checks
     status: pending_verification
-    reason: Hosted accounts and mapped rows are verified in the database, but existing account passwords are unavailable for a full browser sign-in check.
+    reason: An existing member signed in and reached /trainee in Chrome; operator sign-in, cross-role restrictions, and saved program reads still need hosted browser checks.
   - item: Original workbook features requiring external providers
     status: pending_integration
     includes: [payments, live classes, notification delivery, media, advanced scheduling]
@@ -13,5 +13,5 @@ deferred:
     status: preserved
     location: legacy/healthy-life-vite/
 recommended_next_cuts:
-  - Have an existing member and operator sign in and verify saved program, role access, and social data against the hosted project.
+  - Have the existing operator sign in; verify saved program, role access, and social data against the hosted project.
   - Verify recovery from the logical backup in an isolated project before relying on it for disaster recovery.
