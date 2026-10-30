@@ -2,7 +2,7 @@ schema_version: 1
 runtime:
   framework: Next.js 16 App Router with React 19 and Supabase
   entrypoints:
-    public: app/page.tsx and next.config.ts rewrite to public/landing/index.html
+    public: next.config.ts rewrite to public/landing/index.html
     about: next.config.ts rewrite to public/landing/about.html
     application: app/(workspace)/layout.tsx
     authentication: app/auth/ and proxy.ts
@@ -23,4 +23,5 @@ load_order_contracts:
   - On local reset, migrations run before exercise and demo seeds; legacy exercises absent from catalog become custom trainee exercises.
   - Next.js layouts and proxy enforce session entry; database RLS remains the authority for saved data.
   - Landing rewrite targets static public/landing files and must not shadow workspace routes.
+  - Links from Next.js pages to the static landing route use native anchors so client-side RSC prefetches do not request a nonexistent App Router page.
   - Legacy /member and /experts links redirect to the new trainee and trainer entry routes.

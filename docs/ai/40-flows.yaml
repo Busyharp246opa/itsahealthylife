@@ -4,11 +4,14 @@ flows:
     paths: ['/', /about, /auth/login, /auth/register/trainee, /auth/register/trainer]
     manual_smoke_checks:
       - Open landing and About on desktop and phone; verify logo, colors, and registration links.
+      - Open the landing route from the login page and the trainee home; verify full navigation succeeds without a failed RSC prefetch.
       - Open login and both registration routes; verify branding and Supabase connection.
       - Open old /member and /experts bookmarks; verify they reach the new trainee and trainer entry routes.
   member:
     paths: [/trainee, /trainee/dashboard, /today, /circle, /train, /wellness, /store]
     manual_smoke_checks:
+      - Confirm the sidebar wordmark has no icon box or outline beside the Healthy Life mark on desktop and phone.
+      - Check the trainee home in Chrome for failed application requests after a fresh navigation.
       - Open member home, dashboard, Circle, exercise catalog, wellness, and store.
       - Confirm FitLoop and TDEE routes return 404 and no navigation points to them.
   auth_and_roles:

@@ -81,7 +81,7 @@ function current(pathname: string, href: string) {
 }
 
 function Brand({ href, mobile = false }: { href: string; mobile?: boolean }) {
-  return <Link href={href} className={`fc-brand fc-brand--approved${mobile ? " fc-brand--mobile" : ""}`} aria-label="It’s A Healthy Life home"><Image src="/brand/healthy-life-mark.png" alt="" width={43} height={29} priority /><span className="fc-brand-name">IT’S A<br />HEALTHY LIFE</span></Link>;
+  return <Link href={href} className={`fc-brand fc-brand--approved${mobile ? " fc-brand--mobile" : ""}`} aria-label="It’s A Healthy Life home"><Image src="/brand/healthy-life-mark.png" alt="" width={43} height={29} priority /><strong className="fc-brand-name">IT’S A<br />HEALTHY LIFE</strong></Link>;
 }
 
 function PendingLinkIndicator() {

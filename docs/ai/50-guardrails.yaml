@@ -14,7 +14,7 @@ blast_radius:
 must_retest_if_changed:
   - paths: [app/auth/]
     flows: [public_entry, auth_and_roles]
-  - paths: [next.config.ts, app/page.tsx, public/landing/, tokens.css, app/focus-circle.css]
+  - paths: [next.config.ts, public/landing/, tokens.css, app/focus-circle.css]
     flows: [public_entry, member]
   - paths: [app/(workspace)/, app/components/, lib/]
     flows: [member, auth_and_roles, saved_data]

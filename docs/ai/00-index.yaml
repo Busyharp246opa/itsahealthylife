@@ -21,7 +21,7 @@ summary: >-
   legacy archive and mapped into the new model.
 task_routing:
   brand_and_public_site:
-    owner: app/layout.tsx, app/page.tsx, next.config.ts, tokens.css, app/focus-circle.css, public/brand/, public/landing/
+    owner: app/layout.tsx, next.config.ts, tokens.css, app/focus-circle.css, public/brand/, public/landing/
     read: [20-modules.yaml, 40-flows.yaml, 50-guardrails.yaml]
   workspace:
     owner: app/(workspace)/, app/components/, lib/

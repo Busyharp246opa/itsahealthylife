@@ -6,7 +6,7 @@ modules:
     must_not_move_without: [workspace_shell, public_site]
   public_site:
     owner_module: public_site
-    allowed_edit_paths: [app/page.tsx, next.config.ts, public/landing/, public/robots.txt, public/sitemap.xml]
+    allowed_edit_paths: [next.config.ts, public/landing/, public/robots.txt, public/sitemap.xml]
     must_not_move_without: [brand]
   hosting:
     owner_module: hosting

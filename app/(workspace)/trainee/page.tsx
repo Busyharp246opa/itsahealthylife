@@ -12,7 +12,7 @@ export default async function TraineeHome({ searchParams }: { searchParams: Prom
 
   return <div className="fc-page fc-social-home">
     <header className="fc-social-home-masthead">
-      <Link href="/" className="fc-social-home-brand" aria-label="It’s A Healthy Life home">IT’S A HEALTHY LIFE</Link>
+      <a href="/" className="fc-social-home-brand" aria-label="It’s A Healthy Life home">IT’S A HEALTHY LIFE</a>
       <div className="fc-social-home-masthead-actions"><Link href="/discover"><Compass size={18} aria-hidden /><span>Explore</span></Link><Link href="/notifications" aria-label="Notifications"><Bell size={19} aria-hidden /></Link></div>
     </header>
     <div className="fc-social-home-layout">
