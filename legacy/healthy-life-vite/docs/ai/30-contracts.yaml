@@ -1,0 +1,169 @@
+schema_version: 1
+contracts:
+  desktop_concepts:
+    entrypoint: Sample UI/index.html
+    indexing: Standalone design samples are noindex; the live role shells remain the production entry points.
+    routes:
+    - Sample UI/01-daily-workbench/index.html
+    - Sample UI/02-guided-journey/index.html
+    - Sample UI/03-signal-index/index.html
+    loading: Classic shared/model.js script exposes window.HealthyLife before each concept app.js; explicit HTML
+      links work from a directory opened in a browser and through the Vite server.
+    state: Sample UI/shared/model.js owns in-memory sample records and role/view transitions; Daily Workbench training.js
+      adds program cards that open a weekly schedule, full 1324-item category/search/equipment/target filtering
+      with pagination, exercise details and add-to-day targets, rep counts, Flow SVG previews with pause controls, and sample booked-expert sharing. Query
+      parameters select initial role and view. File URLs skip history.replaceState.
+    roles:
+    - member
+    - expert
+    invalid_role: Unknown roles, including admin, fall back to the member preview.
+    backend: None; controls in these previews never write to Supabase or the local demo's browser storage.
+    brand: Frame.png and Group 46831.png copies in Sample UI/assets/; plum, lime, and lavender match the existing
+      shell.
+  landing_sample:
+    entrypoint: Sample UI/04-landing/index.html; about.html and 404.html share its visual system.
+    deployment: scripts/copy-samples.mjs copies all Sample UI files into dist after Vite build; the noindex preview remains at /Sample%20UI/04-landing/index.html.
+    approach_tabs: Move, Nourish, Connect, and Grow select corresponding original photographs and story copy. Images remain local WebP files and inactive images are hidden from assistive technology.
+    story_page: about.html has a two-column photographic hero, an editorial reading section with a second image, and the existing member/trainer account paths. Its photos are local WebP files with descriptive alt text; the hero serves a smaller image on phones.
+    auth_links: Member register/login go to /member?auth=signup or auth=login. Trainer register/login go to /experts?auth=signup or auth=login. On file URLs, links use the Vercel production host; on local Vite they use the local host.
+    boundary: Standalone noindex marketing sample; it has no Supabase client or sample data writes. The existing role shells enforce grants and expert approval.
+  public_site:
+    source: scripts/prepare-public-pages.mjs derives root index.html, about.html, and 404.html from the approved Sample UI/04-landing/ markup before dev and build. The sample retains noindex while the public copies have canonical root/about URLs and omit design-review labels.
+    routes: / is the landing page; /about is the story page. app.html is the React role entrypoint. vite.config.ts maps local /member, /experts, and /admin requests to app.html; vercel.json does the same in production and rewrites /about to about.html.
+    assets: Public HTML uses the shared Sample UI/04-landing/ assets; Vite may bundle referenced images and CSS into hashed files. scripts/copy-samples.mjs preserves classic app.js and GSAP and the noindex sample after build.
+    indexing: public/robots.txt and public/sitemap.xml identify / and /about. The sample pages remain noindex; 404 remains noindex.
+    auth_links: Register/login links send members to /member and trainers to /experts with auth=signup or auth=login. app.html and server-managed role checks protect workspace data.
+  supabase_mcp:
+    name: HealthyLife
+    project_ref: jqtrzwiyeohcljdvfkss
+    feature_groups:
+    - docs
+    - account
+    - database
+    - debugging
+    - development
+    - functions
+    - branching
+    authentication: OAuth through Codex CLI
+    verification: Native get_project_url, list_tables, apply_migration, get_advisors, and list_migrations calls
+      succeeded on 2026-10-25.
+    access_tokens: Never commit or print tokens.
+  browser_to_supabase:
+    configuration: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+    production_configuration: Vercel Production Config values are embedded into the Vite browser bundle at build time; changes require a redeploy. Never use a Supabase service role key here.
+    authorization: Supabase Auth session plus RLS; role_grants is server controlled.
+    shell_access: /member requires a member grant and diverts any admin-granted account to /admin, even if it also has a member grant. /admin requires an admin grant. /experts permits an authenticated applicant to view only the application screen until an expert grant and latest approved review exist. URL selection never grants data access.
+    admin_member_boundary: The /member to /admin diversion is enforced by the connected client after reading role_grants. The first admin's member grant remains in Postgres, so this navigation rule is not a server-side denial of member-owned API operations. Strict role exclusivity would require a separate grant and RLS migration.
+    auth_intent: auth=signup opens the public member or expert account form; auth=login or an absent intent opens sign-in. The admin shell never offers signup. Successful password sign-in reloads the canonical requested role path, except an admin-granted account signing in on /member is sent to /admin after checking its role_grants row.
+    auth_form: Login has a password visibility toggle and Remember me checkbox. Signup and recovery password inputs have visibility toggles. The browser does not save plaintext credentials through app code.
+    auth_persistence: src/authStorage.ts passes a storage adapter to Supabase Auth. Checked Remember me writes the session to localStorage; unchecked writes to sessionStorage for the current tab. The selected mode survives refresh and replaces any prior token in the other store. Legacy localStorage sessions remain readable. Sign-out removes the token from both stores.
+    auth_email_redirects: Signup confirmation and password recovery pass the exact production role URL to Supabase Auth. The Auth Site URL is the production origin and its redirect allow list includes /member, /experts, and /admin. A recovery callback opens the new-password form and updates the password through the authenticated Supabase client.
+    sign_out: Ordinary member, expert, and admin logout actions clear only the current Supabase session. Password recovery completion signs out globally after changing credentials.
+    mutation_refresh: Successful workspace actions refresh RLS-visible rows in the background, keeping the current page and its local selection mounted while new data arrives.
+    direct_writes: Member profile/health, nutrition/activity logs, training programs/set logs/sessions, saves, challenge
+      progress, posts/comments/reports, support, expert slots, booking messages, expert content drafts., Circle
+      reactions and blocks; admin may manage rooms, guidelines, and hide posts via RLS.
+    server_actions: platform-api handles booking, order, expert application/review, publishing, policy, support
+      and report transitions.
+  database:
+    public_tables: 34
+    all_public_tables_have_rls: true
+    private_helpers: private.has_role, private.is_approved_expert, and private.is_slot_open are security definer
+      functions with fixed search_path.
+    simulated_transactions: Separate bookings, payment_transactions, payouts, orders, and audit_events records.
+    slot_constraint: one_active_booking_per_slot unique partial index.
+    policy_version: Stored on each booking and used for cancellation math.
+  navigation:
+    shell_paths: / is public landing, /about is public story, and /member, /experts, and /admin are live role shells. A trailing slash normalizes to the same role path. Vite and vercel.json rewrite direct shell requests to app.html.
+    state: The pathname selects the live role. history.state.healthyLife stores mode, role, page, optional training location and filters, entry index, and parent route.
+    behavior: CloudApp pushes page changes under the current shell path; Training and ExerciseBrowser push program, browse, result, and detail changes. popstate restores the matching screen and scrolls to the top with manual browser scroll restoration. In-app Back uses the parent history entry when it matches, with a local fallback for direct entry.
+    member_shop: Shop is a top-level member destination directly above Profile in desktop and phone navigation. Its active state is Shop, and opening it does not require visiting Plan or expert discovery. Desktop sidebar Log out clears the member session.
+    boundary: URL and history state contain route and filter state only; no auth tokens, health records, or training logs. Neither grants access. Member, expert, and admin rendering checks server-managed grants and review status.
+  feature_search:
+    source: src/FeatureSearch.tsx contains role-scoped Healthy Life feature destinations and keyword ranking adapted
+      from FitCircle.
+    placement: Member desktop trigger is positioned in the sidebar above Your workspace; member mobile keeps the compact header trigger. Admin trigger sits above Overview in the sidebar and collapses to an icon on narrow screens. Expert trigger placement is unchanged.
+    behavior: Click or Ctrl/Cmd+K opens a dialog; typing filters current-role destinations, arrow keys move, Enter
+      navigates, and Escape closes. Demo and connected workspaces map to their own implemented page keys.
+    boundary: Search exposes only destinations for the current role and never changes role or data.
+  booking_messages:
+    source: src/ChatAttachment.tsx provides a single file picker, validation, image preview, and document download UI shared by member and expert threads.
+    attachments: One optional JPG, PNG, WebP, GIF, PDF, TXT, DOC, or DOCX file per message, maximum 10 MB. Text may be empty only when a file is attached.
+    demo: Message metadata persists in localStorage; file blobs persist by random ID in IndexedDB healthy-life-chat-files.
+    live: public.messages holds attachment path, name, MIME, and size. Files use the private session-attachments bucket at conversation-ID/sender-ID/random-ID.extension. Upload precedes message insert; an insert failure attempts to remove the orphan.
+    access: Storage SELECT and INSERT require a confirmed booking participant; INSERT also requires the sender path. Message INSERT requires an existing Storage object for attachments. Orphan DELETE requires the uploading sender.
+    boundary: Browser file controls are convenience validation; database constraints, Storage bucket restrictions, and RLS enforce the server boundary. Cancelled booking messages and attachments are not readable.
+  daily_tracking:
+    source: src/DailyTracker.tsx and src/DailyTracker.css are the shared member Track page in demo and connected modes.
+    layout: Desktop shows nutrition and movement totals, then a quick entry card beside today's log. Mobile places quick entry before the log.
+    quick_entry: Meal requires name and calories, with meal slot defaulting to the current time; protein, carbs, and fat are optional in an expandable section. Activity requires name and minutes. Existing entries can be repeated or removed.
+    persistence: Demo uses src/data.ts localStorage records; live uses member-owned meal_entries and activity_entries with existing RLS. The UI derives totals from today's visible records.
+    boundary: An entry is added only after its write succeeds; admin and expert UI layouts are unchanged.
+  training:
+    catalog: public/data/exercises.json is static English text derived from FitCircle's MIT exercise data. Animation metadata points to public/data/flow/assets SVG frames from Flow Exercise Dataset. The original FitCircle GIFs remain excluded.
+    tables:
+    - training_programs
+    - training_workout_logs
+    - training_sessions
+    previews: src/ExercisePreview.tsx displays three SVG frames in sequence 0,1,2,1 at 180 ms for 1257 exercises. Previews animate only near the viewport, pause when hidden, respect reduced-motion preference, and have manual play/pause. The other 67 show instructions only. Visuals are illustrative and unreviewed.
+    browser_flow: src/Training.tsx opens a selected program from the list; src/ExerciseBrowser.tsx provides browse
+      home, filtered/paginated results, technique detail, and add-to-selected-day targets. The demo and Supabase
+      adapters persist the same schedule shape. Exercise detail includes a sticky top Back button and a bottom Back
+      button. Category and filter state are kept when using browser Back and Forward.
+    schedule: training_programs.schedule is a JSON object keyed by Monday=0 through Sunday=6; each day holds exercise
+      instances with catalog ID, name, target sets, and target reps.
+    active_program: Partial unique index allows one active program per member. public.activate_training_program
+      switches active status atomically as the authenticated caller.
+    sharing: Member sets shared_expert_id on a program. A trigger accepts only an expert with a confirmed or completed
+      booking; RLS requires the same current booking for expert reads of programs, logs, and sessions. Members own
+      all writes; experts have read-only access.
+    logs: One row per program, date, exercise instance, and set; reps are 1-1000 and optional weight is stored in
+      kilograms. Completed sessions are recorded separately.
+    indexes: Program/member composite indexes cover the foreign keys on log and session tables; member/date indexes
+      support history views.
+  function:
+    path: supabase/functions/platform-api/index.ts
+    deployment: platform-api active with JWT verification.
+    origin: Explicit CORS allowlist for https://itsahealthylife.vercel.app and localhost or 127.0.0.1 with optional development port. Other origins receive null. Preflight permits the Supabase client headers including x-retry-count.
+    actor: Authenticated JWT user ID; roles read from role_grants, never request body.
+    admin_management: challenge.update and product.update accept a validated UUID and boolean active flag from an admin only; successful changes add audit_events. product.create accepts an optional admin-supplied product UUID and up to five verified uploaded image paths. product.images.update validates product-scoped uploaded paths, saves image order, removes omitted objects, and records an audit event. Content publishing, support triage, and policy publishing remain server actions.
+  admin_catalogue_ui:
+    source: src/CloudApp.tsx and src/styles.css.
+    challenges: Show the challenge list and status first; New challenge opens the existing create form, and each item's steps expand in place. Pause/Resume keeps using platform-api.
+    store: Products and Orders are separate in-page views. Add product opens the create form with optional image previews; descriptions and image management expand in place. Admins can add or remove images later. The first image is the cover in inventory and the member shop; products without images retain the existing placeholder. Hide/Show keeps using platform-api. Orders remain simulated.
+    refresh: Successful writes refresh the current page in the background and preserve the open view.
+  product_images:
+    source: src/ProductImages.tsx, src/CloudApp.tsx, supabase/functions/platform-api/index.ts, and product image migrations 20261025171436 and 20261025171918.
+    storage: Public product-images bucket for intentional shop imagery; JPG, PNG, or WebP only, 5 MB per file. Authenticated admins alone may insert or delete objects through Storage RLS. No browser service key.
+    schema: public.products.image_paths is a non-null text array with a maximum of five product-scoped paths. Existing products default to no images.
+    write_flow: The admin browser validates and uploads images to a new product UUID folder, then calls product.create or product.images.update. Failed server writes remove newly uploaded objects. Server actions verify every path exists in the bucket. Removing an image updates the product and deletes the old object.
+  circle:
+    source: src/Circle.tsx is the shared visual flow; src/App.tsx adapts localStorage and src/CloudApp.tsx adapts
+      Supabase.
+    spaces: Members use the member Circle with topic rooms. Approved experts use a separate expert Circle. Admin
+      sees reports and room/guideline controls in separate Support center views.
+    admin_support_ui: Requests and reports each have a focused queue view; Circle settings list rooms and preview guidelines, with create/edit forms opened on demand. Ticket status can move from open to in_progress to resolved and back to open using existing platform-api actions.
+    tables:
+    - community_posts
+    - community_comments
+    - community_reports
+    - community_reactions
+    - community_blocks
+    - circle_rooms
+    - circle_guidelines
+    actions:
+    - create post with kind and optional room
+    - view person posts
+    - toggle like
+    - comment up to 2000 characters
+    - report once
+    - block or unblock author
+    - delete own post
+    - admin hide/dismiss reports
+    - admin create or archive rooms
+    - admin edit guidelines
+    security: RLS filters member and expert posts at the database, requires approved expert status for expert posts,
+      requires authenticated ownership for mutations, hides blocked authors, and guards comments/reactions/reports
+      by visible parent posts.
+    demo: Local data contains separate seeded feeds, member rooms, guidelines, blocks, reports, and admin moderation.
+    load: Connected client refreshes the seven Circle tables with the shared table list.

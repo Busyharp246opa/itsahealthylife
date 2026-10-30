@@ -1,0 +1,34 @@
+schema_version: 1
+deferred_cleanup:
+- Supabase Auth Site URL and exact production member/expert/admin redirect URLs were saved and read back on 2026-10-25; default confirmation and recovery templates use ConfirmationURL. A fresh email click and password recovery through the browser still need QA with an inbox controlled by the product owner.
+- The approved landing design now serves / and /about; the noindex Sample UI source remains for review. Replace the Vercel preview domain in canonical URLs and the sitemap if a custom public domain is connected, and review final commercial/legal copy before a commerce release.
+- Daily Workbench is the selected desktop direction; the React member shell now uses its navigation pattern. The
+  three concept previews remain standalone and in-memory.
+- The live training tables, RLS, and activation RPC passed rolled-back authenticated SQL checks. A signed-in member/expert
+  browser pass still needs an approved expert and confirmed booking; the current Supabase project has two profiles
+  and no expert profiles or bookings.
+- The three role shells have shareable paths; pages and training filters within a shell remain in history state rather than shareable URLs.
+- The old src/App.tsx browser-storage walkthrough remains as unmounted reference code; remove or extract its fixtures after connected QA no longer needs them.
+- The feature search opens Training but does not deep-link into a specific member program or exercise; selecting
+  a program is required before adding an exercise.
+- The static exercise catalog loads 1324 English text records at once; add list virtualization or server-side search
+  if lower-end devices show lag. Flow SVG frames are imported separately from the original dataset media.
+- Admin signed-in overview was confirmed by the first admin; member and expert live actions still need a signed-in
+  browser pass.
+- Admin routing from /member to /admin passed an isolated browser test with mocked Supabase Auth and role_grants responses for both dual-grant and member-only accounts. A live password sign-in with the admin account remains to be checked. The first admin retains its signup member grant; the current redirect is a client workspace rule. If admin accounts must be unable to perform member-owned API operations, remove the member grant and revise the relevant RLS policies in a coordinated migration.
+- Supabase Auth leaked-password protection is disabled; the security advisor warns about it and Supabase documents
+  it as a Pro-plan feature.
+- Checkout and orders are simulated; real provider authorization, webhooks, reconciliation, fulfilment, and payout
+  transfer require product decisions.
+- Live attachment browser QA still needs an approved expert and confirmed booking; the project has no confirmed bookings. The private bucket, columns, policies, and local member/expert flow were verified.
+- Release 2 and later spec features such as calls, media uploads outside booking messages and product images, calendar sync, notification delivery, advanced
+  nutrition search, analytics, and content automation are not implemented.
+- The live client loads all RLS-visible rows per table on refresh; add pagination and focused queries for larger
+  datasets.
+- Live Circle member and approved-expert browser QA needs additional signed-in test accounts; this project currently
+  has two profiles but no approved expert. SQL, RLS, and local demo checks are complete.
+- Flow Exercise Dataset previews are imported for 1257 exercises. Its NOTICE reports incomplete generation prompts,
+  third-party rights uncertainty, and unreviewed AI-generated form. Complete a human rights and movement-accuracy
+  review before relying on the artwork for coaching or public release; 67 exercises remain instructions-only.
+refactor_targets:
+- Split src/CloudApp.tsx and src/App.tsx by member, expert, and admin modules when feature behavior stabilizes.

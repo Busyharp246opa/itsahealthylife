@@ -2,24 +2,63 @@
   "name": "its-a-healthy-life",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "node scripts/prepare-public-pages.mjs && vite --host 127.0.0.1",
-    "build": "node scripts/prepare-public-pages.mjs && tsc --noEmit && vite build && node scripts/copy-samples.mjs",
-    "preview": "vite preview --host 127.0.0.1"
+  "engines": {
+    "node": ">=22.13.0"
   },
-  "type": "module",
+  "scripts": {
+    "dev": "npm run supabase:start && next dev --hostname 127.0.0.1 --port 3390",
+    "dev:web": "next dev --hostname 127.0.0.1 --port 3390",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 3390",
+    "test": "npm run supabase:start && npm run build && node --test tests/*.test.mjs",
+    "lint": "eslint app lib tooling tests proxy.ts next.config.ts",
+    "catalog:build": "node tooling/import-exercises.mjs build",
+    "catalog:validate": "node tooling/import-exercises.mjs validate",
+    "exercise-media:validate": "node tooling/validate-flow-exercises.mjs",
+    "catalog:seed": "node tooling/generate-supabase-exercise-seed.mjs",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "db:reset": "npm run catalog:seed && supabase db reset --local",
+    "db:types": "node tooling/generate-database-types.mjs"
+  },
   "dependencies": {
-    "@supabase/supabase-js": "2.118.0",
-    "lucide-react": "1.61.0",
-    "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "@aws-sdk/client-ivs-realtime": "3.1160.0",
+    "@supabase/ssr": "0.12.3",
+    "@supabase/supabase-js": "2.110.7",
+    "amazon-ivs-web-broadcast": "1.41.0",
+    "drizzle-orm": "0.45.2",
+    "lucide-react": "^1.25.0",
+    "next": "16.4.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "recharts": "3.10.1"
   },
   "devDependencies": {
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0",
-    "axe-core": "^4.14.0",
-    "playwright": "^1.64.1",
-    "typescript": "7.0.2",
-    "vite": "8.3.5"
-  }
+    "@cloudflare/vite-plugin": "1.45.1",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "@vitejs/plugin-rsc": "0.5.28",
+    "cross-env": "^10.1.0",
+    "drizzle-kit": "0.31.10",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.10",
+    "react-server-dom-webpack": "19.2.7",
+    "supabase": "^2.109.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vinext": "0.0.50",
+    "vite": "8.1.5",
+    "wrangler": "4.112.0"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    },
+    "postcss": "8.5.31"
+  },
+  "type": "module"
 }

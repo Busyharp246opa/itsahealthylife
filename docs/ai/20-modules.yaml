@@ -1,173 +1,34 @@
 schema_version: 1
 modules:
-- owner_module: desktop_concepts
-  allowed_edit_paths:
-  - Sample UI/
-  must_not_move_without:
-  - src/styles.css
-  - src/data.ts
-  - Frame.png
-  - Group 46831.png
-  purpose: Standalone, interactive member/expert design studies using copied brand assets and sample data. Daily
-    Workbench owns its training.js preview, catalog copy, weekly planner, and sample sharing; no live Supabase writes
-    and no admin sample UI. The landing sample in 04-landing/ has real links to role-specific connected auth forms.
-- owner_module: local_demo
-  allowed_edit_paths:
-  - src/App.tsx
-  - src/data.ts
-  - src/TrainingDemo.tsx
-  - src/Circle.tsx
-  must_not_move_without:
-  - src/CloudApp.tsx
-  - src/styles.css
-  purpose: Self-contained role walkthrough and simulated workflows in localStorage.
-- owner_module: connected_client
-  allowed_edit_paths:
-  - src/CloudApp.tsx
-  - src/authStorage.ts
-  - src/ProductImages.tsx
-  - src/TrainingCloud.tsx
-  - src/Circle.tsx
-  must_not_move_without:
-  - supabase/migrations/
-  - supabase/functions/platform-api/index.ts
-  purpose: Authenticated member, expert, and admin UI over canonical Supabase records, including role-specific confirmation and recovery return URLs, server-grant-based admin diversion from the member shell, canonical password-login shell landing, user-selected auth session storage, member Shop navigation and sidebar logout, admin management actions, and product image selection, upload, and gallery display.
-- owner_module: design_shell
-  allowed_edit_paths:
-  - src/styles.css
-  - app.html
-  - Frame.png
-  - Group 46831.png
-  - DESIGN.md
-  must_not_move_without:
-  - src/App.tsx
-  - src/CloudApp.tsx
-  purpose: Shared responsive visual system sourced from Figma.
-- owner_module: public_site
-  allowed_edit_paths:
-  - Sample UI/04-landing/
-  - scripts/prepare-public-pages.mjs
-  - scripts/copy-samples.mjs
-  - index.html
-  - about.html
-  - 404.html
-  - vite.config.ts
-  - vercel.json
-  - public/robots.txt
-  - public/sitemap.xml
-  must_not_move_without:
-  - app.html
-  - src/main.tsx
-  - src/navigation.ts
-  purpose: Approved public homepage and story derived from the noindex design source, with SEO metadata and separate role-shell routing.
-- owner_module: circle_domain
-  allowed_edit_paths:
-  - src/Circle.tsx
-  - src/App.tsx
-  - src/CloudApp.tsx
-  - src/data.ts
-  - src/styles.css
-  - src/FeatureSearch.tsx
-  - supabase/migrations/20261025101324_circle_spaces.sql
-  must_not_move_without:
-  - src/FeatureSearch.tsx
-  - supabase/functions/platform-api/index.ts
-  purpose: Shared member/expert Circle UI and adapters, topic rooms, social actions, safety controls, and role-separated
-    Supabase RLS. The admin Support center has separate report moderation and Circle settings views.
-- owner_module: training_domain
-  allowed_edit_paths:
-  - src/Training.tsx
-  - src/ExerciseBrowser.tsx
-  - src/ExercisePreview.tsx
-  - scripts/import-flow-exercises.mjs
-  - public/data/flow/
-  - public/data/exercises.json
-  - public/data/exercises-LICENSE.txt
-  - public/data/README.md
-  must_not_move_without:
-  - src/TrainingDemo.tsx
-  - src/TrainingCloud.tsx
-  - src/styles.css
-  - supabase/migrations/
-  purpose: Shared member training and expert review UI, types, licensed text exercise catalog, and illustrative
-    Flow SVG previews. Local and connected adapters own persistence.
-- owner_module: app_navigation
-  allowed_edit_paths:
-  - app.html
-  - vite.config.ts
-  - vercel.json
-  - src/navigation.ts
-  - src/main.tsx
-  - src/App.tsx
-  - src/CloudApp.tsx
-  - src/Training.tsx
-  - src/ExerciseBrowser.tsx
-  must_not_move_without:
-  - src/FeatureSearch.tsx
-  - src/styles.css
-  - vercel.json
-  purpose: Live role shells selected by URL, plus browser history state and Back/Forward restoration within pages and nested training screens. src/App.tsx is unmounted demo reference code.
-- owner_module: booking_messaging
-  allowed_edit_paths:
-  - src/ChatAttachment.tsx
-  - src/App.tsx
-  - src/CloudApp.tsx
-  - src/data.ts
-  - src/styles.css
-  - supabase/migrations/20261025111755_session_message_attachments.sql
-  must_not_move_without:
-  - supabase/migrations/20261025080612_healthy_life_core.sql
-  - src/navigation.ts
-  purpose: Confirmed-booking conversation composer, local IndexedDB files, private live Storage files, message metadata, and participant-only access.
-- owner_module: daily_tracking
-  allowed_edit_paths:
-  - src/DailyTracker.tsx
-  - src/DailyTracker.css
-  - src/App.tsx
-  - src/CloudApp.tsx
-  - DESIGN.md
-  must_not_move_without:
-  - src/data.ts
-  - supabase/migrations/20261025080612_healthy_life_core.sql
-  purpose: Shared compact member Track layout and quick meal/activity form, with demo and live persistence adapters.
-- owner_module: feature_search
-  allowed_edit_paths:
-  - src/FeatureSearch.tsx
-  - src/App.tsx
-  - src/CloudApp.tsx
-  - src/styles.css
-  must_not_move_without:
-  - src/Training.tsx
-  - src/ExerciseBrowser.tsx
-  purpose: Current-role feature destination catalog, keyword search, keyboard dialog, and demo/live route mapping.
-- owner_module: database
-  allowed_edit_paths:
-  - supabase/migrations/
-  - supabase/config.toml
-  must_not_move_without:
-  - supabase/functions/platform-api/index.ts
-  - src/CloudApp.tsx
-  purpose: Postgres schema, grants, RLS, atomic simulated booking and order operations.
-- owner_module: platform_api
-  allowed_edit_paths:
-  - supabase/functions/platform-api/index.ts
-  must_not_move_without:
-  - supabase/migrations/
-  - src/CloudApp.tsx
-  purpose: JWT protected role actions and admin operations using server credentials.
-- owner_module: project_tooling
-  allowed_edit_paths:
-  - package.json
-  - package-lock.json
-  - tsconfig.json
-  - .mcp.json
-  - .env.example
-  - .gitignore
-  - vercel.json
-  - src/main.tsx
-  - README.md
-  - scripts/copy-samples.mjs
-  must_not_move_without:
-  - src/main.tsx
-  - supabase/config.toml
-  purpose: Build, Sample UI distribution, local configuration, Git ignore rules, remote source tracking, and development instructions.
+  brand:
+    owner_module: brand
+    allowed_edit_paths: [tokens.css, app/focus-circle.css, app/globals.css, app/layout.tsx, public/brand/, public/landing/, next.config.ts]
+    must_not_move_without: [workspace_shell, public_site]
+  public_site:
+    owner_module: public_site
+    allowed_edit_paths: [app/page.tsx, next.config.ts, public/landing/, public/robots.txt, public/sitemap.xml]
+    must_not_move_without: [brand]
+  workspace_shell:
+    owner_module: workspace_shell
+    allowed_edit_paths: [app/(workspace)/layout.tsx, app/components/workspace-shell.tsx, app/components/workspace-ui.tsx, proxy.ts]
+    must_not_move_without: [authentication, data_access]
+  authentication:
+    owner_module: authentication
+    allowed_edit_paths: [app/auth/, lib/supabase/, proxy.ts]
+    must_not_move_without: [workspace_shell, database]
+  member_and_social:
+    owner_module: member_and_social
+    allowed_edit_paths: [app/(workspace)/, app/components/, lib/fitcircle-data.ts, lib/preview-data.ts]
+    must_not_move_without: [database, authentication]
+  database:
+    owner_module: database
+    allowed_edit_paths: [supabase/config.toml, supabase/migrations/, supabase/seeds/, lib/database.types.ts, tests/]
+    must_not_move_without: [authentication, data_access, legacy_archive]
+  data_access:
+    owner_module: data_access
+    allowed_edit_paths: [lib/, app/*-actions.ts, app/(workspace)/]
+    must_not_move_without: [database, authentication]
+  legacy_archive:
+    owner_module: legacy_archive
+    allowed_edit_paths: [legacy/healthy-life-vite/]
+    must_not_move_without: [database]

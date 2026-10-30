@@ -1,2 +1,3 @@
-create index training_workout_logs_program_member_idx on public.training_workout_logs(program_id, member_id);
-create index training_sessions_program_member_idx on public.training_sessions(program_id, member_id);
+-- Existing hosted HealthyLife migration version.
+-- Original SQL and data model are preserved in legacy/healthy-life-vite/supabase/migrations/.
+-- This placeholder keeps migration history aligned when the new schema is reset locally.

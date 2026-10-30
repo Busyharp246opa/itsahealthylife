@@ -1,0 +1,61 @@
+schema_version: 1
+phase: production_preview_on_vercel
+decisions:
+  desktop_design_review: Three interactive concepts in Sample UI/ cover member and expert only. Daily Workbench
+    is the selected member desktop direction and now includes a program detail and full exercise browse flow. The
+    React member shell uses its navigation pattern. The admin console retains its sidebar and panels, with search above the sidebar navigation, four corrected overview metric cards, three separately aligned payment cards, and a sidebar logout action.
+  training: Members may save multiple weekly programs with one active program, log sets and completed sessions,
+    and share a program only with a confirmed or completed booked expert. Expert access is read only and revoked
+    by unsharing or loss of booking eligibility.
+  desktop_preview_opening: Comparison links target each concept's index.html explicitly; concept scripts are classic
+    scripts for direct-file or local-server viewing.
+  landing_sample: Sample UI/04-landing/index.html remains a noindex design preview. The approved design is generated into root index.html, about.html, and 404.html before Vite runs. The public homepage is / and the story page is /about; member, expert, and admin workspaces still use their own routes. Move, Nourish, Connect, and Grow show original photographs, and the story page has two original images.
+  landing_auth_links: /member?auth=signup and /experts?auth=signup open the connected registration form; the corresponding auth=login links open sign-in. Trainers create an account, then submit an expert application for approval.
+  visual_source: Figma member, expert, and admin screens plus supplied logos
+  frontend: React 19, TypeScript, Vite 8
+  backend: Supabase Auth, Postgres, RLS, Edge Function
+  checkout: simulated; no payment provider or fund transfer
+  local_testing: http://127.0.0.1:5173/
+  source_repository: https://github.com/Busyharp246opa/itsahealthylife (public; local main branch tracks origin/main)
+  production_host: https://itsahealthylife.vercel.app/ (Vercel project itsahealthylife under the itsahealthylife Hobby account; main deploys automatically)
+  public_shells: / is the public landing page; /about is the public story page. /member serves members, /experts serves approved experts or applicants, and /admin serves granted admins. Vercel rewrites the three role paths to app.html.
+  shell_access: URL chooses the workspace. Member and admin shells verify role_grants; admin-granted accounts are routed from /member to /admin even when they also retain a member grant. The expert shell shows the application until an expert grant and approved review exist. The demo role/mode dock is absent from the public app.
+  production_configuration: Vercel Production holds VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY as browser-readable Config values. No service role key is present. Supabase platform-api allows this production origin and local development origins.
+  auth_email_redirects: Supabase Auth Site URL is the production host; exact /member, /experts, and /admin URLs are allowed. CloudApp requests role-specific production URLs for confirmation and password recovery, including signups started locally. Hosted Auth settings are managed in the Supabase dashboard; supabase/config.toml mirrors them for local Supabase.
+  first_admin_email: itsahealthylifeltd@gmail.com
+  first_admin_state: confirmed account has admin and member grants; initial grant audited; user confirmed live admin
+    overview
+  navigation: Browser paths identify live roles; history state tracks page and member training location within a shell, with Back and Forward restoring them.
+  search_placement: At desktop widths the member Find a feature trigger sits in the plum sidebar above Your workspace; mobile keeps its header trigger. Admin search sits above Admin console and Overview in its sidebar, with an icon trigger on narrow screens. Expert search keeps its top-bar placement.
+  member_navigation: Shop sits above Profile in the member desktop sidebar and phone bottom navigation. The shop opens as a top-level page. Member desktop Log out replaces the motivational/account footer; the profile keeps its account and sign-out section for phone access.
+  admin_session_entry: An admin account signing in from /member is routed to /admin using its server-managed grant. An existing admin session opened at /member also redirects to /admin. Other password sign-ins return to their requested role shell; direct /admin/ normalizes to /admin. Admin sidebar has a pinned current-session logout action.
+  admin_member_grant_scope: The first admin still has the member grant created at signup. The current /member diversion is a client workspace rule; it does not revoke that database grant or its RLS permissions.
+  auth_form_controls: Connected sign-in shows a Remember me checkbox and an accessible password visibility button. Checked sign-ins use localStorage; unchecked sign-ins use sessionStorage. Existing local sessions remain readable. Signup and recovery password fields also have visibility controls.
+  admin_management: Content, Challenges, Store, Support, and Settings are reachable from the admin sidebar. Challenge Pause/Resume and Store Hide/Show use admin-only platform-api actions and record audit events.
+  admin_catalogue_layout: Challenges and Store open with compact item lists. New challenge and Add product reveal their forms on demand. Challenge steps and product descriptions expand per item. Store Products and Orders have separate views. Admins may upload up to five product JPG, PNG, or WebP images during creation or from an existing inventory item, remove them, and see the first image as the member shop cover.
+  admin_support: The Support center has separate Requests, Reports, and Circle settings views with visible queue counts. Requests show unresolved items by default, can reveal resolved items, and offer Start review, Resolve, and Reopen. Circle room creation and guideline editing open on demand.
+  session_attachments: Members and experts may send one image or document (up to 10 MB) with or without text in a confirmed booking conversation. Demo files persist in IndexedDB. Live files use a private Supabase Storage bucket and participant-only policies.
+  product_images: Product images use the public product-images Storage bucket, with admin-only upload and delete policies and a 5 MB per-file limit. Public URLs are intentional for shop imagery. Product image paths are saved on products through admin-only platform-api actions.
+  daily_tracking: Member Track uses the same compact quick-add UI in demo and Live Supabase. Meal name and calories or activity and minutes are the primary fields; macros are optional. Today's log supports repeat and remove. The admin UI is unchanged.
+  exercise_previews: Flow Exercise Dataset SVG frames imported at commit 961bb2739015da373daa43b960c28ee839fe93e6.
+    1257 animated previews, 67 instructions-only; artwork is illustrative and unreviewed.
+  circle: Member topic rooms and an approved-expert-only Circle use dedicated admin Support views for reports
+    and settings. Local demo persists Circle activity in browser storage; live interactions use RLS-protected Supabase
+    tables. Existing admin navigation and visual kit remain.
+maintenance:
+  source_of_truth: Code and SQL migrations for behavior; docs/ai for navigation and retest routing.
+  update_when:
+  - module boundaries change
+  - schema or policies change
+  - role flows change
+  - desktop concepts change
+  - smoke checks change
+  - MCP configuration changes
+  - production deployment or environment configuration changes
+  secrets: Never store OAuth tokens, passwords, or service role keys in project files. .env.local contains only
+    the publishable key and is ignored.
+  migration_rule: Keep local migration filenames aligned with Supabase migration history; apply changes through
+    HealthyLife MCP. Training migrations are 20261025091715, 20261025091915, 20261025092137, and 20261025092951.
+    Circle migration 20261025101324 adds four public tables and role-separated policies.
+    Session attachment migration 20261025111755 adds message metadata and a private Storage bucket/policies.
+    Product image migration 20261025171436 adds product image paths and a public bucket with admin-only write policies; 20261025171918 corrects the Storage path regex after a live upload test.

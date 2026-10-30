@@ -1,0 +1,52 @@
+schema_version: 1
+workspace:
+  state: implemented_local_and_connected
+  entrypoint: / -> index.html public landing; /about -> about.html public story; /member, /experts, /admin -> app.html -> src/main.tsx -> src/CloudApp.tsx
+  local_demo: src/App.tsx + src/data.ts + src/TrainingDemo.tsx remain as unmounted development reference code
+  connected_app: src/CloudApp.tsx + src/authStorage.ts + src/TrainingCloud.tsx + Supabase JS client + private session-attachments Storage bucket + public product-images Storage bucket + src/Circle.tsx
+  design: src/styles.css + src/DailyTracker.tsx + src/DailyTracker.css + src/Training.tsx + src/ExerciseBrowser.tsx + src/FeatureSearch.tsx + Frame.png + Group
+    46831.png + Circle styles + DESIGN.md
+  desktop_concepts: Sample UI/index.html comparison page; Sample UI/shared/model.js member/expert sample model;
+    Daily Workbench training.js has program, browse, results, and exercise-detail screens with Flow previews; three standalone HTML/CSS/JS
+    desktop concept folders and Sample UI/04-landing/ public landing-page sample. The main app retains its existing admin panel. Pages use explicit index.html links and classic
+    scripts, so they can be opened directly or served by Vite.
+  public_site: scripts/prepare-public-pages.mjs derives root index.html, about.html, and 404.html from the approved Sample UI/04-landing/ pages, stripping noindex and review-only labels and rewriting assets and navigation. vite.config.ts builds these alongside app.html and maps local role paths to app.html. Vercel serves root index.html and rewrites /about and the role paths. public/robots.txt and public/sitemap.xml list the public pages.
+  landing_sample: Sample UI/04-landing/index.html, about.html, 404.html, style.css, app.js, local fonts, original photos including four tab-specific approach photos and two story-page photos, and local GSAP. scripts/copy-samples.mjs copies the noindex sample into dist after Vite build.
+  exercise_catalog: public/data/exercises.json holds 1324 English text records adapted from FitCircle; Sample UI/shared/exercises.json
+    is the standalone preview copy. public/data/flow/assets/ stores 3771 SVG frames for 1257 exercises; 67 have no frames. Both clients use the same animation metadata.
+  navigation: src/navigation.ts maps /member, /experts, and /admin (including a trailing slash) to role shells and stores inner page/training state in browser history. CloudApp, Training, and ExerciseBrowser restore on popstate; Vite and Vercel rewrite direct shell requests to app.html. Password sign-in reloads the requested canonical shell, except an admin-granted identity entering /member goes to /admin. CloudApp renders Shop above Profile in member navigation and a desktop sidebar Log out action.
+  auth_storage: src/authStorage.ts supplies the Supabase client's storage adapter. Remember me selects persistent localStorage; an unchecked sign-in selects tab-scoped sessionStorage. Existing local sessions remain readable until sign-out.
+  messaging: src/ChatAttachment.tsx owns file validation, picker, and attachment display. Messages remain booking scoped.
+  daily_tracking: src/DailyTracker.tsx owns the shared compact Track presentation and form state. App and CloudApp adapt it to local demo data or Supabase meal_entries and activity_entries.
+  application_stack: React 19, TypeScript 7, Vite 8, Supabase JS 2
+  hosting: Local Vite at 127.0.0.1:5173 and Vercel Production at https://itsahealthylife.vercel.app/; GitHub main builds to dist, including standalone Sample UI pages. Vercel Production supplies browser-safe Supabase variables.
+  source_repository: https://github.com/Busyharp246opa/itsahealthylife; local Git main tracks origin/main
+external_services:
+  vercel:
+    project: itsahealthylife
+    account: itsahealthylife Hobby
+    production_url: https://itsahealthylife.vercel.app/
+    source: https://github.com/Busyharp246opa/itsahealthylife main
+    production_variables: VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+  supabase:
+    codex_mcp_name: HealthyLife
+    project_ref: jqtrzwiyeohcljdvfkss
+    url: https://jqtrzwiyeohcljdvfkss.supabase.co
+    configuration_location: Codex user MCP configuration and project .mcp.json
+    setup_status: OAuth refreshed; native MCP calls working on 2026-10-25
+    public_schema_tables: 34
+    edge_function: platform-api, deployed with JWT verification
+    auth_email_returns: Hosted Auth Site URL and exact production workspace redirect allow list are managed in Supabase URL Configuration; local supabase/config.toml mirrors them. CloudApp sends role-specific production callback URLs for signup confirmation and password recovery.
+load_order_contracts:
+- Generate root public HTML from Sample UI/04-landing/ before Vite dev/build; keep the sample noindex, while the generated public pages have canonical URLs and no review-only labels.
+- Build index.html, about.html, 404.html, and app.html as separate Vite HTML entrypoints; copy Sample UI/ into dist afterward so shared classic scripts and sample pages remain available.
+- Load Vite variables from ignored .env.local; never bundle a service role key.
+- Vercel Production provides the same two browser-safe Vite variables at build time; changing them requires a redeploy.
+- Auth user creation trigger adds profiles and member role before connected role selection.
+- Apply core schema, indexes, actions, directory/content, edit restriction, slot visibility, then four training
+  migrations in filename order.
+- Apply 20261025101324_circle_spaces.sql after the training migrations; its policies depend on existing role and
+  expert approval helpers.
+- Apply 20261025111755_session_message_attachments.sql after core messages and conversations; its Storage policies depend on booking participant RLS.
+- Apply 20261025171436_product_images.sql after the core products table and admin role helper; its public bucket permits admin-only uploads and deletes.
+- Apply 20261025171918_fix_product_image_policy.sql after the initial product image migration; it corrects UUID path matching for uploads.

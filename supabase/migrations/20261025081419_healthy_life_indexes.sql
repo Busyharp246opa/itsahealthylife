@@ -1,21 +1,3 @@
--- Foreign-key indexes used by RLS joins, member timelines and operational views.
-create index if not exists activity_entries_member_id_idx on public.activity_entries(member_id);
-create index if not exists audit_events_actor_id_idx on public.audit_events(actor_id);
-create index if not exists bookings_policy_version_idx on public.bookings(policy_version);
-create index if not exists challenge_progress_step_id_idx on public.challenge_progress(step_id);
-create index if not exists community_comments_author_id_idx on public.community_comments(author_id);
-create index if not exists community_comments_post_id_idx on public.community_comments(post_id);
-create index if not exists community_posts_author_id_idx on public.community_posts(author_id);
-create index if not exists community_reports_reporter_id_idx on public.community_reports(reporter_id);
-create index if not exists content_items_author_id_idx on public.content_items(author_id);
-create index if not exists expert_reviews_reviewer_id_idx on public.expert_reviews(reviewer_id);
-create index if not exists messages_sender_id_idx on public.messages(sender_id);
-create index if not exists order_items_order_id_idx on public.order_items(order_id);
-create index if not exists order_items_product_id_idx on public.order_items(product_id);
-create index if not exists orders_member_id_idx on public.orders(member_id);
-create index if not exists payment_transactions_booking_id_idx on public.payment_transactions(booking_id);
-create index if not exists payouts_expert_id_idx on public.payouts(expert_id);
-create index if not exists policy_versions_published_by_idx on public.policy_versions(published_by);
-create index if not exists role_grants_granted_by_idx on public.role_grants(granted_by);
-create index if not exists saved_content_content_id_idx on public.saved_content(content_id);
-create index if not exists support_tickets_member_id_idx on public.support_tickets(member_id);
+-- Existing hosted HealthyLife migration version.
+-- Original SQL and data model are preserved in legacy/healthy-life-vite/supabase/migrations/.
+-- This placeholder keeps migration history aligned when the new schema is reset locally.

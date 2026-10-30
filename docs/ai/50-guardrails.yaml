@@ -1,177 +1,23 @@
 schema_version: 1
-guardrails:
-- id: desktop_concept_isolation
-  rule: Sample UI/ is a member/expert design review area. Keep its state local to the page, label sample data, and
-    preserve the shipped mobile and existing admin UI while comparing directions. Keep hosted samples noindex.
-- id: landing_sample_boundary
-  rule: The approved landing design is now the public root and /about; keep the Sample UI copy noindex. Hero copy and account actions must be visible on first paint. Registration and login CTAs must resolve to the correct member or expert shell and account form. Trainers still require application and approval; do not imply real charges or mobile app-store availability.
-- id: no_secrets
-  rule: Keep OAuth tokens, passwords, and service keys out of source, docs, logs, and browser bundles. Only publishable
-    credentials may enter Vite.
-- id: production_origin
-  rule: Vercel Production may embed only the Supabase project URL and publishable key. Keep platform-api CORS limited to the verified production host and local development; do not allow arbitrary origins. Preserve JWT verification and role checks.
-- id: role_boundaries
-  rule: Browser cannot grant roles or directly change booking, payment, payout, approval, or policy state. Server
-    actions derive actor from JWT and check grants. Challenge and product visibility changes also require an admin role on the server and must be audited.
-- id: expert_review
-  rule: Credential and price changes create a submitted review; direct authenticated expert_profiles updates are
-    revoked.
-- id: booking_integrity
-  rule: A slot has at most one active booking and booked slots are hidden from member discovery; booking/payment/payout
-    are separate states; cancellation uses booked policy version.
-- id: health_privacy
-  rule: Member health rows require explicit consent, are self-only unless sharing is enabled for a booked expert,
-    and can be removed by the member; admin cannot browse them by default.
-- id: training_privacy
-  rule: Members own and write their training programs, set logs, and completed sessions. A program can be shared
-    only with a confirmed or completed booked expert; expert reads require that booking to remain eligible and the
-    explicit per-program share choice. Experts cannot edit member training. Only one program per member is active.
-    Never copy FitCircle's separately licensed exercise images or GIFs into the catalog. Flow artwork must retain source, license, NOTICE, and provenance; label it illustrative because generation prompts and form review are incomplete.
-- id: browser_navigation
-  rule: The pathname selects /member, /experts, or /admin, with optional trailing slash normalized to the same shell; browser history stores only navigation and catalog filter state. Back/Forward must restore the page and nested training location within that shell without exposing protected data or changing authorization. Member/admin grants and expert approval must be checked after loading or restoring a route. Keep the admin console's sidebar and panel structure.
-- id: live_shell_access
-  rule: The public entrypoint mounts only the connected app. Do not render the demo role/mode switch. A URL or history state cannot grant admin or expert access; unapproved experts see only their application. Admin-granted users must not render the member shell, even if they also have a member grant; use server-managed role_grants to route them to /admin. Keep a visible sign-out path in each shell.
-- id: member_navigation
-  rule: Keep Shop as a top-level member destination above Profile on desktop and phone. The shop should have its own active navigation state, and the member desktop sidebar must retain a visible bottom Log out action. Preserve phone access to Profile sign-out.
-- id: auth_email_returns
-  rule: Confirmation and recovery links must return to exact production member, expert, or admin shell URLs allowed by Supabase Auth. Never include tokens in source, docs, logs, or navigation state. Keep public signup off the admin shell, and handle password recovery before rendering workspace content.
-- id: auth_session_choice
-  rule: Remember me selects persistent localStorage only when checked; unchecked password sign-in uses tab-scoped sessionStorage. Preserve readable existing local sessions and clear either store on sign-out. Password visibility controls must not save plaintext credentials or change role checks.
-- id: feature_search_roles
-  rule: Command search only lists current-role destinations. Route keys must exist in the corresponding demo or
-    connected workspace, and search must not change authorization or reveal other roles. Keep the member desktop trigger above Your workspace, preserve its mobile access, and keep the admin trigger in its sidebar above Overview. Expert placement is unchanged.
-- id: messaging_privacy
-  rule: Booking conversation messages and private attachments are visible only to participants while the booking is confirmed. Storage paths bind the conversation and sender. Keep upload and download behind RLS; never use public URLs. Preserve message-only sends and allow file-only sends.
-- id: product_image_access
-  rule: Product images are public shop assets, unlike private booking attachments. Only an authenticated admin may upload or delete them. Keep bucket MIME and size limits, the five-image product cap, product-scoped paths, and server-side path verification. Never expose the service key in the browser.
-- id: daily_tracking_data
-  rule: Track totals are derived from today's visible member records. Keep quick entry writes within existing member-owned demo or Supabase paths, and clear form fields only after a successful write. Preserve the admin and expert layouts.
-- id: simulation_honesty
-  rule: UI identifies payments and orders as simulated; do not display real charge or payout claims.
-- id: architecture_alignment
-  rule: Update affected YAMLs and project-structure.txt after changing implementation or boundaries.
-- id: circle_privacy
-  rule: Keep member and approved-expert Circle feeds separate in RLS, not only in the UI. Posts, comments, likes,
-    reports, and blocks require a visible parent or actor ownership. Admin moderation keeps the existing admin navigation
-    and visual kit.
+invariants:
+  - Keep Healthy Life logo, Host/Bricolage typography, plum/lime/lavender/warm-white palette, and public landing identity.
+  - Do not restore FitLoop or the TDEE calculator in routes, navigation, schema, or tests.
+  - Never expose SUPABASE_SERVICE_ROLE_KEY to the browser.
+  - Preserve hosted Auth users and original data through healthy_legacy archival before new public schema creation.
+  - Do not treat demo checkout, currency, notifications, or scheduling previews as production integrations.
+  - RLS and server authorization must guard saved data regardless of client presentation.
+blast_radius:
+  brand: [public_entry, member]
+  routing: [public_entry, member, auth_and_roles]
+  auth: [auth_and_roles, saved_data, legacy_migration]
+  migrations: [saved_data, legacy_migration, auth_and_roles]
 must_retest_if_changed:
-- paths:
-  - supabase/config.toml
-  smoke_groups:
-  - auth_email_redirects
-- paths:
-  - index.html
-  - about.html
-  - 404.html
-  - app.html
-  - vite.config.ts
-  - scripts/prepare-public-pages.mjs
-  - public/robots.txt
-  - public/sitemap.xml
-  smoke_groups:
-  - landing_preview
-  - shell_routes
-  - production_deployment
-- paths:
-  - Sample UI/04-landing/
-  - scripts/copy-samples.mjs
-  - package.json
-  smoke_groups:
-  - landing_preview
-  - production_deployment
-- paths:
-  - src/main.tsx
-  - vercel.json
-  smoke_groups:
-  - shell_routes
-  - production_deployment
-- paths:
-  - src/DailyTracker.tsx
-  - src/DailyTracker.css
-  smoke_groups:
-  - demo_track
-  - live_track
-- paths:
-  - src/ChatAttachment.tsx
-  - supabase/migrations/20261025111755_session_message_attachments.sql
-  smoke_groups:
-  - demo_messages
-  - live_messages
-  - security_boundary
-- paths:
-  - src/ProductImages.tsx
-  - supabase/migrations/20261025171436_product_images.sql
-  - supabase/migrations/20261025171918_fix_product_image_policy.sql
-  smoke_groups:
-  - live_admin
-  - live_member
-  - security_boundary
-- paths:
-  - Sample UI/
-  smoke_groups:
-  - desktop_concepts
-  - landing_preview
-- paths:
-  - src/Training.tsx
-  - src/ExerciseBrowser.tsx
-  - src/navigation.ts
-  - src/ExercisePreview.tsx
-  - scripts/import-flow-exercises.mjs
-  - public/data/flow/
-  - src/TrainingDemo.tsx
-  - public/data/exercises.json
-  smoke_groups:
-  - demo_training
-  - desktop_concepts
-  - app_navigation
-  - shell_routes
-- paths:
-  - src/TrainingCloud.tsx
-  smoke_groups:
-  - live_training
-  - security_boundary
-- paths:
-  - supabase/migrations/
-  - supabase/functions/platform-api/index.ts
-  smoke_groups:
-  - security_boundary
-  - production_deployment
-  - live_member
-  - live_expert
-  - live_admin
-  - live_training
-- paths:
-  - src/CloudApp.tsx
-  - src/authStorage.ts
-  - src/FeatureSearch.tsx
-  smoke_groups:
-  - feature_search
-  - live_signed_out
-  - auth_email_redirects
-  - live_member
-  - live_expert
-  - live_admin
-  - live_training
-  - live_circle
-  - demo_circle
-  - app_navigation
-  - shell_routes
-  - landing_preview
-- paths:
-  - src/App.tsx
-  - src/data.ts
-  - src/styles.css
-  smoke_groups:
-  - feature_search
-  - demo_member_booking
-  - demo_training
-  - live_signed_out
-  - demo_circle
-  - app_navigation
-- paths:
-  - src/Circle.tsx
-  - supabase/migrations/20261025101324_circle_spaces.sql
-  smoke_groups:
-  - demo_circle
-  - live_circle
-  - security_boundary
+  - paths: [next.config.ts, app/page.tsx, public/landing/, tokens.css, app/focus-circle.css]
+    flows: [public_entry, member]
+  - paths: [app/(workspace)/, app/components/, lib/]
+    flows: [member, auth_and_roles, saved_data]
+  - paths: [supabase/migrations/, supabase/config.toml, lib/supabase/]
+    flows: [saved_data, legacy_migration, auth_and_roles]
+refactor_rules:
+  - Edit helpers and data access first, route wiring second, docs last.
+  - Keep the archived Vite runtime separate from the Next.js build.

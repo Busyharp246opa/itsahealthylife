@@ -1,0 +1,130 @@
+schema_version: 1
+project: HealthyLife
+status: vercel_production_and_live_supabase
+timezone: Asia/Dubai
+read_order:
+- 00-index.yaml
+- 05-admin.yaml
+- 10-system-map.yaml
+- 30-contracts.yaml
+- 20-modules.yaml
+- 40-flows.yaml
+- 50-guardrails.yaml
+- 60-debt.yaml
+summary: The approved public landing page opens at /, with an About page at /about. Responsive member, expert, and admin clients share a Supabase backend at /member, /experts, and /admin.
+  The role entrypoint mounts the connected client only; the old browser-storage demo remains as reference code. Admin-granted accounts entering /member are sent to /admin, including after password sign-in.
+  Members author weekly training programs, track sets, and optionally share with booked experts. Checkout
+  and orders are simulated. Three standalone member/expert desktop concept previews and a public landing-page sample live in Sample UI/; Daily Workbench
+  training informs the member desktop app. Members open programs, browse and filter the full exercise catalog, review
+  technique, and add movements to a selected day. Role-scoped command search navigates member, expert, and admin
+  features; admin search sits in the sidebar above Overview, overview and payment metric cards use complete layouts, and logout is visible below navigation. Admin Challenges and Store show item lists first, with creation forms opened on demand; they can toggle publication status. Admin Support uses separate compact request, report, and Circle settings views. Browser Back and Forward follow pages within the selected shell and the nested training browser. Circle now has member topic rooms and a separate approved-expert
+  feed, with posts, kinds, likes, comments, safety actions, people views, guidelines, and admin moderation. Exercise
+  detail has top and bottom Back controls. Flow SVG previews cover 1,257 exercises; 67 have instructions only. Preview motion is illustrative and can be paused.
+  Booking messages support one private image or document attachment per message.
+  Member Track uses a compact daily check-in with side-by-side totals, quick meal/activity entry, optional macros, and one-click repeat from today's log. Member Shop is a top-level sidebar and phone navigation destination above Profile; the desktop sidebar ends with Log out.
+  The production Vite build is served from itsahealthylife.vercel.app with browser-safe Supabase variables set in Vercel Production.
+task_routing:
+  desktop_concepts:
+    read:
+    - 20-modules.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: Sample UI/
+  landing_page_sample:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: Sample UI/04-landing/, scripts/prepare-public-pages.mjs, index.html, about.html, 404.html, app.html, vite.config.ts, vercel.json
+  training:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/Training.tsx, src/ExerciseBrowser.tsx, src/ExercisePreview.tsx, src/TrainingDemo.tsx, src/TrainingCloud.tsx, public/data/exercises.json,
+      supabase/migrations/
+  navigation:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/navigation.ts, src/main.tsx, src/CloudApp.tsx, src/Training.tsx, src/ExerciseBrowser.tsx, vercel.json
+  feature_search:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/FeatureSearch.tsx, src/App.tsx, src/CloudApp.tsx, src/styles.css
+  messaging:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/ChatAttachment.tsx, src/App.tsx, src/CloudApp.tsx, src/data.ts, src/styles.css,
+      supabase/migrations/20261025111755_session_message_attachments.sql
+  daily_tracking:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/DailyTracker.tsx, src/DailyTracker.css, src/App.tsx, src/CloudApp.tsx
+  product_images:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/ProductImages.tsx, src/CloudApp.tsx, src/styles.css, supabase/migrations/20261025171436_product_images.sql, supabase/migrations/20261025171918_fix_product_image_policy.sql,
+      supabase/functions/platform-api/index.ts
+  deployment:
+    read:
+    - 10-system-map.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: package.json, src/main.tsx, vercel.json, supabase/functions/platform-api/index.ts, README.md
+  frontend:
+    read:
+    - 20-modules.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/App.tsx and src/CloudApp.tsx
+  authentication_ui:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/CloudApp.tsx, src/authStorage.ts, src/styles.css
+  database:
+    read:
+    - 10-system-map.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: supabase/migrations/
+  server_actions:
+    read:
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: supabase/functions/platform-api/index.ts
+  refactors:
+    read:
+    - 20-modules.yaml
+    - 10-system-map.yaml
+    - 50-guardrails.yaml
+    - 60-debt.yaml
+  circle:
+    read:
+    - 20-modules.yaml
+    - 30-contracts.yaml
+    - 40-flows.yaml
+    - 50-guardrails.yaml
+    owner: src/Circle.tsx, src/App.tsx, src/CloudApp.tsx, src/data.ts, supabase/migrations/

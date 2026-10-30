@@ -1,0 +1,100 @@
+.fc-training-hero{display:grid;grid-template-columns:minmax(0,1fr) 125px;gap:28px;align-items:center;padding:27px 30px;border-radius:16px;background:#1d252a;color:#fff;border:1px solid #3b5663}
+.fc-training-eyebrow{display:block;color:#8cd6ea;font-size:.67rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.fc-training-hero h2{margin:8px 0;font-size:clamp(1.45rem,2.5vw,2.2rem);line-height:1.15;color:#fff}
+.fc-training-hero p{max-width:62ch;margin:0;color:#c4d9df;font-size:.85rem;line-height:1.55}
+.fc-training-hero-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:19px}
+.fc-training-hero-count{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;align-items:baseline;border-left:1px solid #48616a;padding-left:22px}
+.fc-training-hero-count strong{color:#f9951d;font-size:1.7rem}
+.fc-training-hero-count span{color:#b6ced6;font-size:.72rem}
+.fc-training-index{display:grid;grid-template-columns:minmax(270px,.8fr) minmax(0,1.2fr);align-items:start;gap:18px}
+.fc-training-index .fc-panel>h2{display:flex;align-items:center;gap:8px}
+.fc-training-index .fc-panel>p{color:#52636b;font-size:.84rem;line-height:1.5}
+.fc-training-program-list,.fc-training-schedules{display:grid;gap:10px}
+.fc-training-program-row{display:flex;align-items:center;gap:12px;padding:15px;border:1px solid #d4e3e8;border-radius:11px;background:#f7fbfc;color:#1d252a;text-decoration:none}
+.fc-training-program-row:hover{border-color:#65b7ce;background:#eaf7fa}
+.fc-training-program-row>div{min-width:0;flex:1}
+.fc-training-program-row strong{font-size:.96rem}
+.fc-training-program-row p{margin:4px 0;color:#52636b;font-size:.8rem;line-height:1.4}
+.fc-training-program-row small{color:#5d7078;font-size:.73rem}
+.fc-training-week-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.fc-training-day{min-width:0;padding:18px;border:1px solid #d4e3e8;border-radius:13px;background:#fff}
+.fc-training-day.is-today{border-color:#2a9cc0;box-shadow:inset 0 0 0 1px #2a9cc0}
+.fc-training-day-head{display:flex;align-items:start;justify-content:space-between;gap:10px}
+.fc-training-day-head span{color:#0b7297;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.fc-training-day-head h2{margin:3px 0 0;font-size:1.22rem}
+.fc-training-day-head>strong{max-width:45%;color:#3c5964;font-size:.78rem;text-align:right}
+.fc-training-day-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+.fc-training-day-form label{flex:1;min-width:140px}
+.fc-training-day-form input,.fc-training-targets input,.fc-training-delete input,.fc-training-search input{width:100%;min-width:0;height:41px;padding:7px 10px;border:1px solid #c9d7dc;border-radius:8px;background:#fff;color:#1d252a}
+.fc-training-day-form .fc-button{min-height:41px}
+.fc-training-movements,.fc-training-view-list{display:grid;gap:10px;margin:12px 0;padding:0;list-style:none}
+.fc-training-movements>li,.fc-training-view-list>li{padding:12px;border:1px solid #e0e9ec;border-radius:9px;background:#f8fbfc}
+.fc-training-movement-head{display:flex;align-items:start;gap:9px}
+.fc-training-movement-head>span{color:#0b7297;font-size:.7rem;font-weight:800}
+.fc-training-movement-head>div{display:grid;gap:3px;min-width:0;flex:1}
+.fc-training-movement-head strong{font-size:.85rem}
+.fc-training-movement-head small{color:#60737b;font-size:.72rem}
+.fc-training-movement-head .fc-button{min-height:30px;padding:0 8px;font-size:.68rem}
+.fc-training-targets{display:grid;grid-template-columns:64px 90px minmax(0,1fr) auto;gap:7px;align-items:end;margin-top:11px}
+.fc-training-targets label{display:grid;gap:4px;color:#52636b;font-size:.66rem;font-weight:800}
+.fc-training-targets .fc-button{min-height:41px}
+.fc-training-targets .fc-training-feedback{grid-column:1/-1}
+.fc-training-empty-day{margin:15px 0;color:#60737b;font-size:.8rem;line-height:1.5}
+.fc-training-add-link{display:flex;align-items:center;gap:7px;min-height:42px;margin-top:14px;padding:0 10px;border:1px dashed #95bfca;border-radius:8px;color:#0b6587;font-size:.78rem;font-weight:800;text-decoration:none}
+.fc-training-add-link svg:last-child{margin-left:auto}
+.fc-training-add-link:hover{background:#e7f4f8}
+.fc-training-edit-details summary,.fc-training-schedule-card summary{cursor:pointer;color:#0b6587;font-weight:800}
+.fc-training-edit-details .fc-form{margin-top:15px}
+.fc-training-picker-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:18px;align-items:start}
+.fc-training-search{display:flex;align-items:end;gap:8px}
+.fc-training-search label{flex:1;display:grid;gap:6px;min-width:0;font-size:.75rem;font-weight:800}
+.fc-training-search label>div{position:relative}
+.fc-training-search label svg{position:absolute;top:12px;left:10px;color:#59808c}
+.fc-training-search input{padding-left:35px}
+.fc-training-picker-results{display:grid;gap:0;max-height:700px;overflow:auto;margin-top:12px;border-top:1px solid #e0e9ec}
+.fc-training-picker-results article{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e0e9ec}
+.fc-training-picker-results article>div{display:grid;gap:3px;min-width:0}
+.fc-training-picker-results strong{font-size:.84rem}
+.fc-training-picker-results small{color:#60737b;font-size:.72rem}
+.fc-training-picker-results .fc-button{white-space:nowrap}
+.fc-training-custom-column{display:grid;gap:18px}
+.fc-training-form-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fc-training-pagination{display:flex;justify-content:space-between;gap:8px;padding-top:15px;font-size:.78rem}
+.fc-training-pagination a{color:#0b6587}
+.fc-training-pagination a[aria-disabled=true]{pointer-events:none;opacity:.45}
+.fc-training-feedback{margin:7px 0 0;color:#276e51;font-size:.73rem;line-height:1.35}
+.fc-training-feedback.is-error{color:#9a302a}
+.fc-training-feedback a{color:inherit;font-weight:800}
+.fc-training-calendar-section{padding:21px;border:1px solid #d4e3e8;border-radius:14px;background:#f9fcfd}
+.fc-training-section-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.fc-training-section-head h2{margin:5px 0;font-size:1.35rem}
+.fc-training-section-head p{margin:0;color:#5d7078;font-size:.79rem}
+.fc-training-week-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px;font-size:.8rem}
+.fc-training-week-nav>div{display:flex;gap:16px;flex-wrap:wrap}
+.fc-training-week-nav a{color:#1682a7;font-weight:700;text-decoration:none}
+.fc-training-week-nav a:hover{text-decoration:underline}
+.fc-training-calendar-section .fc-training-eyebrow{color:#0b7297}
+.fc-training-week-grid--view{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.fc-training-week-grid--view .fc-training-day{padding:11px;min-height:160px}
+.fc-training-week-grid--view .fc-training-day-head{display:grid}
+.fc-training-week-grid--view .fc-training-day-head h2{font-size:.87rem}
+.fc-training-week-grid--view .fc-training-day-head>strong{max-width:none;text-align:left;font-size:.71rem}
+.fc-training-view-list{gap:6px}
+.fc-training-view-list>li{display:grid;gap:2px;padding:7px;font-size:.7rem}
+.fc-training-view-list span,.fc-training-view-list small{color:#5d7078}
+.fc-training-schedule-card{display:grid;gap:12px;padding:15px;border:1px solid #d4e3e8;border-radius:11px;background:#f7fbfc}
+.fc-training-schedule-heading{display:flex;justify-content:space-between;gap:12px}
+.fc-training-schedule-heading p{margin:4px 0 0;color:#60737b;font-size:.76rem}
+.fc-training-schedule-heading a,.fc-training-share-link a{color:#0b6587}
+.fc-training-schedule-actions,.fc-training-share-link{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.fc-training-share-link{padding:10px;border-radius:8px;background:#e7f4f8;font-size:.76rem}
+.fc-training-delete{display:flex;flex-wrap:wrap;align-items:end;gap:8px;margin-top:10px}
+.fc-training-delete label{display:grid;gap:4px;font-size:.72rem}
+.fc-training-delete input{width:170px}
+.fc-training-client-week{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fc-training-client-week>div{padding:10px;border:1px solid #d4e3e8;border-radius:8px;background:#f8fbfc}
+.fc-training-client-week strong{font-size:.8rem}
+.fc-training-client-week p{margin:4px 0 0;color:#60737b;font-size:.74rem;line-height:1.4}
+@media(max-width:1120px){.fc-training-week-grid--view{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.fc-training-index,.fc-training-picker-grid{grid-template-columns:1fr}.fc-training-week-grid--view{grid-template-columns:repeat(2,minmax(0,1fr))}.fc-training-hero{grid-template-columns:1fr}.fc-training-hero-count{display:flex;gap:6px;border-left:0;border-top:1px solid #48616a;padding:13px 0 0}.fc-training-hero-count span{margin-right:10px}}
+@media(max-width:560px){.fc-training-week-grid,.fc-training-client-week{grid-template-columns:1fr}.fc-training-hero{padding:21px}.fc-training-search{display:grid}.fc-training-targets{grid-template-columns:60px minmax(85px,1fr)}.fc-training-targets-note{grid-column:1/-1}.fc-training-targets .fc-button{grid-column:1/-1}.fc-training-section-head{align-items:start;flex-direction:column}.fc-training-week-grid--view{grid-template-columns:1fr}.fc-training-week-grid--view .fc-training-day{min-height:0}.fc-training-picker-results article{align-items:start;flex-direction:column}.fc-training-program-row{flex-wrap:wrap}}

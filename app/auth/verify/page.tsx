@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { ResendVerification } from "../resend-verification";
+export default async function Page({ searchParams }: { searchParams: Promise<{ error?: string }> }) { const { error } = await searchParams; return <div className="fc-auth-card"><p className="fc-auth-eyebrow">Check your inbox</p><h1>Verify your email.</h1><p>{error ? "That verification link expired or is invalid. Request a new link from support." : "Open the Healthy Life verification link we sent you."} Once confirmed, return here to sign in. If you applied as a trainer, your application also needs admin approval.</p><ResendVerification /><Link className="fc-button fc-button--primary" href="/auth/login">Go to sign in</Link></div>; }

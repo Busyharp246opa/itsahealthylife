@@ -1,5 +1,3 @@
--- Credential and price edits must create a new review. The authenticated client
--- can submit drafts through platform-api, which writes a submitted review.
-revoke update(specialty,bio,credentials,formats,session_price,currency)
-  on public.expert_profiles from authenticated;
-drop policy expert_update on public.expert_profiles;
+-- Existing hosted HealthyLife migration version.
+-- Original SQL and data model are preserved in legacy/healthy-life-vite/supabase/migrations/.
+-- This placeholder keeps migration history aligned when the new schema is reset locally.

@@ -1,62 +1,34 @@
-# It’s a Healthy Life
+# It’s A Healthy Life
 
-Source repository: https://github.com/Busyharp246opa/itsahealthylife
+A Next.js implementation of the FitCircle product, adapted to the existing Healthy Life brand. It includes member, trainer, community, training, wellness, store preview, and operator workflows. FitLoop and the TDEE calculator are excluded. The original Healthy Life Vite app and its architecture docs are preserved in `legacy/healthy-life-vite/`.
 
-A responsive member app, expert workspace, and admin console based on the supplied platform spec, workbook, logos, and Figma screens. The public app connects to Supabase and uses separate role-specific URLs. The earlier seeded walkthrough remains in the repository as development reference code, but is not mounted by the public entrypoint.
+## Local development
 
-## Run locally
+Requires Node.js 22.13+ and Docker. This project uses its own Supabase stack on ports 57320–57329 and Next.js on port 3390, separate from the FitCircle development stack.
 
 ```bash
-npm install
-cp .env.example .env.local
-npm run dev
+npm ci
+DOCKER_HOST=unix:///run/user/1000/docker.sock npm run supabase:start
+DOCKER_HOST=unix:///run/user/1000/docker.sock npm run db:reset
 ```
 
-Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`, then open <http://127.0.0.1:5173/> for the public landing page or <http://127.0.0.1:5173/member>, <http://127.0.0.1:5173/experts>, or <http://127.0.0.1:5173/admin> for a workspace. The current workspace already has an ignored `.env.local` for the HealthyLife project. Never put a service role key in a Vite variable.
-
-The public site opens at <https://itsahealthylife.vercel.app/> with its story at <https://itsahealthylife.vercel.app/about>. The production workspaces remain <https://itsahealthylife.vercel.app/member>, <https://itsahealthylife.vercel.app/experts>, and <https://itsahealthylife.vercel.app/admin>. GitHub `main` deploys through the Vercel `itsahealthylife` project. Its Production environment contains the same browser-safe Supabase URL and publishable key as local development; changes to those values require redeployment. The Supabase `platform-api` function permits requests from that production origin and localhost, with JWT and role checks still required.
-
-Supabase Auth URL Configuration must use `https://itsahealthylife.vercel.app` as the Site URL and allow the exact `/member`, `/experts`, and `/admin` return URLs on that host. Account confirmation and password reset requests explicitly return to the matching production workspace, even when requested from a local development browser. The `/admin` return URL is used only for password reset; public signup stays limited to member and expert. The local `supabase/config.toml` mirrors these URLs but does not change the hosted project's dashboard configuration. A new password is entered in the app after following a recovery link. Previously issued email links retain their original destination.
-
-For the three desktop design concepts, open <http://127.0.0.1:5173/Sample%20UI/index.html>. You can also open `Sample UI/index.html` directly from the project folder; its links target each concept's `index.html` rather than a directory. Daily Workbench now includes clickable program details, full exercise browsing, illustrative animated exercise previews, technique details, add-to-day targets, and an expert sharing preview. These concept actions stay in memory and never write to Supabase. Its member desktop navigation has also been adapted into the React app, with role-scoped Find a feature search (Ctrl/Cmd+K); the existing admin panel keeps its UI. Browser Back and Forward now follow workspace pages and the training catalog, including its filters. Design rationale is in `Sample UI/DESIGN.md`.
-
-The approved landing design combines movement, food, expert support, and community themes from the existing public website. It has original imagery and paired member/trainer registration and login actions. `scripts/prepare-public-pages.mjs` generates the public `index.html`, `about.html`, and `404.html` from the [noindex design source](Sample%20UI/04-landing/index.html) before development and production builds. `app.html` mounts the connected React workspaces, while `vite.config.ts` and `vercel.json` route `/member`, `/experts`, and `/admin` to that entrypoint. The Vite build still copies the noindex sample into `dist` for design review. `/member?auth=signup` and `/experts?auth=signup` open the connected registration form directly; `auth=login` opens sign-in. Design notes are in `Sample UI/04-landing/DESIGN.md`.
-
-Create or sign in to an account from `/member`. The confirmed account `itsahealthylifeltd@gmail.com` has the first admin grant and may open `/admin`. Members can open `/experts` to apply; until approval, that shell shows only the application and review status. An admin must approve the application before the full expert workspace opens and the expert appears in discovery.
-
-Admin password sign-in stays on `/admin`, including when the URL has a trailing slash. The admin dashboard has aligned metric cards, feature search above the sidebar navigation, and a visible sidebar Log out button that ends the current session. The overview counts registered profiles, approved experts, bookings, and simulated checkout records; it does not add amounts across different currencies.
-
-## What works
-
-- Member: account creation/sign-in/reset, health profile and sharing choice, expert discovery, available slots, simulated booking/cancellation, booking-linked messages, meal and activity logs, **member-authored weekly training programs with a 1,324-item searchable and filtered exercise browser, technique details, target sets/reps, per-set rep and weight logging, completion history, one active program, and optional sharing with a booked expert**, reviewed library saves, challenge steps, member Circle rooms and posts, likes, comments, reports, blocks, and people views, shop orders, and support requests.
-- Expert: application and review status, availability, assigned bookings/clients, read-only member-shared training programs, messages, a separate approved-expert Circle, content drafts, and linked simulated earnings.
-- Admin: expert review, booking/payment/payout overview, content publication, challenge and product creation, support/report queues, booking policy versions, and audit activity.
-- Development reference: the former browser-storage demo code and standalone design concepts remain in the repository; the deployed app does not expose the demo role/mode switch.
-
-Checkout and shop orders are **simulated**. No card is charged, no funds move, and no external payment provider is configured.
-
-Confirmed booking messages support one image or document attachment per message (up to 10 MB). Demo files stay in browser IndexedDB; Live Supabase files use a private Storage bucket that only the booked member and expert can access while the booking is confirmed.
-
-Member **Track** has compact nutrition and movement totals, a quick meal/activity form, optional macros, and repeat/remove controls in today's log.
-
-## Backend
-
-The `HealthyLife` Supabase MCP targets project `jqtrzwiyeohcljdvfkss`. SQL migrations live in `supabase/migrations/`; the deployed `platform-api` Edge Function is in `supabase/functions/platform-api/index.ts`. The browser uses a publishable key and user JWT. Row level security limits reads and direct writes; the Edge Function checks roles and performs privileged state transitions. The database has separate booking, payment, payout, and audit records. All 34 public tables have RLS enabled. Training rows have member ownership policies; an expert sees a program and its logs only while the member shares it and a confirmed or completed booking connects them.
-
-The exercise finder uses 1,324 English text records adapted from the local FitCircle repository. Provenance and the MIT license are in `public/data/README.md` and `public/data/exercises-LICENSE.txt`. FitCircle's separately licensed exercise images and GIFs were not copied. Flow Exercise Dataset SVG previews are now included for 1,257 exercises, with instructions-only fallbacks for 67. Artwork attribution and limitations are in `public/data/README.md`; the visuals are illustrative and have not received a rights or form-accuracy review.
-
-If the MCP token expires, run `codex mcp login HealthyLife` and approve the OAuth flow. The project `.mcp.json` contains the MCP URL but no credentials.
-
-## Verify
+Copy `.env.example` to `.env.local`. Fill `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SERVICE_ROLE_KEY` from `supabase status -o env`; keep the service role key server only. Then run `npm run dev:web` and open `http://127.0.0.1:3390/`. If Docker is not rootless on your machine, omit `DOCKER_HOST`.
 
 ```bash
 npm run build
+node --test tests/*.test.mjs
 ```
 
-The local walkthrough has been exercised in a browser from expert selection through confirmed simulated booking. The Circle member/expert feeds, room navigation, posting, report-to-admin moderation, mobile layout, and exercise-detail Back navigation were checked in a local browser. A rolled-back authenticated SQL test created a Circle post, like, and comment with no persistent records; all 34 public tables have RLS. Daily Workbench and the React training studio were exercised in a browser at desktop and phone widths. Rolled-back SQL checks created a training program, set log, and completed session under an authenticated member, switched the active program atomically, and confirmed another signed-in identity could not see the program. No test records persisted. The connected sign-in screen loads, and the first admin confirmed that the live Platform overview opens. The deployed function responds to local CORS preflight and rejects unauthenticated POST requests. The Supabase security advisor currently reports one Auth warning: leaked-password protection is disabled (a Pro-plan feature). There are no table/RLS security findings. See `docs/ai/40-flows.yaml` for flow-specific smoke checks.
+The local reset runs the schema migrations and seeds the exercise catalog and demo content. The public landing page and About page use the original Healthy Life design, logo, Host and Bricolage fonts, and plum, lime, lavender, and warm-white palette. Workspace routes start at `/trainee`, `/trainer`, and `/admin`; auth routes are under `/auth`.
 
-## Scope still requiring integrations
+## Supabase and existing data
 
-Auth URL Configuration was updated on 2026-10-25 and read back from the hosted Supabase dashboard: the Site URL is the production origin, and the member, expert, and admin return URLs are allowed. The default confirmation and recovery templates use Supabase's confirmation URL. A fresh email click remains to be checked with an inbox controlled by the product owner.
+The `HealthyLife` Supabase MCP is configured in `.mcp.json` for project `jqtrzwiyeohcljdvfkss` and its OAuth login was verified on 2026-10-30. The hosted database remains on the original schema. The production site must be checked after a `main` push because Vercel may deploy automatically.
 
-The product spec’s real payment provider, calls, media uploads, calendar sync, notification delivery, advanced food search, charts, and social publishing need additional integration and policy decisions. The hosted build is a product preview for connected workflow testing; it is not a production commerce or telehealth release.
+The hosted project contains existing Auth users and original Healthy Life tables. The ordered migrations in `supabase/migrations/` first archive the old public and private schemas as `healthy_legacy` and `healthy_legacy_private`, then create the new app schema, and finally map existing accounts, roles, Circle rooms, products, challenge, library items, guidelines, and saved training program. Original rows remain in the archived schemas, including data without a direct new-model counterpart. A representative local rehearsal passed, including sign-in to a migrated account. The hosted cutover still requires a database backup, ordered migration application, hosted environment and Auth redirect updates, deployment, and role/data smoke checks. See `CUTOVER.md` for the reviewed sequence and `docs/ai/` for architecture.
+
+The old Vite architecture and its original docs are at `legacy/healthy-life-vite/docs/ai/`. `Sample UI/` contains design source and concepts. Exercise text provenance and media limits are in `public/data/README.md`.
+
+## Product boundaries
+
+The store, pricing, wallet, live class, and some scheduling screens are previews. They do not charge cards or fulfill orders. Saved social and training operations use Supabase Auth, server checks, and row level security. The service role key must never be exposed to the browser.

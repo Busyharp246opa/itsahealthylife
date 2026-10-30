@@ -1,0 +1,33 @@
+import Image from "next/image";
+import Link from "next/link";
+import { BookOpen, HeartPulse, Moon, Salad, ShieldCheck } from "lucide-react";
+import { getWellnessData } from "../../../lib/fitcircle-data";
+import { isOfflinePreview } from "../../../lib/supabase/availability";
+import { CheckinForm, CreateMealForm, DeleteJournalForm, JournalForm, UpdateJournalForm } from "../../components/mutation-forms";
+import { WellnessSections } from "../../components/wellness-sections";
+import { EmptyState, LocalDataNote, MetricCard, PageHeader, SectionHeader, StatusBadge } from "../../components/workspace-ui";
+
+export const metadata = { title: "Wellness" };
+
+const guides = [
+  { title: "Build a varied plate", image: "/demo/lunch-bowl.png", alt: "Synthetic photograph of a chicken, rice, chickpea, and vegetable bowl", body: "Choose a variety of vegetables, fruits, pulses, whole grains, and protein foods. Your needs and local foods can differ.", href: "https://www.who.int/en/news-room/fact-sheets/detail/healthy-diet", source: "WHO healthy diet guidance" },
+  { title: "Read the portion you ate", image: "/demo/breakfast-bowl.png", alt: "Synthetic photograph of a yogurt, fruit, oats, and nuts breakfast bowl", body: "Compare the label's serving size with your actual portion before entering nutrients. FoodData Central provides reference values for many foods.", href: "https://fdc.nal.usda.gov/", source: "USDA FoodData Central" },
+];
+
+export default async function WellnessPage() {
+  const [data, offlinePreview] = await Promise.all([getWellnessData(), isOfflinePreview()]);
+  const latest = data.checkins[0];
+  const readiness = <>
+    <section className="fc-metric-grid fc-metric-grid--three fc-wellness-snapshot" aria-label="Your recent wellness activity"><MetricCard icon={HeartPulse} label="Latest mood" value={latest ? `${latest.mood} / 5` : "—"} detail={latest ? offlinePreview ? "Synthetic example" : `Saved ${latest.checked_on}` : "No check-in yet"} tone="accent" /><MetricCard icon={Moon} label="Sleep" value={latest?.sleep_hours ? `${latest.sleep_hours}h` : "—"} detail={offlinePreview ? "Synthetic example" : "Optional"} /><MetricCard icon={Salad} label="Meals logged" value={data.meals.length} detail={offlinePreview ? "Synthetic examples" : "Private to your account"} tone="success" /></section>
+    <div className="fc-wellness-layout"><section className="fc-panel"><SectionHeader title="Daily readiness" description="Non-diagnostic signals for your own planning." /><CheckinForm /></section><section className="fc-panel"><SectionHeader title="Recent check-ins" description={offlinePreview ? "Fictional entries show how your history will look." : "Only rows owned by your local identity appear here."} />{data.checkins.length ? <div className="fc-checkin-history">{data.checkins.map((item) => <article key={item.id}><time>{new Intl.DateTimeFormat("en-AE", { month: "short", day: "numeric" }).format(new Date(`${item.checked_on}T12:00:00Z`))}</time><span><strong>Mood {item.mood}</strong><small>Energy {item.energy} · soreness {item.soreness}</small></span><StatusBadge tone={item.energy >= 4 ? "success" : "neutral"}>{item.sleep_hours ?? "—"}h sleep</StatusBadge></article>)}</div> : <EmptyState title="No check-ins yet" description="Save the form once to begin your private history." />}</section></div></>;
+  const meals = <div className="fc-wellness-layout"><section className="fc-panel"><SectionHeader title="Log a meal" description="Record one food to start, then add more foods to the meal." /><CreateMealForm /></section><section className="fc-panel"><SectionHeader title="Meal history" description="Totals reflect only the food values you entered." />{data.meals.length ? <div className="fc-meal-history">{data.meals.map((meal) => <Link href={`/wellness/meals/${meal.id}`} key={meal.id}><span><strong>{meal.meal_type}</strong><small>{new Intl.DateTimeFormat("en-AE", { dateStyle: "medium", timeStyle: "short" }).format(new Date(meal.eaten_at))}</small></span><span>{meal.meal_items.length} foods · {meal.meal_items.reduce((total, item) => total + (item.calories ?? 0), 0)} kcal</span></Link>)}</div> : <EmptyState title="No meals logged" description="Your private food history will appear here." />}</section></div>;
+  const journal = <div className="fc-wellness-layout"><section className="fc-panel"><SectionHeader title="Private journal" description="A space to notice patterns without judgement." /><JournalForm /></section><section className="fc-panel"><SectionHeader title="Recent reflections" description="Entries are visible only to this account." />{data.journals.length ? <div className="fc-journal-history">{data.journals.map((entry) => <article key={entry.id}><small>{new Intl.DateTimeFormat("en-AE", { dateStyle: "medium" }).format(new Date(entry.created_at))}</small><h3>{entry.title || "Untitled reflection"}</h3><p>{entry.body}</p><UpdateJournalForm entry={entry} /><DeleteJournalForm entryId={entry.id} /></article>)}</div> : <EmptyState title="No reflections yet" description="Write a few words and they will stay private to this local identity." />}</section></div>;
+  const foodGuides = <section className="fc-surface-rail"><SectionHeader title="Food guides" description="General guidance with clear sources; pictures show fictional example meals." /><div className="fc-guide-grid">{guides.map((guide) => <article className="fc-guide-card" key={guide.title}><Image src={guide.image} alt={guide.alt} width={640} height={400} sizes="(max-width: 720px) 100vw, 50vw" /><div><BookOpen size={20} aria-hidden /><h3>{guide.title}</h3><p>{guide.body}</p><a href={guide.href} target="_blank" rel="noreferrer">Read {guide.source}</a></div></article>)}</div></section>;
+
+  return <div className="fc-page fc-wellness-page">
+    <PageHeader eyebrow="Wellness · private" title="Your wellness." description={offlinePreview ? "Explore fictional readiness, meal, and reflection examples. Start local Supabase to save your own." : "Check in, log meals, and reflect in one private space."} />
+    <WellnessSections readiness={readiness} meals={meals} journal={journal} guides={foodGuides} />
+    <p className="fc-privacy-line"><ShieldCheck size={16} aria-hidden /> Journal entries stay private. Your selected trainer can read readiness check-ins only while “Share with my trainer” is on.</p>
+    <LocalDataNote>{offlinePreview ? "All check-ins, meals, and reflections shown here are synthetic preview examples. The general guides are educational." : "Wellness rows are owner-only. These general guides are educational and do not diagnose or prescribe a diet."}</LocalDataNote>
+  </div>;
+}
