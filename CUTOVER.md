@@ -1,6 +1,6 @@
 # Healthy Life hosted cutover
 
-**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Commit `7be5222` failed on Vercel because the project still expected Vite's `dist` folder. The project framework is now Next.js, and commit `7952a28` built successfully as a preview; its landing and login routes render. Production still serves the previous Vite deployment. The three browser-safe Next.js variables are set for Production; the server-only service role key, backup, and hosted migration remain pending.
+**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Commit `7be5222` failed on Vercel because the project still expected Vite's `dist` folder. The project framework is now Next.js, and commit `7952a28` built successfully as a preview; its landing and login routes render, while `/fitloop` and `/wellness/tdee` return 404. Production still serves the previous Vite deployment. The three browser-safe Next.js variables are set for Production; the server-only service role key, backup, and hosted migration remain pending.
 
 The hosted Supabase project is `jqtrzwiyeohcljdvfkss`. Its original 14 migration versions are represented by placeholder files in the current `supabase/migrations/` directory; the original SQL remains in `legacy/healthy-life-vite/supabase/migrations/`. This keeps local and hosted migration history aligned. The new migration chain uses `--include-all` because some new versions predate the original hosted versions.
 
