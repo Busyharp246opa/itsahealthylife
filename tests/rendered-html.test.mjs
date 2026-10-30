@@ -48,6 +48,18 @@ test("serves the Healthy Life landing page and story", async () => {
   }
 });
 
+test("login accepts existing password lengths while registration keeps its eight-character rule", async () => {
+  const login = await fetch(`http://127.0.0.1:${port}/auth/login`).then((response) => response.text());
+  const loginPassword = login.match(/<input\b(?=[^>]*\bname="password")[^>]*>/i)?.[0];
+  assert.ok(loginPassword, "login password input is rendered");
+  assert.doesNotMatch(loginPassword, /\b(?:minlength|maxlength)=/i);
+
+  const registration = await fetch(`http://127.0.0.1:${port}/auth/register/trainee`).then((response) => response.text());
+  const newPassword = registration.match(/<input\b(?=[^>]*\bname="password")[^>]*>/i)?.[0];
+  assert.ok(newPassword, "registration password input is rendered");
+  assert.match(newPassword, /\bmaxlength="8"/i);
+});
+
 test("server-renders the populated Healthy Life Today overview", async () => {
   const response = await fetch(`http://127.0.0.1:${port}/today`);
   assert.equal(response.status, 200);

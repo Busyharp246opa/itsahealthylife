@@ -10,9 +10,9 @@ import { isOperatorRole } from "../../lib/workspace-routing";
 
 const initial: AuthResult = { status: "idle", message: "" };
 
-export function PasswordField({ name = "password", label = "Password", autoComplete = "new-password" }: { name?: string; label?: string; autoComplete?: string }) {
+export function PasswordField({ name = "password", label = "Password", autoComplete = "new-password", exactLength = true }: { name?: string; label?: string; autoComplete?: string; exactLength?: boolean }) {
   const [visible, setVisible] = useState(false);
-  return <label className="fc-auth-field"><span>{label}</span><div className="fc-password-wrap"><input name={name} type={visible ? "text" : "password"} autoComplete={autoComplete} minLength={8} maxLength={8} required /><button type="button" onClick={() => setVisible(!visible)} aria-label={visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`} aria-pressed={visible}>{visible ? <EyeOff size={18} /> : <Eye size={18} />}</button></div></label>;
+  return <label className="fc-auth-field"><span>{label}</span><div className="fc-password-wrap"><input name={name} type={visible ? "text" : "password"} autoComplete={autoComplete} minLength={exactLength ? 8 : undefined} maxLength={exactLength ? 8 : undefined} required /><button type="button" onClick={() => setVisible(!visible)} aria-label={visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`} aria-pressed={visible}>{visible ? <EyeOff size={18} /> : <Eye size={18} />}</button></div></label>;
 }
 
 export function RegistrationForm({ role }: { role: "trainee" | "trainer" }) {
@@ -58,7 +58,7 @@ export function LoginForm({ postAfterSignIn = false }: { postAfterSignIn?: boole
     }
     router.push(target); router.refresh();
   }
-  return <form onSubmit={submit} className="fc-auth-form"><label className="fc-auth-field"><span>Email address</span><input name="email" type="email" autoComplete="username" required /></label><PasswordField autoComplete="current-password" /><label className="fc-auth-check"><input type="checkbox" name="remember" defaultChecked /><span>Remember me on this device</span></label><button className="fc-button fc-button--primary" disabled={pending} aria-busy={pending}>{pending ? <LoaderCircle className="fc-spin" size={17} aria-hidden /> : null}{pending ? "Signing in…" : "Sign in"}{!pending ? <ArrowRight size={17} aria-hidden /> : null}</button>{error ? <p className="fc-auth-feedback error" role="alert">{error}</p> : null}</form>;
+  return <form onSubmit={submit} className="fc-auth-form"><label className="fc-auth-field"><span>Email address</span><input name="email" type="email" autoComplete="username" required /></label><PasswordField autoComplete="current-password" exactLength={false} /><label className="fc-auth-check"><input type="checkbox" name="remember" defaultChecked /><span>Remember me on this device</span></label><button className="fc-button fc-button--primary" disabled={pending} aria-busy={pending}>{pending ? <LoaderCircle className="fc-spin" size={17} aria-hidden /> : null}{pending ? "Signing in…" : "Sign in"}{!pending ? <ArrowRight size={17} aria-hidden /> : null}</button>{error ? <p className="fc-auth-feedback error" role="alert">{error}</p> : null}</form>;
 }
 
 export function ChangePasswordForm() {

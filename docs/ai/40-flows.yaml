@@ -14,6 +14,8 @@ flows:
   auth_and_roles:
     paths: [/trainer, /admin, /auth/admin]
     manual_smoke_checks:
+      - Enter a longer alphanumeric test value on the login page; verify digits remain in the field and the full value is submitted only when signed in with valid credentials.
+      - Confirm new account registration still applies its eight-character password rule.
       - Guest trainer and admin routes lead to the appropriate sign-in page.
       - Signed member cannot access trainer or operator data; existing admin retains operator access after cutover.
   saved_data:

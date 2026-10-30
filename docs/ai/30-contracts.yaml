@@ -12,6 +12,7 @@ authentication:
   profile: public.profiles.user_id is unique and references auth.users.id.
   roles: member, coachsphere, fitsphere, moderator, support, finance_admin, catalog_admin, super_admin.
   authorization: Server checks and Postgres RLS; service role stays server-only.
+  password_inputs: Sign-in accepts existing passwords without a client-side length cap; new registration passwords retain the eight-character rule.
 legacy_cutover:
   archive_migration: supabase/migrations/20260717175900_archive_healthy_life_legacy.sql
   mapping_migration: supabase/migrations/20261030120000_migrate_healthy_life_legacy.sql
