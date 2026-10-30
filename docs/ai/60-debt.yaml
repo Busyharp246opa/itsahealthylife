@@ -1,8 +1,8 @@
 schema_version: 1
 deferred:
-  - item: Hosted schema and application cutover
-    status: pending_review
-    reason: Existing HealthyLife users and data require a backed-up, ordered, verified migration before deployment.
+  - item: Hosted account sign-in and role smoke checks
+    status: pending_verification
+    reason: Hosted accounts and mapped rows are verified in the database, but existing account passwords are unavailable for a full browser sign-in check.
   - item: Original workbook features requiring external providers
     status: pending_integration
     includes: [payments, live classes, notification delivery, media, advanced scheduling]
@@ -13,5 +13,5 @@ deferred:
     status: preserved
     location: legacy/healthy-life-vite/
 recommended_next_cuts:
-  - Review the locally rehearsed hosted cutover and backup in CUTOVER.md.
-  - Configure hosted Next.js environment and Auth redirect URLs, deploy, and smoke test roles and saved data.
+  - Have an existing member and operator sign in and verify saved program, role access, and social data against the hosted project.
+  - Verify recovery from the logical backup in an isolated project before relying on it for disaster recovery.

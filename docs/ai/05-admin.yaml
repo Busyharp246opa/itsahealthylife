@@ -3,20 +3,20 @@ project: Its A Healthy Life
 current_state:
   development_branch: main
   target_branch: main
-  hosted_app: Original Vite implementation remains deployed at itsahealthylife.vercel.app.
-  hosted_database: HealthyLife Supabase project jqtrzwiyeohcljdvfkss still has the original public schema and Auth users.
+  hosted_app: Next.js Healthy Life implementation is deployed at itsahealthylife.vercel.app.
+  hosted_database: HealthyLife Supabase project jqtrzwiyeohcljdvfkss has all 41 migration versions and 1324 catalog exercises; original Auth users remain and original tables are archived in healthy_legacy.
   mcp: HealthyLife is configured in .mcp.json and OAuth login was verified on 2026-10-30.
   local_app: Next.js app on port 3390, with isolated local Supabase on ports 57320-57329.
-  deployment: Commit 7be5222 on main failed under Vite's dist output. Vercel is now set to Next.js and commit 7952a28 passed as a preview deployment. Production still serves the prior Vite app until database cutover and main push.
+  deployment: Vercel is configured for Next.js; commit 39b13a1 was the first successful Production build. Later Git deployments include the server secret.
   original_docs: legacy/healthy-life-vite/docs/ai/
 maintenance:
   package_manager: npm; use npm ci for a clean install.
   local_database: Use DOCKER_HOST=unix:///run/user/1000/docker.sock when using rootless Docker on this workstation.
   environment: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY are browser-safe; SUPABASE_SERVICE_ROLE_KEY is server-only.
-  production_cutover: Review migration and rollback plan, back up hosted data, apply ordered migrations, configure hosted environment and Auth redirects, then deploy and run smoke checks.
+  production_cutover: Completed 2026-10-30. See CUTOVER.md for backup location, applied versions, row counts, and remaining smoke checks.
   preservation: Original public tables move to healthy_legacy and original private schema to healthy_legacy_private; Auth user IDs are retained.
   cutover_guide: CUTOVER.md
   rehearsal: Original 14-migration stack plus representative saved account and program migrated locally on 2026-10-30; sign-in and owner reads passed.
   hosting_access: Chrome is signed into the owning Vercel team. The connected Vercel MCP account still lacks this project, so use Chrome for project settings and deployment inspection.
-  hosting_environment: Production has NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, and NEXT_PUBLIC_APP_ORIGIN; SUPABASE_SERVICE_ROLE_KEY remains to be configured. Original VITE variables remain for the old deployment.
-  database_dashboard_access: Chrome Supabase Dashboard currently shows unrelated Table Top Org or Rays accounts; Healthy Life project access is pending for backup and server key setup. HealthyLife MCP remains operational.
+  hosting_environment: Production has NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, NEXT_PUBLIC_APP_ORIGIN, and server-only SUPABASE_SERVICE_ROLE_KEY. Only deployments created after the secret was added include it.
+  database_dashboard_access: Chrome Supabase Dashboard is signed into the Healthy Life project; HealthyLife MCP and Supabase CLI profile healthy-life are operational.

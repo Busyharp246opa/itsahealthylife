@@ -1,34 +1,28 @@
 # Healthy Life hosted cutover
 
-**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Commit `7be5222` failed on Vercel because the project still expected Vite's `dist` folder. The project framework is now Next.js, and commit `7952a28` built successfully as a preview; its landing and login routes render, while `/fitloop` and `/wellness/tdee` return 404. Production still serves the previous Vite deployment. The three browser-safe Next.js variables are set for Production; the server-only service role key, backup, and hosted migration remain pending.
+**Status (2026-10-30):** The Next.js Healthy Life app is live at https://itsahealthylife.vercel.app. The Supabase migration and exercise catalog load are complete. The original Auth users retain their IDs, and the former public and private schemas are archived. The Production server secret has been added to Vercel for subsequent deployments.
 
-The hosted Supabase project is `jqtrzwiyeohcljdvfkss`. Its original 14 migration versions are represented by placeholder files in the current `supabase/migrations/` directory; the original SQL remains in `legacy/healthy-life-vite/supabase/migrations/`. This keeps local and hosted migration history aligned. The new migration chain uses `--include-all` because some new versions predate the original hosted versions.
+The hosted Supabase project is `jqtrzwiyeohcljdvfkss`. The original 14 migration versions are represented by placeholders in this repository, with their SQL retained under `legacy/healthy-life-vite/supabase/migrations/`. The 27 new versions were applied using `supabase db push --include-all`; hosted migration history now contains 41 versions.
 
-## Verified on 2026-10-30
+## Backup and execution record
 
-- A clean isolated stack resets with all 41 migration files and the local exercise/demo seeds.
-- A second isolated stack ran all 14 original migrations, created an account and saved training program, then applied all 27 new migrations. The old rows remained in `healthy_legacy`, while the new public schema held one mapped account, one program and movement, three products, three library posts, three communities, and one challenge.
-- The mapped account signed in with its original password and could read its new profile, program, and movement through owner-scoped API policies.
-- `npm run build` and 29 integration tests passed. The rendered app exposes neither FitLoop nor TDEE routes.
+- Before migration, a logical dump of `public`, `private`, `auth`, `storage`, and `supabase_migrations` was saved outside the repository at `/home/okja/healthy-life-backup-20261030/`. It contains `schema.sql`, `data.sql`, and `roles.sql`, each readable only by the local owner. The hosted Free plan did not provide a managed project backup. The dump has not been restored into an isolated project, so recovery from it remains untested.
+- Pre-cutover inventory: 2 Auth users, 2 profiles, 3 role grants, 1 training program, 3 products, 3 content items, 3 Circle rooms, 1 challenge with 7 steps, and no Storage objects. Other saved member activity tables were empty.
+- The migration retained 2 Auth users, archived 2 profiles, 3 role grants, 1 training program, and 3 products, and mapped 2 new profiles including 1 `super_admin`, 1 trainee program with 1 movement, 3 products, 3 communities, 3 posts, and 1 challenge. No public FitLoop or TDEE tables remain.
+- The 1,324-exercise catalog was loaded from `supabase/seeds/10_exercises.sql` in 14 idempotent batches. The single 17 MB file exceeded the hosted query endpoint's request size. `supabase/seeds/20_demo.sql` was not loaded in Production.
+- Supabase Auth's Site URL was already the production origin. `https://itsahealthylife.vercel.app/auth/confirm` was added to its redirect allowlist and verified after a dashboard refresh. The three former app URLs remain on the list.
+- Vercel is configured for Next.js and commit `39b13a1` deployed successfully. Production has `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_APP_ORIGIN`, and the server-only `SUPABASE_SERVICE_ROLE_KEY`. The new secret was added after `39b13a1`; later Git deployments include it.
 
-The hosted inventory at review time was 2 Auth users, 2 profiles, 3 role grants, 1 training program, 3 products, 3 content items, 3 Circle rooms, 1 challenge with 7 steps, and no Storage objects. All other saved member activity tables were empty. Recheck these counts immediately before cutover.
+## Verification and limits
 
-## Before changing the hosted project
+- A clean isolated stack reset with all 41 migration files and the local exercise and demo seeds. A second isolated stack rehearsed all 14 original migrations, an account, and a saved training program before applying the 27 new migrations. The account signed in with its original password and read its mapped profile, program, and movement through owner-scoped policies.
+- `npm run build` and 29 integration tests passed before the hosted migration. The new landing and login routes rendered in preview, and `/fitloop` and `/wellness/tdee` returned 404. The production landing was observed serving the new app.
+- Hosted row counts and the admin role were verified through SQL after migration. A full browser sign-in with the existing hosted member and operator accounts still requires their credentials; no account password was changed for this cutover.
 
-1. Secure a restorable database backup or logical dump and record the restore point. Supabase documents its backup and logical dump options at https://supabase.com/docs/guides/platform/backups. The archive migration preserves old rows, but a backup is still required for recovery from an incomplete cutover.
-2. Arrange a short write freeze, because old and new applications use incompatible public schemas. Record counts of `auth.users` and all old public tables.
-3. Use the owning Vercel account in Chrome to verify project settings and deployments. The connected Vercel MCP account does not see `itsahealthylife`. Confirm `SUPABASE_SERVICE_ROLE_KEY` is set as a server-only Production secret. Do not migrate the hosted database until the replacement deployment can be configured and launched.
-4. Confirm hosted Auth redirect URLs cover the new `/auth/confirm` and password recovery routes at the production origin.
+## Follow-up smoke checks
 
-## Ordered cutover
-
-1. Link the Supabase CLI to `jqtrzwiyeohcljdvfkss` with an authorized account. Review `supabase db push --include-all --dry-run`; it should list only the 27 new migration versions. Do not use `db reset --linked` or `--include-seed` on production.
-2. Apply `supabase db push --include-all`. The first new migration archives the original public tables/functions and private schema. The final new migration maps compatible records to the new schema. Auth users and their IDs remain in place.
-3. Load the **exercise catalog only** with `supabase db query --linked --file supabase/seeds/10_exercises.sql`. Do not load `20_demo.sql` on production; it contains fictional accounts and product data.
-4. Verify archived counts match the pre-cutover counts; confirm 2 mapped profiles, the admin role, saved training program/day/movement, 3 products, 3 library posts, 3 communities, 1 challenge, and 1,324 exercises. Confirm no FitLoop tables.
-5. Configure the Vercel project for Next.js at repository root. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_APP_ORIGIN=https://itsahealthylife.vercel.app`, and server-only `SUPABASE_SERVICE_ROLE_KEY`. Deploy the reviewed revision.
-6. Smoke test landing/About, member sign-in, existing admin sign-in, saved program, social, exercise catalog, store, and trainer access. Check `/fitloop` and `/wellness/tdee` return 404. Resume writes after these checks.
+On the Production deployment, open landing, About, login, member, trainer, and admin routes. Confirm guest role redirects, FitLoop and TDEE 404s, and the catalog view. Have an existing member and operator sign in to confirm saved program, social data, and role access. Restore the logical dump into an isolated project before relying on it as a tested recovery path.
 
 ## Recovery
 
-If a cutover step fails, keep writes paused. Restore the recorded pre-cutover database backup and redeploy the previous Vite revision. The original rows also remain archived after a successful archive migration, but the old app cannot run against the new public schema without a database restore or separately reviewed reversal. A database restore can discard writes made after the restore point, so the write freeze is part of the cutover.
+If recovery is needed, stop writes first. Restore the pre-cutover logical dump into a replacement project and point the prior Vite deployment at it only after checking the restored schema and Auth users. The archived rows remain in the current database, but the old app cannot use the new public schema directly. A restore can discard writes made after the dump.

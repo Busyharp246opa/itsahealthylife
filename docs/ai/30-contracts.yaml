@@ -18,9 +18,9 @@ legacy_cutover:
   archived_schemas: [healthy_legacy, healthy_legacy_private]
   mapped_records: [profiles, role_grants, circle_rooms, products, challenges, content_items, circle_guidelines, training_programs]
   retained_archive: All original public rows and private functions remain in archived schemas, including records without a direct new-model equivalent.
-  live_status: Not applied to hosted project as of 2026-10-30.
+  live_status: Applied to hosted project on 2026-10-30; 41 migration versions, 2 retained Auth users, 2 mapped profiles, and 1324 catalog exercises verified.
   history_alignment: Fourteen placeholder migrations mirror hosted version names; original SQL remains under legacy/healthy-life-vite/supabase/migrations/.
-  production_catalog: Apply supabase/seeds/10_exercises.sql separately after schema migration; never apply the demo seed to production.
+  production_catalog: supabase/seeds/10_exercises.sql was applied in 14 idempotent batches because the hosted query endpoint rejected the complete file with HTTP 413. Never apply the demo seed to production.
 route_contracts:
   public: ['/', /about]
   member: [/trainee, /today, /circle, /train, /wellness, /store]

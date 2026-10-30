@@ -1,6 +1,6 @@
 schema_version: 1
 project: Its A Healthy Life
-status: nextjs_local_implementation_hosted_cutover_pending
+status: nextjs_hosted_cutover_complete
 timezone: Asia/Dhaka
 read_order:
   - 00-index.yaml
@@ -17,7 +17,8 @@ summary: >-
   member, trainer, social, training, wellness, commerce preview, and operator
   routes. FitLoop and the TDEE calculator are excluded. The prior Vite app and
   its original AI docs remain in legacy/healthy-life-vite/. The hosted Supabase
-  project still runs the prior schema until a reviewed cutover.
+  project runs the new schema, with original accounts and rows preserved in the
+  legacy archive and mapped into the new model.
 task_routing:
   brand_and_public_site:
     owner: app/layout.tsx, app/page.tsx, next.config.ts, tokens.css, app/focus-circle.css, public/brand/, public/landing/
