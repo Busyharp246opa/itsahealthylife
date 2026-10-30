@@ -1,6 +1,6 @@
 # Healthy Life hosted cutover
 
-**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Pushing `main` may trigger a Vercel build, so check the live site before any database change.
+**Status:** prepared and locally rehearsed; hosted schema cutover is pending. Commit `7be5222` failed on Vercel because the project still expected Vite's `dist` folder. Root `vercel.json` now declares the Next.js framework and `.next` output. Check the replacement build, environment, and live site before any database change.
 
 The hosted Supabase project is `jqtrzwiyeohcljdvfkss`. Its original 14 migration versions are represented by placeholder files in the current `supabase/migrations/` directory; the original SQL remains in `legacy/healthy-life-vite/supabase/migrations/`. This keeps local and hosted migration history aligned. The new migration chain uses `--include-all` because some new versions predate the original hosted versions.
 

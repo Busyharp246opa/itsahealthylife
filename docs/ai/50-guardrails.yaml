@@ -21,3 +21,4 @@ must_retest_if_changed:
 refactor_rules:
   - Edit helpers and data access first, route wiring second, docs last.
   - Keep the archived Vite runtime separate from the Next.js build.
+  - Keep Vercel framework and output settings aligned with Next.js; check the production build and environment before hosted schema cutover.

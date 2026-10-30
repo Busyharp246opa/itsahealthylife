@@ -8,6 +8,10 @@ modules:
     owner_module: public_site
     allowed_edit_paths: [app/page.tsx, next.config.ts, public/landing/, public/robots.txt, public/sitemap.xml]
     must_not_move_without: [brand]
+  hosting:
+    owner_module: hosting
+    allowed_edit_paths: [vercel.json, next.config.ts, CUTOVER.md]
+    must_not_move_without: [public_site, authentication, database]
   workspace_shell:
     owner_module: workspace_shell
     allowed_edit_paths: [app/(workspace)/layout.tsx, app/components/workspace-shell.tsx, app/components/workspace-ui.tsx, proxy.ts]

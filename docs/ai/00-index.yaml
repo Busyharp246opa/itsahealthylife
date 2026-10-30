@@ -28,6 +28,9 @@ task_routing:
   database_and_migration:
     owner: supabase/migrations/, supabase/seeds/, lib/supabase/, tests/
     read: [05-admin.yaml, 20-modules.yaml, 30-contracts.yaml, 40-flows.yaml, 50-guardrails.yaml]
+  hosting_and_cutover:
+    owner: vercel.json, next.config.ts, CUTOVER.md
+    read: [05-admin.yaml, 20-modules.yaml, 30-contracts.yaml, 40-flows.yaml, 50-guardrails.yaml]
   previous_app:
     owner: legacy/healthy-life-vite/
     read: [legacy/healthy-life-vite/docs/ai/00-index.yaml]

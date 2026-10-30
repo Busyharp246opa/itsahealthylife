@@ -11,5 +11,6 @@ Its A Healthy Life (Next.js App Router)
 ├── tokens.css              Healthy Life color tokens
 ├── docs/ai/                Current architecture and routing pack
 ├── CUTOVER.md              Hosted migration and deployment procedure
+├── vercel.json             Next.js framework and build output override
 ├── legacy/healthy-life-vite/  Previous application and its AI docs
 └── Sample UI/              Design source and reference concepts
